@@ -181,6 +181,21 @@
   }
   .typetoggle button.on{background:var(--truth);border-color:var(--truth);color:#fff}
 
+  .wordrow{display:flex;gap:8px}
+  .wordrow input{flex:1}
+  .wordrow .btn{white-space:nowrap;padding:0 16px}
+  .wordrow .btn:disabled{opacity:.5}
+
+  details#advancedFields{margin-top:18px;border-top:1px solid var(--line);padding-top:2px}
+  details#advancedFields summary{
+    font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--mark);cursor:pointer;padding:14px 0;list-style:none;
+  }
+  details#advancedFields summary::-webkit-details-marker{display:none}
+  details#advancedFields summary::before{content:"+ ";color:var(--dimmer)}
+  details#advancedFields[open] summary::before{content:"– "}
+  details#advancedFields label:first-of-type{margin-top:0}
+
   .databox{margin-top:36px;border-top:1px solid var(--line);padding-top:20px}
   .databox .lbl{margin-bottom:8px}
   .databox p.hint{font-family:var(--sans);color:var(--dim);font-size:13px;margin:6px 0 16px;line-height:1.5}
@@ -251,43 +266,49 @@
     </div>
     <form class="addform" id="addForm">
       <label for="f_word" id="lbl_word">Word</label>
-      <input type="text" id="f_word" required placeholder="e.g. laconic">
+      <div class="wordrow">
+        <input type="text" id="f_word" required placeholder="e.g. egregious">
+        <button type="button" class="btn ghost" id="autofillBtn">Look up</button>
+      </div>
+      <div class="hint" id="autofillHint">Type the word, tap Look up — meaning, examples and a starter contrast get drafted for you. Only works once this page is live on the web (not in this chat preview).</div>
 
       <label for="f_meaning" id="lbl_meaning">Core meaning</label>
-      <textarea id="f_meaning" required placeholder="Using very few words; terse."></textarea>
-
-      <label for="f_hook">Memory hook</label>
-      <input type="text" id="f_hook" placeholder="e.g. says almost nothing, means a lot">
-
-      <label for="f_register" id="lbl_register">Register</label>
-      <select id="f_register">
-        <option>Everyday educated</option>
-        <option>Formal / professional</option>
-        <option>Literary</option>
-        <option>Humorous</option>
-        <option>Rare / recognition only</option>
-      </select>
+      <textarea id="f_meaning" placeholder="Using very few words; terse."></textarea>
 
       <label for="f_examples" id="lbl_examples">Natural spoken examples — one per line</label>
       <textarea id="f_examples" placeholder="laconic reply&#10;laconic style&#10;stayed laconic throughout"></textarea>
-      <div class="hint">one per line</div>
 
-      <label for="f_collocations" id="lbl_collocations">Useful collocations</label>
-      <input type="text" id="f_collocations" placeholder="laconic reply, laconic wit, laconic style">
-      <div class="hint">comma separated</div>
+      <details id="advancedFields">
+        <summary>More detail (optional — fill in whenever, or never)</summary>
 
-      <label for="f_family" id="lbl_family">Word family</label>
-      <input type="text" id="f_family" placeholder="laconic, laconically, laconicism (rare)">
-      <div class="hint">comma separated</div>
+        <label for="f_hook">Memory hook</label>
+        <input type="text" id="f_hook" placeholder="e.g. says almost nothing, means a lot">
 
-      <label for="f_contrast" id="lbl_contrast">Near-synonym distinction</label>
-      <textarea id="f_contrast" placeholder="Laconic = few words by nature/style. Terse = deliberately curt."></textarea>
+        <label for="f_register" id="lbl_register">Register</label>
+        <select id="f_register">
+          <option>Everyday educated</option>
+          <option>Formal / professional</option>
+          <option>Literary</option>
+          <option>Humorous</option>
+          <option>Rare / recognition only</option>
+        </select>
 
-      <label for="f_personal">🗣️ Personal use frame</label>
-      <input type="text" id="f_personal" placeholder="The most laconic person I know is ___, because ___.">
+        <label for="f_collocations" id="lbl_collocations">Useful collocations</label>
+        <input type="text" id="f_collocations" placeholder="laconic reply, laconic wit, laconic style">
+
+        <label for="f_family" id="lbl_family">Word family</label>
+        <input type="text" id="f_family" placeholder="laconic, laconically, laconicism (rare)">
+
+        <label for="f_contrast" id="lbl_contrast">Near-synonym distinction</label>
+        <textarea id="f_contrast" placeholder="Laconic = few words by nature/style. Terse = deliberately curt."></textarea>
+
+        <label for="f_personal">🗣️ Personal use frame</label>
+        <input type="text" id="f_personal" placeholder="The most laconic person I know is ___, because ___.">
+      </details>
 
       <div class="submitrow">
         <button type="submit" class="btn primary" id="submitBtn">Add to lexicon</button>
+        <button type="button" class="btn ghost" id="cancelEditBtn" style="display:none">Cancel edit</button>
       </div>
     </form>
 
@@ -301,6 +322,7 @@
       <input type="file" id="importFile" accept="application/json" style="display:none">
     </div>
   </section>
+
 
 </main>
 
@@ -630,11 +652,21 @@ function renderBrowse(){
           ${it.contrast?`<dt>Distinction</dt><dd>${it.contrast}</dd>`:""}
           ${it.personal?`<dt>Personal use</dt><dd>${it.personal}</dd>`:""}
         </dl>
+        ${it.id.startsWith("c")?`<button type="button" class="btn ghost editItemBtn" data-id="${it.id}" data-type="${it.type}" style="margin-top:12px">Edit</button>`:""}
       </div>
     </div>`;
   }).join("");
   host.querySelectorAll(".lexitem").forEach(el=>{
-    el.addEventListener("click",()=> el.classList.toggle("open"));
+    el.addEventListener("click",(e)=>{
+      if(e.target.classList.contains("editItemBtn")) return;
+      el.classList.toggle("open");
+    });
+  });
+  host.querySelectorAll(".editItemBtn").forEach(btn=>{
+    btn.addEventListener("click",(e)=>{
+      e.stopPropagation();
+      enterEditMode(btn.dataset.id, btn.dataset.type);
+    });
   });
 }
 
@@ -669,14 +701,16 @@ document.getElementById("togglePhrase").addEventListener("click", ()=>{
   applyAddLabels();
 });
 
+let editingId = null;
+let editingType = null;
+
 document.getElementById("addForm").addEventListener("submit", async (e)=>{
   e.preventDefault();
   const word = document.getElementById("f_word").value.trim();
   if(!word) return;
-  const id = "c" + Date.now();
   const examples = document.getElementById("f_examples").value.split("\n").map(s=>s.trim()).filter(Boolean);
-  const newItem = {
-    id, word,
+  const fields = {
+    word,
     meaning: document.getElementById("f_meaning").value.trim(),
     hook: document.getElementById("f_hook").value.trim(),
     register: document.getElementById("f_register").value,
@@ -686,13 +720,105 @@ document.getElementById("addForm").addEventListener("submit", async (e)=>{
     contrast: document.getElementById("f_contrast").value.trim(),
     personal: document.getElementById("f_personal").value.trim()
   };
-  if(addType === "phrase"){ store.customPhrases.push(newItem); }
-  else { store.customWords.push(newItem); }
-  store.progress[id] = {box:0, due: addDays(todayStr(),1), seen:0};
-  await saveStore();
-  document.getElementById("addForm").reset();
-  toast(`Added “${word}” — enters practice tomorrow`);
+
+  if(editingId){
+    const arr = editingType === "phrase" ? store.customPhrases : store.customWords;
+    const idx = arr.findIndex(x=>x.id===editingId);
+    if(idx>-1) arr[idx] = Object.assign({id:editingId}, fields);
+    await saveStore();
+    toast(`Saved changes to “${word}”`);
+    exitEditMode();
+  } else {
+    const id = "c" + Date.now();
+    const newItem = Object.assign({id}, fields);
+    if(addType === "phrase"){ store.customPhrases.push(newItem); }
+    else { store.customWords.push(newItem); }
+    store.progress[id] = {box:0, due: addDays(todayStr(),1), seen:0};
+    await saveStore();
+    document.getElementById("addForm").reset();
+    toast(`Added “${word}” — enters practice tomorrow`);
+  }
   renderStats();
+});
+
+function enterEditMode(id, type){
+  const arr = type === "phrase" ? store.customPhrases : store.customWords;
+  const item = arr.find(x=>x.id===id);
+  if(!item) return;
+  editingId = id; editingType = type;
+  addType = type;
+  document.getElementById("toggleWord").classList.toggle("on", type==="word");
+  document.getElementById("togglePhrase").classList.toggle("on", type==="phrase");
+  applyAddLabels();
+  document.getElementById("f_word").value = item.word || "";
+  document.getElementById("f_meaning").value = item.meaning || "";
+  document.getElementById("f_hook").value = item.hook || "";
+  document.getElementById("f_register").value = item.register || "Everyday educated";
+  document.getElementById("f_examples").value = (item.examples||[]).join("\n");
+  document.getElementById("f_collocations").value = item.collocations || "";
+  document.getElementById("f_family").value = item.family || "";
+  document.getElementById("f_contrast").value = item.contrast || "";
+  document.getElementById("f_personal").value = item.personal || "";
+  document.getElementById("submitBtn").textContent = "Save changes";
+  document.getElementById("cancelEditBtn").style.display = "";
+  document.getElementById("advancedFields").open = true;
+  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("on"));
+  document.querySelector('.tabbtn[data-view="add"]').classList.add("on");
+  document.querySelectorAll(".screen").forEach(v=>v.classList.remove("on"));
+  document.getElementById("add").classList.add("on");
+  document.getElementById("f_word").scrollIntoView({behavior:"smooth", block:"start"});
+}
+function exitEditMode(){
+  editingId = null; editingType = null;
+  document.getElementById("addForm").reset();
+  document.getElementById("submitBtn").textContent = ADD_LABELS[addType].submit;
+  document.getElementById("cancelEditBtn").style.display = "none";
+}
+document.getElementById("cancelEditBtn").addEventListener("click", exitEditMode);
+
+/* ---- autofill from a free, keyless dictionary API (works once hosted, not in this chat preview) ---- */
+document.getElementById("autofillBtn").addEventListener("click", async ()=>{
+  const word = document.getElementById("f_word").value.trim();
+  if(!word){ toast("Type a word first"); return; }
+  const btn = document.getElementById("autofillBtn");
+  btn.disabled = true; btn.textContent = "Looking…";
+  try{
+    const res = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(word));
+    if(!res.ok) throw new Error("not found");
+    const data = await res.json();
+    const entry = data[0];
+    const meaningBlock = (entry.meanings && entry.meanings[0]) || {};
+    const def = (meaningBlock.definitions && meaningBlock.definitions[0]) || {};
+    const meaningEl = document.getElementById("f_meaning");
+    if(!meaningEl.value.trim() && def.definition){
+      meaningEl.value = def.definition.charAt(0).toUpperCase() + def.definition.slice(1);
+    }
+    const examplesEl = document.getElementById("f_examples");
+    if(!examplesEl.value.trim()){
+      const exLines = [];
+      (entry.meanings||[]).forEach(m=>(m.definitions||[]).forEach(d=>{ if(d.example) exLines.push(d.example); }));
+      if(exLines.length) examplesEl.value = exLines.slice(0,3).join("\n");
+    }
+    const allSynonyms = new Set();
+    (entry.meanings||[]).forEach(m=>{
+      (m.synonyms||[]).forEach(s=>allSynonyms.add(s));
+      (m.definitions||[]).forEach(d=>(d.synonyms||[]).forEach(s=>allSynonyms.add(s)));
+    });
+    const contrastEl = document.getElementById("f_contrast");
+    if(!contrastEl.value.trim() && allSynonyms.size){
+      contrastEl.value = `Close in meaning to: ${Array.from(allSynonyms).slice(0,5).join(", ")} — work out how ${word.toLowerCase()} differs before treating them as interchangeable.`;
+    }
+    const personalEl = document.getElementById("f_personal");
+    if(!personalEl.value.trim()){
+      personalEl.value = `A time I'd genuinely call something ${word.toLowerCase()} was ___.`;
+    }
+    document.getElementById("advancedFields").open = true;
+    toast(`Drafted from a dictionary lookup — check it over`);
+  }catch(err){
+    toast("No definition found (or offline) — fill it in yourself this time");
+  }finally{
+    btn.disabled = false; btn.textContent = "Look up";
+  }
 });
 
 /* ================= EXPORT / IMPORT ================= */
