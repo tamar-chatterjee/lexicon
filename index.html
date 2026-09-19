@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>Sancti Speaks — vocabulary &amp; conversation drill</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sancti Speaks">
+<meta name="theme-color" content="#0F1317">
+<meta name="color-scheme" content="dark">
+<style>
+  :root{
+    --ground:#0F1317;
+    --panel:#161B21;
+    --panel2:#1D242B;
+    --line:#28313A;
+    --paper:#E9E2D4;
+    --paper-shade:#D8CFBD;
+    --ink:#D9E0E6;
+    --dim:#7E8D99;
+    --dimmer:#55636D;
+    --truth:#E24A2B;
+    --mark:#57C4E5;
+    --gold:#E3B142;
+    --good:#6FCF97;
+    --mono:ui-monospace,"SF Mono",Menlo,"Roboto Mono",monospace;
+    --sans:-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    background:var(--ground);color:var(--ink);font-family:var(--sans);
+    font-size:15px;line-height:1.45;overscroll-behavior:none;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  header{
+    display:flex;align-items:baseline;gap:10px;
+    padding:calc(12px + env(safe-area-inset-top)) 16px 10px;
+    border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--ground);z-index:20;
+  }
+  header h1{
+    margin:0;font-family:var(--mono);font-size:15px;letter-spacing:.34em;
+    text-transform:uppercase;font-weight:500;
+  }
+  header .sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--dimmer);text-transform:uppercase}
+  header .streak{margin-left:auto;text-align:right}
+  header .streak .n{font-family:var(--mono);font-size:20px;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+  header .streak .l{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--dimmer);text-transform:uppercase}
+
+  nav{display:flex;border-bottom:1px solid var(--line);background:var(--ground);position:sticky;top:0;z-index:19}
+  nav button{
+    flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--dimmer);
+    font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    padding:11px 4px;cursor:pointer;
+  }
+  nav button.on{color:var(--ink);border-bottom-color:var(--truth)}
+
+  main{padding:16px 16px 40px;max-width:640px;margin:0 auto}
+  .screen{display:none}
+  .screen.on{display:block}
+
+  .btn{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--panel2);color:var(--ink);border:1px solid var(--line);
+    padding:11px 16px;cursor:pointer;
+  }
+  .btn:active{background:var(--line)}
+  .btn.primary{background:var(--truth);border-color:var(--truth);color:#fff}
+  .btn.ghost{background:none}
+  .btn.block{width:100%}
+
+  .hint{color:var(--dim);font-size:13px;margin:6px 0 0}
+
+  .statgrid{display:flex;gap:10px;margin-bottom:16px}
+  .stat{flex:1;background:var(--panel);border:1px solid var(--line);padding:12px 14px}
+  .stat b{display:block;font-family:var(--mono);font-size:20px;font-weight:500;color:var(--ink)}
+  .stat span{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer)}
+
+  .sessionhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .sessionhead .lbl{color:var(--dim)}
+  .sessionhead .pos{font-family:var(--mono);font-size:11px;color:var(--dimmer)}
+
+  .bar{display:flex;gap:3px;margin-bottom:16px}
+  .bar i{flex:1;height:3px;background:var(--line);list-style:none}
+  .bar i.done{background:var(--mark)}
+  .bar i.cur{background:var(--truth)}
+
+  .stage{position:relative;background:var(--panel);border:1px solid var(--line);padding:20px 18px}
+  .stage .kicker{
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--dim);margin-bottom:12px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;
+  }
+  .stage .kicker em{font-style:normal;color:var(--mark)}
+  .stage .prompt{font-size:18px;line-height:1.5;min-height:52px}
+  .stage .prompt .focus{color:var(--truth);font-style:italic}
+
+  textarea.jot{
+    width:100%;margin-top:16px;background:var(--ground);border:1px solid var(--line);
+    color:var(--ink);font-family:var(--sans);font-size:14px;padding:11px;resize:vertical;min-height:52px;
+  }
+  textarea.jot:focus{outline:none;border-color:var(--mark)}
+  textarea.jot::placeholder{color:var(--dimmer)}
+
+  .revealbtnrow{margin-top:16px}
+
+  .qcard{background:var(--panel2);border:1px solid var(--line);padding:16px;margin-top:16px;display:none}
+  .qcard.on{display:block}
+  .qcard .headword{font-family:var(--mono);font-size:20px;letter-spacing:.02em;color:var(--truth);margin-bottom:10px}
+  .qcard dl{margin:0}
+  .qcard dt{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer);margin-top:12px}
+  .qcard dt:first-of-type{margin-top:0}
+  .qcard dd{margin:3px 0 0;font-size:14px;color:var(--ink)}
+  .qcard .examples{margin:3px 0 0;padding-left:18px;color:var(--ink)}
+  .qcard .examples li{margin-bottom:2px}
+
+  .raterow{display:flex;gap:8px;margin-top:18px}
+  .raterow button{
+    flex:1;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    background:none;border:1px solid var(--line);color:var(--dim);padding:11px 4px;cursor:pointer;
+  }
+  .raterow button.missed:active,.raterow button.missed.pick{background:var(--truth);border-color:var(--truth);color:#fff}
+  .raterow button.shaky:active,.raterow button.shaky.pick{background:var(--gold);border-color:var(--gold);color:#1a1400}
+  .raterow button.nailed:active,.raterow button.nailed.pick{background:var(--good);border-color:var(--good);color:#04210f}
+
+  .donepanel{text-align:center;padding:54px 16px;color:var(--dim)}
+  .donepanel .big{font-family:var(--mono);font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin-bottom:10px}
+  .donepanel .btn{margin-top:18px}
+
+  .searchrow{display:flex;gap:8px;margin-bottom:14px}
+  .searchrow input[type=text]{
+    flex:1;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--sans);font-size:14px;padding:10px 12px;
+  }
+  .searchrow input[type=text]:focus{outline:none;border-color:var(--mark)}
+  .searchrow select{
+    background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:0 10px;
+  }
+
+  .lexitem{border-bottom:1px solid var(--line);padding:14px 2px;cursor:pointer}
+  .lexitem .row1{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .lexitem .headword{font-family:var(--mono);font-size:15px;color:var(--truth)}
+  .lexitem .badge{
+    font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;
+    border:1px solid var(--line);color:var(--dim);padding:2px 7px;white-space:nowrap;
+  }
+  .lexitem .meaning{color:var(--dim);font-size:13.5px;margin-top:4px}
+  .lexitem .detail{display:none;margin-top:12px;font-size:14px}
+  .lexitem.open .detail{display:block}
+  .lexitem .detail dt{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dimmer);margin-top:10px}
+  .lexitem .detail dt:first-child{margin-top:0}
+  .lexitem .detail dd{margin:2px 0 0;color:var(--ink)}
+  .lexitem .detail dl{margin:0}
+  .lexitem .box{font-family:var(--mono);font-size:10px;color:var(--mark);margin-top:6px}
+
+  .empty{border:1px dashed var(--line);padding:26px 18px;text-align:center;color:var(--dim);font-size:13.5px}
+
+  form.addform label{
+    display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:18px 0 6px;
+  }
+  form.addform label:first-child{margin-top:0}
+  form.addform input,form.addform textarea,form.addform select{
+    width:100%;background:var(--panel);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--sans);font-size:14px;padding:10px 12px;
+  }
+  form.addform input:focus,form.addform textarea:focus,form.addform select:focus{outline:none;border-color:var(--mark)}
+  form.addform textarea{min-height:52px;resize:vertical}
+  form.addform .hint{font-family:var(--mono);font-size:10.5px;color:var(--dimmer);margin-top:4px;letter-spacing:.02em;text-transform:none}
+  form.addform .submitrow{margin-top:22px;display:flex;align-items:center;gap:14px}
+
+  .typetoggle{display:flex;gap:8px;margin-bottom:18px}
+  .typetoggle button{
+    flex:1;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    background:var(--panel);border:1px solid var(--line);color:var(--dim);padding:11px 6px;cursor:pointer;
+  }
+  .typetoggle button.on{background:var(--truth);border-color:var(--truth);color:#fff}
+
+  .databox{margin-top:36px;border-top:1px solid var(--line);padding-top:20px}
+  .databox .lbl{margin-bottom:8px}
+  .databox p.hint{font-family:var(--sans);color:var(--dim);font-size:13px;margin:6px 0 16px;line-height:1.5}
+  .datarow{display:flex;gap:10px}
+  .datarow .btn{flex:1}
+
+  .toast{
+    position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom));
+    background:var(--panel2);border:1px solid var(--line);padding:10px 16px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink);
+    z-index:50;opacity:0;pointer-events:none;transition:opacity .25s ease;max-width:88vw;text-align:center;
+  }
+  .toast.on{opacity:1}
+
+  ::selection{background:rgba(226,74,43,.35)}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Sancti</h1>
+    <div class="sub">vocabulary · retrieval drill</div>
+  </div>
+  <div class="streak"><div class="n num" id="streakNum">0</div><div class="l">day streak</div></div>
+</header>
+
+<nav>
+  <button class="tabbtn on" data-view="practice">Practice</button>
+  <button class="tabbtn" data-view="browse">Lexicon</button>
+  <button class="tabbtn" data-view="add">Add</button>
+</nav>
+
+<main>
+
+  <section id="practice" class="screen on">
+    <div class="statgrid">
+      <div class="stat"><b class="num" id="dueCount">–</b><span>Due today</span></div>
+      <div class="stat"><b class="num" id="totalCount">–</b><span>In lexicon</span></div>
+      <div class="stat"><b class="num" id="masteredCount">–</b><span>Locked (box 5)</span></div>
+    </div>
+
+    <div class="sessionhead">
+      <span class="lbl" id="sessionLabel">Session</span>
+      <span class="pos num" id="sessionPos"></span>
+    </div>
+    <ul class="bar" id="progressBar"></ul>
+
+    <div id="cardHost"></div>
+  </section>
+
+  <section id="browse" class="screen">
+    <div class="searchrow">
+      <input type="text" id="searchBox" placeholder="Search words, meanings, phrases…">
+      <select id="filterType">
+        <option value="all">All</option>
+        <option value="word">Words</option>
+        <option value="phrase">Phrases</option>
+      </select>
+    </div>
+    <div id="lexList"></div>
+  </section>
+
+  <section id="add" class="screen">
+    <div class="typetoggle">
+      <button type="button" class="on" data-type="word" id="toggleWord">Word</button>
+      <button type="button" data-type="phrase" id="togglePhrase">Phrase / sentence structure</button>
+    </div>
+    <form class="addform" id="addForm">
+      <label for="f_word" id="lbl_word">Word</label>
+      <input type="text" id="f_word" required placeholder="e.g. laconic">
+
+      <label for="f_meaning" id="lbl_meaning">Core meaning</label>
+      <textarea id="f_meaning" required placeholder="Using very few words; terse."></textarea>
+
+      <label for="f_hook">Memory hook</label>
+      <input type="text" id="f_hook" placeholder="e.g. says almost nothing, means a lot">
+
+      <label for="f_register" id="lbl_register">Register</label>
+      <select id="f_register">
+        <option>Everyday educated</option>
+        <option>Formal / professional</option>
+        <option>Literary</option>
+        <option>Humorous</option>
+        <option>Rare / recognition only</option>
+      </select>
+
+      <label for="f_examples" id="lbl_examples">Natural spoken examples — one per line</label>
+      <textarea id="f_examples" placeholder="laconic reply&#10;laconic style&#10;stayed laconic throughout"></textarea>
+      <div class="hint">one per line</div>
+
+      <label for="f_collocations" id="lbl_collocations">Useful collocations</label>
+      <input type="text" id="f_collocations" placeholder="laconic reply, laconic wit, laconic style">
+      <div class="hint">comma separated</div>
+
+      <label for="f_family" id="lbl_family">Word family</label>
+      <input type="text" id="f_family" placeholder="laconic, laconically, laconicism (rare)">
+      <div class="hint">comma separated</div>
+
+      <label for="f_contrast" id="lbl_contrast">Near-synonym distinction</label>
+      <textarea id="f_contrast" placeholder="Laconic = few words by nature/style. Terse = deliberately curt."></textarea>
+
+      <label for="f_personal">🗣️ Personal use frame</label>
+      <input type="text" id="f_personal" placeholder="The most laconic person I know is ___, because ___.">
+
+      <div class="submitrow">
+        <button type="submit" class="btn primary" id="submitBtn">Add to lexicon</button>
+      </div>
+    </form>
+
+    <div class="databox">
+      <div class="lbl">Backup &amp; sync</div>
+      <p class="hint">Everything you add lives in this browser only. Export a backup file any time — commit it to your GitHub repo to keep it safe, or import it on another device/browser to bring your additions across.</p>
+      <div class="datarow">
+        <button class="btn ghost" id="exportBtn">Export additions (.json)</button>
+        <button class="btn ghost" id="importBtn">Import .json</button>
+      </div>
+      <input type="file" id="importFile" accept="application/json" style="display:none">
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= DATA ================= */
+const BUILTIN_WORDS = [
+{id:"w1",word:"Obstreperous",meaning:"Noisily difficult, unruly, argumentative or hard to control.",hook:"loud + difficult",register:"Everyday educated",examples:["obstreperous child","obstreperous crowd","obstreperous behaviour","become obstreperous"],collocations:"obstreperous child, obstreperous crowd, obstreperous behaviour",family:"obstreperous, obstreperously",contrast:"Obstreperous = noisy/unruly/difficult. Acrimonious = bitter/hostile.",personal:"The most obstreperous ___ I've dealt with was ___."},
+{id:"w2",word:"Persiflage",meaning:"Light, playful, slightly teasing conversation or banter.",hook:"playful verbal back-and-forth",register:"Literary",examples:["harmless persiflage","light persiflage","the usual persiflage over dinner"],collocations:"harmless persiflage, light persiflage",family:"persiflage",contrast:"Relatively literary — use selectively rather than forcing it into ordinary conversation.",personal:"There's always a bit of persiflage when ___ and I get together, usually about ___."},
+{id:"w3",word:"Pecuniary",meaning:"Relating to money or financial matters.",hook:"money-related, formal",register:"Formal / professional",examples:["pecuniary interest","pecuniary motive","pecuniary advantage"],collocations:"pecuniary interest, pecuniary motive, pecuniary advantage",family:"pecuniary",contrast:"Formal/legal register — reach for this over 'financial' when you want a slightly dry, precise tone.",personal:"A purely pecuniary reason I'd do ___ is ___."},
+{id:"w4",word:"Incontrovertible",meaning:"Impossible to dispute or deny because the evidence or truth is exceptionally clear.",hook:"you can argue, but you're not winning",register:"Everyday educated",examples:["incontrovertible evidence","incontrovertible fact","incontrovertible proof","incontrovertible truth"],collocations:"incontrovertible evidence, incontrovertible fact, incontrovertible proof",family:"incontrovertible, incontrovertibly",contrast:"Stronger than 'clear' or 'obvious' — implies the matter is settled beyond reasonable challenge.",personal:"One incontrovertible fact about me is that ___."},
+{id:"w5",word:"Mercurial",meaning:"Changing suddenly and unpredictably, particularly in mood, temperament or behaviour.",hook:"changeable + unpredictable",register:"Everyday educated",examples:["mercurial temperament","mercurial personality","mercurial mood","mercurial nature"],collocations:"mercurial temperament, mercurial mood, mercurial nature",family:"mercurial, mercurially (rare)",contrast:"Moody = fluctuating mood generally. Mercurial = emphasises rapid, unpredictable change specifically.",personal:"The most mercurial person I know is ___ — one minute ___, the next ___."},
+{id:"w6",word:"Exculpate",meaning:"To clear someone from blame or guilt, generally through evidence.",hook:"remove the blame",register:"Formal / professional",examples:["It may explain her behaviour, but it doesn't exculpate her."],collocations:"exculpatory evidence",family:"exculpate, exculpation, exculpatory",contrast:"Stronger and more formal than 'excuse' — implies clearing of actual blame, often with evidence.",personal:"Something that might explain but not exculpate ___ is ___."},
+{id:"w7",word:"Equanimity",meaning:"Mental calmness and composure, especially under stress or provocation.",hook:"calm under pressure",register:"Everyday educated",examples:["with equanimity","maintain one's equanimity","remarkable equanimity"],collocations:"maintain one's equanimity, remarkable equanimity",family:"equanimity, equanimous, equanimously (less common)",contrast:"The presence of pressure or provocation is what makes 'equanimity' more precise than simple 'calmness'.",personal:"A moment I handled with real equanimity was ___."},
+{id:"w8",word:"Acrimonious",meaning:"Bitter, angry or hostile, particularly in disagreements, speech or relationships.",hook:"bitterness in conflict",register:"Everyday educated",examples:["acrimonious exchange","acrimonious debate","acrimonious dispute","acrimonious divorce"],collocations:"acrimonious exchange, acrimonious debate, acrimonious dispute",family:"acrimony, acrimonious, acrimoniously",contrast:"Obstreperous = noisy/unruly/difficult. Acrimonious = bitter/hostile.",personal:"The most acrimonious ___ I've witnessed was between ___."},
+{id:"w9",word:"Malleable",meaning:"Capable of being shaped, altered or influenced — literally or figuratively.",hook:"shapeable",register:"Everyday educated",examples:["malleable material","malleable opinion","malleable memory","malleable proposal"],collocations:"malleable material, malleable opinion, malleable memory",family:"malleable, malleability, malleably (rare)",contrast:"Applied to a person, it can imply they're overly suggestible or easily influenced — not always a compliment.",personal:"My plans for ___ are still pretty malleable at this point."},
+{id:"w10",word:"Abeyance",meaning:"Temporary suspension or inactivity with the possibility or expectation of later resumption.",hook:"paused, not ended",register:"Formal / professional",examples:["held in abeyance","kept in abeyance","the plan is in abeyance"],collocations:"held in abeyance, kept in abeyance",family:"abeyance, abeyant (rare)",contrast:"Abandoned = finished. Postponed = moved to later. In abeyance = suspended while the future stays unresolved.",personal:"Right now I've got ___ in abeyance until ___."},
+{id:"w11",word:"Prescient",meaning:"Showing an ability to anticipate or understand future developments before they happen.",hook:"seeing ahead — PREscient predicts",register:"Everyday educated",examples:["prescient warning","prescient prediction","prescient decision","remarkably prescient"],collocations:"prescient warning, prescient decision, remarkably prescient",family:"prescient, prescience, presciently",contrast:"SENTient → senses. PREscient → predicts.",personal:"A prescient decision I made was ___, back when ___."},
+{id:"w12",word:"Oblique",meaning:"Indirect rather than straightforward or explicit.",hook:"coming at something sideways",register:"Everyday educated",examples:["oblique reference","oblique criticism","oblique remark","oblique approach"],collocations:"oblique reference, oblique criticism, oblique remark",family:"oblique, obliquely, obliqueness, obliquity (less useful)",contrast:"Vague = lacking clarity. Oblique = indirect, sometimes deliberately so, while remaining understandable.",personal:"I once made an oblique reference to ___ instead of saying it outright."},
+{id:"w13",word:"Fastidious",meaning:"Extremely attentive to detail and demanding regarding accuracy, cleanliness, appearance or standards.",hook:"very particular about getting things right",register:"Everyday educated",examples:["fastidious about appearance","fastidious about cleanliness","fastidious attention to detail","fastidious standards"],collocations:"fastidious about appearance, fastidious attention to detail",family:"fastidious, fastidiously, fastidiousness",contrast:"Can be complimentary (meticulous, exacting) or imply someone is excessively particular.",personal:"I'm fastidious about ___ but genuinely careless about ___."},
+{id:"w14",word:"Recondite",meaning:"Difficult to understand because the subject is obscure, abstruse or principally known by specialists.",hook:"knowledge buried deep",register:"Literary",examples:["recondite subject","recondite knowledge","recondite point","recondite discussion"],collocations:"recondite subject, recondite knowledge, recondite point",family:"recondite (adjective is by far the most useful form)",contrast:"Merely difficult doesn't make something recondite — the sense of obscurity or specialised knowledge matters.",personal:"The most recondite subject I know anything about is ___."},
+{id:"w15",word:"Capricious",meaning:"Changing suddenly and unpredictably, often according to whim rather than a consistent or rational principle.",hook:"governed by whim",register:"Everyday educated",examples:["capricious behaviour","capricious decision","capricious nature","capricious change"],collocations:"capricious behaviour, capricious decision, capricious nature",family:"caprice, capricious, capriciously, capriciousness",contrast:"Mercurial → rapidly/unpredictably changeable, esp. mood. Capricious → unpredictable, governed by whim/impulse. \"His mood is mercurial.\" / \"His decisions are capricious.\"",personal:"A capricious decision I made recently was ___."},
+{id:"w16",word:"Perfunctory",meaning:"Done with minimal interest, effort or care, generally because it is required or expected.",hook:"going through the motions",register:"Everyday educated",examples:["perfunctory apology","perfunctory glance","perfunctory examination","perfunctory greeting"],collocations:"perfunctory apology, perfunctory glance, perfunctory greeting",family:"perfunctory, perfunctorily, perfunctoriness (rare)",contrast:"Something can be brief without being perfunctory — perfunctory implies a lack of genuine engagement or care.",personal:"I gave a fairly perfunctory ___ to ___ recently — I should go back and do it properly."},
+{id:"w17",word:"Specious",meaning:"Appearing reasonable, convincing or true at first glance while actually being false or logically flawed.",hook:"sounds convincing — isn't",register:"Everyday educated",examples:["specious argument","specious reasoning","specious claim","specious justification"],collocations:"specious argument, specious reasoning, specious claim",family:"specious, speciously, speciousness (rare)",contrast:"Not the same as merely false — a specious argument has a veneer of plausibility that fails under scrutiny.",personal:"I've heard a specious argument recently that went something like: ___."},
+{id:"w18",word:"Tacit",meaning:"Understood, accepted or communicated without being directly stated.",hook:"understood without being said",register:"Everyday educated",examples:["tacit agreement","tacit understanding","tacit approval","tacit consent"],collocations:"tacit agreement, tacit understanding, tacit approval",family:"tacit, tacitly, tacitness (rare) — not to be confused with taciturn (says little)",contrast:"Oblique → communicated indirectly. Tacit → understood without needing to be communicated at all.",personal:"___ and I have a tacit understanding that ___."}
+];
+
+const BUILTIN_PHRASES = [
+{id:"p1",word:"Just suppose…",meaning:"Opens imagination — invites a hypothetical without demanding commitment.",hook:"low-pressure hypothetical door-opener",register:"Everyday educated",examples:["Just suppose you disappeared for a month. Where are you going?"],collocations:"category: opening imagination",family:"variants: Imagine for a second… / If that were possible…",contrast:"vs. a direct question ('What would you do?') — this frames it as play, not a real demand for a plan.",personal:"Try it now: \"Just suppose ___, where would your mind go first?\""},
+{id:"p2",word:"What is it about that…?",meaning:"Deepens a topic by asking what specifically appeals or matters, rather than accepting the surface answer.",hook:"finds the feeling under the fact",register:"Everyday educated",examples:["What is it about that kind of freedom that appeals to you?"],collocations:"category: deepening",family:"variants: Why that specifically? / What part matters most?",contrast:"vs. 'Why do you like it?' — this version is harder to answer with a cliché.",personal:"Pick something someone mentioned to you recently and ask yourself: what is it about that, specifically, that got their attention?"},
+{id:"p3",word:"Have you noticed…?",meaning:"Directs attention to a pattern in the other person's own words or energy.",hook:"holds up a small mirror",register:"Everyday educated",examples:["Have you noticed you become much more animated whenever you talk about travel?"],collocations:"category: noticing",family:"variants: There's something in the way you said that… / You light up talking about this.",contrast:"vs. simply complimenting them — noticing invites them to reflect, not just receive praise.",personal:"Next conversation, notice one pattern in how someone talks, and say it back to them gently."},
+{id:"p4",word:"So…?",meaning:"A tiny, open prompt that invites another layer after something emotionally meaningful is said, without supplying your own reaction first.",hook:"the powerful pause",register:"Everyday educated",examples:["She gives an interesting answer. Pause. \"So…?\""],collocations:"category: inviting another layer",family:"—",contrast:"vs. jumping in with advice or a clever line — 'So…?' leaves room instead of filling it.",personal:"Next time someone says something that matters to them, resist responding — just say \"So…?\" and wait."},
+{id:"p5",word:"When you… (calibration)",meaning:"Presuppose circumstances that are already plausible or voluntarily chosen — never feelings, beliefs, or consent.",hook:"presuppose the situation, not the reaction",register:"Everyday educated",examples:["When you're next in Paris…","When you finally take that trip…"],collocations:"category: future framing",family:"contrast pair: avoid 'When you realise I'm right…' or 'When you fall for me…'",contrast:"Good: presupposes circumstance. Bad: presupposes feeling or agreement that hasn't happened.",personal:"Turn a plan someone mentioned into a 'when you…' sentence: \"When you finally ___…\""},
+{id:"p6",word:"What is it about that word…? (hot words)",meaning:"When someone uses an emotionally weighted word (wild, alive, home, free…), stay with their exact word instead of translating it into your own synonym.",hook:"don't translate — stay in their language",register:"Everyday educated",examples:["They say: \"I want life to feel a little more wild.\" You: \"Wild how?\" or \"What does wild look like for you these days?\""],collocations:"category: hot words — free, alive, home, peaceful, wild, safe, exciting, strange, beautiful, intense, romantic, adventure, grounded, chaos, magic, real",family:"—",contrast:"vs. 'So you like adventure?' — that substitutes your word for theirs and closes the door a little.",personal:"Think of the last unusual word someone used about their own life, and write the question you should have asked back."},
+{id:"p7",word:"Okay, paint me the scene. (world-building)",meaning:"Moves a conversation from information into a shared imagined scene, building an 'us' playfully rather than only extracting facts.",hook:"turn a topic into a place you're both standing in",register:"Everyday educated",examples:["Right — tiny basement jazz bar somewhere in Paris, dreadful red wine, rain outside. Are you happy?"],collocations:"category: world-building & flirtation",family:"follow-ups: I can imagine us… / We'd definitely…",contrast:"vs. 'What kind of jazz do you like?' — the informational question collects facts; painting the scene creates a shared moment.",personal:"Take something someone loves and build one full sentence of scene around it: \"Right, we're in ___, and ___.\""},
+{id:"p8",word:"Notice → Hot word → Deepen → Imagine → Share",meaning:"The core conversation sequence: notice what they said, pick up their word, deepen it, imagine together, then share something of your own so it isn't an interview.",hook:"five-step sequence, always end on Share",register:"Everyday educated",examples:["Her: \"I think I just need more adventure.\" You: \"Adventure keeps coming up with you… what actually counts as adventure in your world?… what is it about that feeling you crave?… just suppose you had nothing tying you down for six months — where does your mind go first?… Mine inevitably involves some ancient coastal town and no sensible plan.\""],collocations:"category: core sequence",family:"—",contrast:"Without the final Share step, curiosity can start to feel like an interview.",personal:"Run this sequence once today, out loud, on a real thing someone told you this week."}
+];
+
+/* ================= STORAGE: Claude host API, else IndexedDB, else localStorage, else memory ================= */
+var DRIVER='mem', IDB=null, MEM={};
+function openIDB(){
+  return new Promise(function(res,rej){
+    var r=indexedDB.open('sancti',1);
+    r.onupgradeneeded=function(){ r.result.createObjectStore('kv'); };
+    r.onsuccess=function(){ res(r.result); };
+    r.onerror=function(){ rej(r.error); };
+  });
+}
+function idb(mode,fn){
+  return new Promise(function(res,rej){
+    var tx=IDB.transaction('kv',mode), st=tx.objectStore('kv'), rq=fn(st);
+    tx.oncomplete=function(){ res(rq?rq.result:null); };
+    tx.onerror=function(){ rej(tx.error); };
+  });
+}
+async function initStore(){
+  if(window.storage && typeof window.storage.get==='function'){ DRIVER='claude'; return; }
+  if(window.indexedDB){
+    try{ IDB=await openIDB(); DRIVER='idb'; return; }catch(e){}
+  }
+  try{
+    window.localStorage.setItem('ss:probe','1');
+    window.localStorage.removeItem('ss:probe');
+    DRIVER='ls'; return;
+  }catch(e){}
+  DRIVER='mem';
+}
+async function sGet(key){
+  try{
+    if(DRIVER==='claude'){ var r=await window.storage.get(key,false); return r&&r.value?JSON.parse(r.value):null; }
+    if(DRIVER==='idb'){ var v=await idb('readonly',function(st){ return st.get(key); }); return v?JSON.parse(v):null; }
+    if(DRIVER==='ls'){ var s=window.localStorage.getItem(key); return s?JSON.parse(s):null; }
+    return MEM[key]!==undefined?JSON.parse(MEM[key]):null;
+  }catch(e){ return null; }
+}
+async function sSet(key,val){
+  var txt=JSON.stringify(val);
+  try{
+    if(DRIVER==='claude'){ await window.storage.set(key,txt,false); return true; }
+    if(DRIVER==='idb'){ await idb('readwrite',function(st){ st.put(txt,key); }); return true; }
+    if(DRIVER==='ls'){ window.localStorage.setItem(key,txt); return true; }
+    MEM[key]=txt; return true;
+  }catch(e){
+    if(DRIVER==='ls'){ toast('Storage full — items may not be saved'); }
+    MEM[key]=txt; return false;
+  }
+}
+function driverName(){
+  return {claude:'host storage', idb:'on-device storage', ls:'local storage', mem:'memory only — nothing will be kept'}[DRIVER];
+}
+
+var store = {progress:{}, streak:0, lastPracticeDate:null, customWords:[], customPhrases:[]};
+async function loadStore(){
+  var s = await sGet('ss:store');
+  if(s) store = Object.assign(store, s);
+}
+async function saveStore(){ await sSet('ss:store', store); }
+
+function toast(msg){
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('on');
+  clearTimeout(toast._h);
+  toast._h = setTimeout(function(){ t.classList.remove('on'); }, 2600);
+}
+
+/* ================= BANK ================= */
+function allItems(){
+  return [
+    ...BUILTIN_WORDS.map(w=>({...w,type:"word"})),
+    ...store.customWords.map(w=>({...w,type:"word"})),
+    ...BUILTIN_PHRASES.map(p=>({...p,type:"phrase"})),
+    ...store.customPhrases.map(p=>({...p,type:"phrase"}))
+  ];
+}
+const INTERVALS = {0:0,1:1,2:2,3:4,4:8,5:16};
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function addDays(dateStr, n){
+  const d = new Date(dateStr+"T00:00:00");
+  d.setDate(d.getDate()+n);
+  return d.toISOString().slice(0,10);
+}
+function ensureProgress(item){
+  if(!store.progress[item.id]){
+    store.progress[item.id] = {box:0, due:todayStr(), seen:0};
+  }
+  return store.progress[item.id];
+}
+function dueItems(){
+  const t = todayStr();
+  return allItems().filter(it=>{
+    const p = ensureProgress(it);
+    return p.due <= t;
+  });
+}
+
+/* ================= CUES ================= */
+function buildCue(item, prog){
+  const forms = [];
+  if(item.type==="word"){
+    forms.push({kind:"Recall the word", prompt:`This means: “${item.meaning}”${item.hook?` <span class="focus">(hook: ${item.hook})</span>`:""}. What's the word?`});
+    if(prog.box>=2){
+      forms.push({kind:"Use it in a sentence", prompt:`Say a natural sentence aloud using <span class="focus">${item.word.toLowerCase()}</span>.`});
+    }
+    if(item.contrast){
+      forms.push({kind:"Distinguish", prompt:`What's the difference between <span class="focus">${item.word.toLowerCase()}</span> and its nearest near-synonym?`});
+    }
+    if(item.personal){
+      forms.push({kind:"Personal use", prompt:`Complete aloud: “${item.personal.replace(/___/g,"___")}”`});
+    }
+  } else {
+    forms.push({kind:"Recall the frame", prompt:`Retrieval scenario: ${item.examples[0]||item.meaning}. What's the frame/phrase you'd reach for?`});
+    forms.push({kind:"Personal use", prompt:item.personal || `Use this frame right now, out loud, on something real from this week.`});
+  }
+  const idx = prog.seen % forms.length;
+  return forms[idx];
+}
+
+/* ================= SESSION ================= */
+let session = { queue: [], pos: 0 };
+
+function shuffled(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startSession(){
+  session.queue = shuffled(dueItems());
+  session.pos = 0;
+  renderPractice();
+}
+
+function drillAnyway(){
+  session.queue = shuffled(allItems()).slice(0, 10);
+  session.pos = 0;
+  renderPractice();
+}
+
+function renderStats(){
+  const items = allItems();
+  document.getElementById("totalCount").textContent = items.length;
+  document.getElementById("dueCount").textContent = dueItems().length;
+  document.getElementById("masteredCount").textContent = items.filter(it=>ensureProgress(it).box>=5).length;
+  document.getElementById("streakNum").textContent = store.streak;
+}
+
+function renderBar(){
+  const host = document.getElementById("progressBar");
+  if(session.queue.length===0){ host.innerHTML=""; return; }
+  host.innerHTML = session.queue.map((_,i)=>{
+    let cls = "";
+    if(i < session.pos) cls = "done";
+    else if(i === session.pos) cls = "cur";
+    return `<i class="${cls}"></i>`;
+  }).join("");
+}
+
+function renderPractice(){
+  renderStats();
+  renderBar();
+  const host = document.getElementById("cardHost");
+  const posEl = document.getElementById("sessionPos");
+  const label = document.getElementById("sessionLabel");
+
+  if(session.queue.length===0){
+    label.textContent = "Nothing due";
+    posEl.textContent = "";
+    host.innerHTML = `<div class="donepanel"><div class="big">You're caught up</div>Nothing is due for retrieval right now.<br>Add a new word, or browse the lexicon while you wait.<br><button class="btn ghost" id="drillAnywayBtn">Drill anyway</button></div>`;
+    document.getElementById("drillAnywayBtn").onclick = drillAnyway;
+    return;
+  }
+
+  if(session.pos >= session.queue.length){
+    label.textContent = "Session complete";
+    posEl.textContent = "";
+    host.innerHTML = `<div class="donepanel"><div class="big">Nicely done</div>You worked through ${session.queue.length} item${session.queue.length===1?"":"s"} out loud.<br><button class="btn ghost" id="againBtn">Practice more</button></div>`;
+    document.getElementById("againBtn").onclick = drillAnyway;
+    markPracticedToday();
+    return;
+  }
+
+  label.textContent = "Retrieval session";
+  posEl.textContent = `${session.pos+1} / ${session.queue.length}`;
+
+  const item = session.queue[session.pos];
+  const prog = ensureProgress(item);
+  const cue = buildCue(item, prog);
+
+  host.innerHTML = `
+    <div class="stage">
+      <div class="kicker"><span>${item.type==="word"?"Word":"Phrase"}</span><em>${cue.kind}</em></div>
+      <div class="prompt">${cue.prompt}</div>
+      <textarea class="jot" placeholder="Optional: jot what you'd say, then say it out loud…"></textarea>
+      <div class="revealbtnrow" id="preReveal">
+        <button class="btn primary block" id="revealBtn">Reveal answer</button>
+      </div>
+      <div class="qcard" id="revealBox">
+        <div class="headword">${item.word}</div>
+        <dl>
+          <dt>Meaning</dt><dd>${item.meaning}</dd>
+          ${item.hook?`<dt>Memory hook</dt><dd>${item.hook}</dd>`:""}
+          <dt>Register</dt><dd>${item.register||""}</dd>
+          ${item.examples&&item.examples.length?`<dt>Natural examples</dt><dd><ul class="examples">${item.examples.map(e=>`<li>${e}</li>`).join("")}</ul></dd>`:""}
+          ${item.collocations?`<dt>Collocations</dt><dd>${item.collocations}</dd>`:""}
+          ${item.family?`<dt>Word family</dt><dd>${item.family}</dd>`:""}
+          ${item.contrast?`<dt>Distinction</dt><dd>${item.contrast}</dd>`:""}
+          ${item.personal?`<dt>Personal use</dt><dd>${item.personal}</dd>`:""}
+        </dl>
+        <div class="raterow">
+          <button class="missed" data-rate="0">Missed it</button>
+          <button class="shaky" data-rate="1">Shaky</button>
+          <button class="nailed" data-rate="2">Nailed it</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("revealBtn").onclick = ()=>{
+    document.getElementById("revealBox").classList.add("on");
+    document.getElementById("preReveal").style.display = "none";
+  };
+  host.querySelectorAll(".raterow button").forEach(btn=>{
+    btn.onclick = ()=> rate(item, parseInt(btn.dataset.rate,10));
+  });
+}
+
+async function rate(item, level){
+  const prog = ensureProgress(item);
+  prog.seen += 1;
+  if(level===0){ prog.box = 1; }
+  else if(level===1){ prog.box = Math.max(1, prog.box); }
+  else { prog.box = Math.min(5, prog.box+1); }
+  const interval = INTERVALS[prog.box] ?? 1;
+  prog.due = addDays(todayStr(), interval);
+  await saveStore();
+  session.pos += 1;
+  renderPractice();
+}
+
+async function markPracticedToday(){
+  const t = todayStr();
+  if(store.lastPracticeDate === t) return;
+  if(store.lastPracticeDate === addDays(t,-1)){ store.streak += 1; }
+  else { store.streak = 1; }
+  store.lastPracticeDate = t;
+  await saveStore();
+  renderStats();
+}
+
+/* ================= BROWSE ================= */
+function renderBrowse(){
+  const q = document.getElementById("searchBox").value.trim().toLowerCase();
+  const type = document.getElementById("filterType").value;
+  const items = allItems().filter(it=>{
+    if(type!=="all" && it.type!==type) return false;
+    if(!q) return true;
+    const hay = (it.word+" "+it.meaning+" "+(it.collocations||"")).toLowerCase();
+    return hay.includes(q);
+  }).sort((a,b)=>a.word.localeCompare(b.word));
+
+  const host = document.getElementById("lexList");
+  if(items.length===0){
+    host.innerHTML = `<div class="empty">Nothing matches yet.</div>`;
+    return;
+  }
+  host.innerHTML = items.map(it=>{
+    const prog = ensureProgress(it);
+    return `
+    <div class="lexitem" data-id="${it.id}">
+      <div class="row1">
+        <span class="headword">${it.word}</span>
+        <span class="badge">${it.type==="word"?(it.register||"word"):"phrase"}</span>
+      </div>
+      <div class="meaning">${it.meaning}</div>
+      <div class="box">box ${prog.box} · next due ${prog.due}</div>
+      <div class="detail">
+        <dl>
+          ${it.hook?`<dt>Memory hook</dt><dd>${it.hook}</dd>`:""}
+          ${it.examples&&it.examples.length?`<dt>Natural examples</dt><dd><ul class="examples">${it.examples.map(e=>`<li>${e}</li>`).join("")}</ul></dd>`:""}
+          ${it.collocations?`<dt>Collocations</dt><dd>${it.collocations}</dd>`:""}
+          ${it.family?`<dt>Word family</dt><dd>${it.family}</dd>`:""}
+          ${it.contrast?`<dt>Distinction</dt><dd>${it.contrast}</dd>`:""}
+          ${it.personal?`<dt>Personal use</dt><dd>${it.personal}</dd>`:""}
+        </dl>
+      </div>
+    </div>`;
+  }).join("");
+  host.querySelectorAll(".lexitem").forEach(el=>{
+    el.addEventListener("click",()=> el.classList.toggle("open"));
+  });
+}
+
+/* ================= ADD FORM ================= */
+let addType = "word";
+const ADD_LABELS = {
+  word:{word:"Word", meaning:"Core meaning", register:"Register", examples:"Natural spoken examples — one per line", collocations:"Useful collocations", family:"Word family", contrast:"Near-synonym distinction", submit:"Add to lexicon", wordPlaceholder:"e.g. laconic"},
+  phrase:{word:"Phrase / frame", meaning:"What it does in conversation", register:"Category", examples:"Scenario examples — one per line", collocations:"Related category / tag", family:"Variant phrasings", contrast:"How it differs from the obvious alternative", submit:"Add to phrase toolkit", wordPlaceholder:"e.g. Just suppose…"}
+};
+function applyAddLabels(){
+  const L = ADD_LABELS[addType];
+  document.getElementById("lbl_word").textContent = L.word;
+  document.getElementById("lbl_meaning").textContent = L.meaning;
+  document.getElementById("lbl_register").textContent = L.register;
+  document.getElementById("lbl_examples").textContent = L.examples;
+  document.getElementById("lbl_collocations").textContent = L.collocations;
+  document.getElementById("lbl_family").textContent = L.family;
+  document.getElementById("lbl_contrast").textContent = L.contrast;
+  document.getElementById("submitBtn").textContent = L.submit;
+  document.getElementById("f_word").placeholder = L.wordPlaceholder;
+}
+document.getElementById("toggleWord").addEventListener("click", ()=>{
+  addType = "word";
+  document.getElementById("toggleWord").classList.add("on");
+  document.getElementById("togglePhrase").classList.remove("on");
+  applyAddLabels();
+});
+document.getElementById("togglePhrase").addEventListener("click", ()=>{
+  addType = "phrase";
+  document.getElementById("togglePhrase").classList.add("on");
+  document.getElementById("toggleWord").classList.remove("on");
+  applyAddLabels();
+});
+
+document.getElementById("addForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const word = document.getElementById("f_word").value.trim();
+  if(!word) return;
+  const id = "c" + Date.now();
+  const examples = document.getElementById("f_examples").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  const newItem = {
+    id, word,
+    meaning: document.getElementById("f_meaning").value.trim(),
+    hook: document.getElementById("f_hook").value.trim(),
+    register: document.getElementById("f_register").value,
+    examples,
+    collocations: document.getElementById("f_collocations").value.trim(),
+    family: document.getElementById("f_family").value.trim(),
+    contrast: document.getElementById("f_contrast").value.trim(),
+    personal: document.getElementById("f_personal").value.trim()
+  };
+  if(addType === "phrase"){ store.customPhrases.push(newItem); }
+  else { store.customWords.push(newItem); }
+  store.progress[id] = {box:0, due: addDays(todayStr(),1), seen:0};
+  await saveStore();
+  document.getElementById("addForm").reset();
+  toast(`Added “${word}” — enters practice tomorrow`);
+  renderStats();
+});
+
+/* ================= EXPORT / IMPORT ================= */
+document.getElementById("exportBtn").addEventListener("click", ()=>{
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    customWords: store.customWords,
+    customPhrases: store.customPhrases,
+    progress: store.progress
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "sancti-speaks-backup.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast("Backup downloaded");
+});
+
+document.getElementById("importBtn").addEventListener("click", ()=>{
+  document.getElementById("importFile").click();
+});
+document.getElementById("importFile").addEventListener("change", async (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  try{
+    const text = await file.text();
+    const data = JSON.parse(text);
+    let added = 0;
+    (data.customWords||[]).forEach(w=>{
+      if(!store.customWords.find(x=>x.id===w.id)){ store.customWords.push(w); added++; }
+    });
+    (data.customPhrases||[]).forEach(p=>{
+      if(!store.customPhrases.find(x=>x.id===p.id)){ store.customPhrases.push(p); added++; }
+    });
+    if(data.progress){
+      Object.keys(data.progress).forEach(pid=>{
+        if(!store.progress[pid]) store.progress[pid] = data.progress[pid];
+      });
+    }
+    await saveStore();
+    toast(added ? `Imported ${added} new item${added===1?"":"s"}` : "Nothing new to import");
+    renderStats();
+  }catch(err){
+    toast("Couldn't read that file");
+  }
+  e.target.value = "";
+});
+
+/* ================= TABS ================= */
+document.querySelectorAll(".tabbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("on"));
+    document.querySelectorAll(".screen").forEach(v=>v.classList.remove("on"));
+    btn.classList.add("on");
+    document.getElementById(btn.dataset.view).classList.add("on");
+    if(btn.dataset.view==="browse") renderBrowse();
+  });
+});
+document.getElementById("searchBox").addEventListener("input", renderBrowse);
+document.getElementById("filterType").addEventListener("change", renderBrowse);
+
+/* ================= BOOT ================= */
+async function boot(){
+  await initStore();
+  await loadStore();
+  if(DRIVER==='mem') toast('Memory only this session — nothing will be saved');
+  startSession();
+}
+boot();
+</script>
+</body>
+</html>
