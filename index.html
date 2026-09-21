@@ -220,6 +220,7 @@
   .toast.on{opacity:1}
 
   ::selection{background:rgba(226,74,43,.35)}
+  .hint code{background:var(--panel2);border:1px solid var(--line);padding:1px 5px;font-family:var(--mono);font-size:.9em;color:var(--mark)}
 
   /* --- Story reps --- */
   .levelrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
@@ -431,6 +432,11 @@
         <button class="btn ghost" id="importBtn">Import .json</button>
       </div>
       <input type="file" id="importFile" accept="application/json" style="display:none">
+
+      <p class="hint" style="margin-top:16px">Cross-device via the repo (no login needed): export a backup, rename it <code>lexicon.json</code>, and commit it into a <code>data/</code> folder next to this file in your repo. Every device will then quietly pull it in automatically when the page loads — or tap below to check right now.</p>
+      <div class="datarow">
+        <button class="btn ghost" id="syncRepoBtn">Sync from repo now</button>
+      </div>
     </div>
   </section>
 
@@ -452,7 +458,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION = "1.8.0";
+const APP_VERSION = "1.9.0";
 document.getElementById("appVersion").textContent = "v" + APP_VERSION;
 
 /* ================= DATA ================= */
@@ -1271,27 +1277,32 @@ document.getElementById("exportBtn").addEventListener("click", ()=>{
 document.getElementById("importBtn").addEventListener("click", ()=>{
   document.getElementById("importFile").click();
 });
+function mergeLexiconPayload(data){
+  let added = 0;
+  (data.customWords||[]).forEach(w=>{
+    if(!store.customWords.find(x=>x.id===w.id)){ store.customWords.push(w); added++; }
+  });
+  (data.customPhrases||[]).forEach(p=>{
+    if(!store.customPhrases.find(x=>x.id===p.id)){ store.customPhrases.push(p); added++; }
+  });
+  if(data.progress){
+    Object.keys(data.progress).forEach(pid=>{
+      if(!store.progress[pid]) store.progress[pid] = data.progress[pid];
+    });
+  }
+  if(Array.isArray(data.answerLog) && data.answerLog.length){
+    store.answerLog = data.answerLog.concat(store.answerLog).slice(0,300);
+  }
+  return added;
+}
+
 document.getElementById("importFile").addEventListener("change", async (e)=>{
   const file = e.target.files[0];
   if(!file) return;
   try{
     const text = await file.text();
     const data = JSON.parse(text);
-    let added = 0;
-    (data.customWords||[]).forEach(w=>{
-      if(!store.customWords.find(x=>x.id===w.id)){ store.customWords.push(w); added++; }
-    });
-    (data.customPhrases||[]).forEach(p=>{
-      if(!store.customPhrases.find(x=>x.id===p.id)){ store.customPhrases.push(p); added++; }
-    });
-    if(data.progress){
-      Object.keys(data.progress).forEach(pid=>{
-        if(!store.progress[pid]) store.progress[pid] = data.progress[pid];
-      });
-    }
-    if(Array.isArray(data.answerLog) && data.answerLog.length){
-      store.answerLog = data.answerLog.concat(store.answerLog).slice(0,300);
-    }
+    const added = mergeLexiconPayload(data);
     await saveStore();
     toast(added ? `Imported ${added} new item${added===1?"":"s"}` : "Nothing new to import");
     renderStats();
@@ -1300,6 +1311,23 @@ document.getElementById("importFile").addEventListener("change", async (e)=>{
   }
   e.target.value = "";
 });
+
+/* ---- pull data/lexicon.json committed to the repo, if present (same-origin, works once hosted) ---- */
+async function syncFromRepoFile(silent){
+  try{
+    const res = await fetch("./data/lexicon.json", {cache:"no-store"});
+    if(!res.ok) throw new Error("no file");
+    const data = await res.json();
+    const added = mergeLexiconPayload(data);
+    if(added){ await saveStore(); renderStats(); }
+    if(!silent) toast(added ? `Pulled ${added} new item${added===1?"":"s"} from the repo` : "Repo file found — nothing new in it");
+    return true;
+  }catch(err){
+    if(!silent) toast("No data/lexicon.json found at this URL — see the note below for how to set that up");
+    return false;
+  }
+}
+document.getElementById("syncRepoBtn")?.addEventListener("click", ()=> syncFromRepoFile(false));
 
 /* ================= UPLOAD WORDS (simple JSON, one item or many) ================= */
 function downloadJSON(filename, obj){
@@ -1796,6 +1824,7 @@ async function boot(){
   await initStore();
   await loadStore();
   if(DRIVER==='mem') toast('Memory only this session — nothing will be saved');
+  await syncFromRepoFile(true);
   startSession();
 }
 boot();
