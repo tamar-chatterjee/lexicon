@@ -1,0 +1,250 @@
+{
+  "exportedAt": "2026-09-21T22:26:47.803Z",
+  "appVersion": "1.9.0",
+  "customWords": [
+    {
+      "id": "c1790026920050i4dh1",
+      "word": "egregious",
+      "meaning": "Outstandingly bad; shockingly or conspicuously wrong.",
+      "hook": "not merely bad — glaringly bad",
+      "register": "Everyday educated",
+      "examples": [
+        "egregious error",
+        "egregious behaviour",
+        "an egregious abuse of power"
+      ],
+      "collocations": "egregious error, egregious mistake, egregious behaviour, egregious violation, egregious abuse",
+      "family": "egregious, egregiously, egregiousness (less common)",
+      "contrast": "Egregious = conspicuously or shockingly bad. Serious = important or severe, but not necessarily outrageous or glaring.",
+      "nearestSynonym": "Flagrant",
+      "personal": "One of the most egregious examples of ___ I've encountered was ___.,I thought ___ was particularly egregious because ___.,It would be egregious to ___, especially when ___."
+    },
+    {
+      "id": "c17900271027683viis",
+      "word": "apt",
+      "meaning": "Appropriate or particularly suitable in the circumstances; also likely or inclined to do something.",
+      "hook": "exactly fitting — or naturally likely",
+      "register": "Everyday educated",
+      "examples": [
+        "an apt description",
+        "an apt comparison",
+        "apt to forget"
+      ],
+      "collocations": "apt description, apt analogy, apt comparison, apt choice, particularly apt, apt to",
+      "family": "apt, aptly, aptness; aptitude (related, but with a distinct meaning)",
+      "contrast": "Apt = especially fitting or appropriate to the situation. Suitable = acceptable or appropriate, but without the same sense of being particularly well matched.",
+      "nearestSynonym": "Fitting",
+      "personal": "I thought ___ was an apt description of ___ because ___.,The comparison between ___ and ___ seems particularly apt because ___.,I'm apt to ___ whenever ___."
+    },
+    {
+      "id": "c17900271094044ul29",
+      "word": "dogged",
+      "meaning": "Showing persistent determination; refusing to give up despite difficulty or opposition.",
+      "hook": "keeps going — won't let go",
+      "register": "Everyday educated",
+      "examples": [
+        "dogged determination",
+        "a dogged pursuit",
+        "remained dogged in her efforts"
+      ],
+      "collocations": "dogged determination, dogged persistence, dogged pursuit, dogged effort, dogged refusal",
+      "family": "dogged, doggedly, doggedness",
+      "contrast": "Dogged = persistently determined despite difficulty or setbacks. Stubborn = unwilling to change one's position, often despite good reasons to do so.",
+      "nearestSynonym": "Tenacious",
+      "personal": "Her dogged determination to ___ eventually resulted in ___.,I became particularly dogged about ___ when ___.,Despite ___, he doggedly continued to ___ until ___."
+    },
+    {
+      "id": "c1790027198963aw2uo",
+      "word": "wary",
+      "meaning": "Cautious and watchful because of possible danger, difficulty, or problems.",
+      "hook": "alert because something might go wrong",
+      "register": "Everyday educated",
+      "examples": [
+        "wary of strangers",
+        "a wary response",
+        "remained wary throughout"
+      ],
+      "collocations": "wary of, increasingly wary, understandably wary, wary glance, wary response, remain wary",
+      "family": "wary, warily, wariness",
+      "contrast": "Wary = cautious because you recognise a possible risk or problem. Suspicious = inclined to distrust someone or believe that something dishonest or harmful may be happening.",
+      "nearestSynonym": "Cautious",
+      "personal": "I'm usually wary of ___ because ___.,She became increasingly wary when ___.,I would be wary about ___ if ___."
+    }
+  ],
+  "customPhrases": [],
+  "progress": {
+    "w1": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w2": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w3": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w4": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0,
+      "lastCueKind": "Recall the word"
+    },
+    "w5": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w6": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w7": {
+      "box": 1,
+      "due": "2026-09-21",
+      "seen": 1,
+      "lastCueKind": "Personal use"
+    },
+    "w8": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w9": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w10": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w11": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w12": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w13": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w14": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w15": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w16": {
+      "box": 1,
+      "due": "2026-09-21",
+      "seen": 1,
+      "lastCueKind": "Personal use"
+    },
+    "w17": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "w18": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "p1": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "p2": {
+      "box": 1,
+      "due": "2026-09-21",
+      "seen": 1,
+      "lastCueKind": "Personal use"
+    },
+    "p3": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "p4": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "p5": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0,
+      "lastCueKind": "Personal use"
+    },
+    "p6": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "p7": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "p8": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "c1790026920050i4dh1": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "c17900271027683viis": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "c17900271094044ul29": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    },
+    "c1790027198963aw2uo": {
+      "box": 0,
+      "due": "2026-09-21",
+      "seen": 0
+    }
+  },
+  "answerLog": [
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    }
+  ]
+}
