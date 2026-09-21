@@ -48,6 +48,7 @@
     text-transform:uppercase;font-weight:500;
   }
   header .sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--dimmer);text-transform:uppercase}
+  header h1 .ver{font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--dimmer);text-transform:none;vertical-align:middle;margin-left:4px}
   header .streak{margin-left:auto;text-align:right}
   header .streak .n{font-family:var(--mono);font-size:20px;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
   header .streak .l{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--dimmer);text-transform:uppercase}
@@ -291,8 +292,7 @@
 
 <header>
   <div>
-    <h1>Sancti</h1>
-    <div class="sub">vocabulary · retrieval drill</div>
+    <h1>Speak <span class="ver" id="appVersion"></span></h1>
   </div>
   <div class="streak"><div class="n num" id="streakNum">0</div><div class="l">day streak</div></div>
 </header>
@@ -301,7 +301,7 @@
   <button class="tabbtn on" data-view="practice">Practice</button>
   <button class="tabbtn" data-view="browse">Lexicon</button>
   <button class="tabbtn" data-view="add">Add</button>
-  <button class="tabbtn" data-view="story">Story reps</button>
+  <button class="tabbtn" data-view="story">Stories</button>
   <button class="tabbtn" data-view="progress">Progress</button>
 </nav>
 
@@ -440,6 +440,10 @@
 <div class="toast" id="toast"></div>
 
 <script>
+/* ================= VERSION ================= */
+const APP_VERSION = "1.6.0";
+document.getElementById("appVersion").textContent = "v" + APP_VERSION;
+
 /* ================= DATA ================= */
 const BUILTIN_WORDS = [
 {id:"w1",word:"Obstreperous",meaning:"Noisily difficult, unruly, argumentative or hard to control.",hook:"loud + difficult",register:"Everyday educated",examples:["obstreperous child","obstreperous crowd","obstreperous behaviour","become obstreperous"],collocations:"obstreperous child, obstreperous crowd, obstreperous behaviour",family:"obstreperous, obstreperously",contrast:"Obstreperous = noisy/unruly/difficult. Acrimonious = bitter/hostile.",personal:"The most obstreperous ___ I've dealt with was ___."},
@@ -576,6 +580,25 @@ function dueItems(){
 }
 
 /* ================= CUES ================= */
+const CONVO_SCENARIOS = [
+  "A friend just told you: “I really want to travel more before I turn 30.”",
+  "A colleague mentioned: “I've been feeling stuck in my routine lately.”",
+  "Someone at a party said: “I love places that feel alive.”",
+  "A friend said: “I'm thinking about finally learning to surf next summer.”",
+  "Someone told you: “Work's just felt chaotic lately.”",
+  "A friend mentioned: “I want life to feel a bit wilder.”",
+  "Someone said: “I've been meaning to call my grandmother more.”",
+  "A colleague said: “I finally signed up for that pottery class.”",
+  "Someone told you: “I don't really feel like myself at work anymore.”",
+  "A friend said: “I've always wanted to write a book.”",
+  "Someone mentioned: “I'm dreading the holidays this year.”",
+  "A friend said: “I just need a proper adventure.”",
+  "Someone told you: “I'm thinking about quitting my job.”",
+  "A colleague mentioned: “I haven't taken a real day off in months.”",
+  "A friend said: “I keep meaning to get back into painting.”"
+];
+function randomScenario(){ return CONVO_SCENARIOS[Math.floor(Math.random()*CONVO_SCENARIOS.length)]; }
+
 function buildCue(item, prog){
   const forms = [];
   if(item.type==="word"){
@@ -587,11 +610,11 @@ function buildCue(item, prog){
       forms.push({kind:"Distinguish", prompt:`What's the difference between <span class="focus">${item.word.toLowerCase()}</span> and its nearest near-synonym?`});
     }
     if(item.personal){
-      forms.push({kind:"Personal use", prompt:`Complete aloud: “${item.personal.replace(/___/g,"___")}”`});
+      forms.push({kind:"Personal use", prompt:`<em style="color:var(--dim);font-style:italic">${randomScenario()}</em><br><br>Respond using <span class="focus">${item.word.toLowerCase()}</span> somewhere in what you say.`});
     }
   } else {
     forms.push({kind:"Recall the frame", prompt:`Retrieval scenario: ${item.examples[0]||item.meaning}. What's the frame/phrase you'd reach for?`});
-    forms.push({kind:"Personal use", prompt:item.personal || `Use this frame right now, out loud, on something real from this week.`});
+    forms.push({kind:"Personal use", prompt:`<em style="color:var(--dim);font-style:italic">${randomScenario()}</em><br><br>${item.personal || `Respond to that using this frame, out loud.`}`});
   }
   let idx = Math.floor(Math.random()*forms.length);
   if(forms.length>1 && forms[idx].kind === prog.lastCueKind){
@@ -1136,6 +1159,7 @@ document.getElementById("autofillBtn").addEventListener("click", async ()=>{
 document.getElementById("exportBtn").addEventListener("click", ()=>{
   const payload = {
     exportedAt: new Date().toISOString(),
+    appVersion: APP_VERSION,
     customWords: store.customWords,
     customPhrases: store.customPhrases,
     progress: store.progress
