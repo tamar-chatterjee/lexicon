@@ -112,6 +112,14 @@
   .qcard{background:var(--panel2);border:1px solid var(--line);padding:16px;margin-top:16px;display:none}
   .qcard.on{display:block}
   .qcard .headword{font-family:var(--mono);font-size:20px;letter-spacing:.02em;color:var(--truth);margin-bottom:10px}
+  .answerlead{
+    background:var(--panel);border:1px solid var(--good);border-left-width:3px;
+    padding:12px 14px;margin-bottom:16px;font-size:14.5px;color:var(--ink);line-height:1.55;
+  }
+  .answerlead .lbl2{
+    display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--good);margin-bottom:5px;
+  }
   .qcard dl{margin:0}
   .qcard dt{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer);margin-top:12px}
   .qcard dt:first-of-type{margin-top:0}
@@ -392,6 +400,9 @@
         <label for="f_contrast" id="lbl_contrast">Near-synonym distinction</label>
         <textarea id="f_contrast" placeholder="Laconic = few words by nature/style. Terse = deliberately curt."></textarea>
 
+        <label for="f_nearestSynonym">Nearest synonym (exact word) <span class="hint" style="display:inline">— only drilled once that word is also in your lexicon</span></label>
+        <input type="text" id="f_nearestSynonym" placeholder="e.g. Terse">
+
         <label for="f_personal">🗣️ Personal use frame</label>
         <input type="text" id="f_personal" placeholder="The most laconic person I know is ___, because ___.">
       </details>
@@ -404,7 +415,7 @@
 
     <div class="databox">
       <div class="lbl">Upload words</div>
-      <p class="hint">Already have the fields worked out somewhere else — another chat, a spreadsheet, whatever? Upload a JSON file with one word/phrase object, or an array of them, using the same field names as the form above (word, meaning, hook, register, examples, collocations, family, contrast, personal, and optionally type: "word" or "phrase"). Unknown fields are ignored; only "word" is required.</p>
+      <p class="hint">Already have the fields worked out somewhere else — another chat, a spreadsheet, whatever? Upload a JSON file with one word/phrase object, or an array of them, using the same field names as the form above (word, meaning, hook, register, examples, collocations, family, contrast, nearestSynonym, personal, and optionally type: "word" or "phrase"). Unknown fields are ignored; only "word" is required.</p>
       <div class="datarow">
         <button class="btn ghost" id="uploadWordsBtn">Upload words (.json)</button>
         <button class="btn ghost" id="templateBtn">Download template</button>
@@ -441,29 +452,29 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION = "1.6.0";
+const APP_VERSION = "1.7.0";
 document.getElementById("appVersion").textContent = "v" + APP_VERSION;
 
 /* ================= DATA ================= */
 const BUILTIN_WORDS = [
-{id:"w1",word:"Obstreperous",meaning:"Noisily difficult, unruly, argumentative or hard to control.",hook:"loud + difficult",register:"Everyday educated",examples:["obstreperous child","obstreperous crowd","obstreperous behaviour","become obstreperous"],collocations:"obstreperous child, obstreperous crowd, obstreperous behaviour",family:"obstreperous, obstreperously",contrast:"Obstreperous = noisy/unruly/difficult. Acrimonious = bitter/hostile.",personal:"The most obstreperous ___ I've dealt with was ___."},
+{id:"w1",word:"Obstreperous",meaning:"Noisily difficult, unruly, argumentative or hard to control.",hook:"loud + difficult",register:"Everyday educated",examples:["obstreperous child","obstreperous crowd","obstreperous behaviour","become obstreperous"],collocations:"obstreperous child, obstreperous crowd, obstreperous behaviour",family:"obstreperous, obstreperously",contrast:"Obstreperous = noisy/unruly/difficult. Acrimonious = bitter/hostile.",nearestSynonym:"Acrimonious",personal:"The most obstreperous ___ I've dealt with was ___."},
 {id:"w2",word:"Persiflage",meaning:"Light, playful, slightly teasing conversation or banter.",hook:"playful verbal back-and-forth",register:"Literary",examples:["harmless persiflage","light persiflage","the usual persiflage over dinner"],collocations:"harmless persiflage, light persiflage",family:"persiflage",contrast:"Relatively literary — use selectively rather than forcing it into ordinary conversation.",personal:"There's always a bit of persiflage when ___ and I get together, usually about ___."},
 {id:"w3",word:"Pecuniary",meaning:"Relating to money or financial matters.",hook:"money-related, formal",register:"Formal / professional",examples:["pecuniary interest","pecuniary motive","pecuniary advantage"],collocations:"pecuniary interest, pecuniary motive, pecuniary advantage",family:"pecuniary",contrast:"Formal/legal register — reach for this over 'financial' when you want a slightly dry, precise tone.",personal:"A purely pecuniary reason I'd do ___ is ___."},
 {id:"w4",word:"Incontrovertible",meaning:"Impossible to dispute or deny because the evidence or truth is exceptionally clear.",hook:"you can argue, but you're not winning",register:"Everyday educated",examples:["incontrovertible evidence","incontrovertible fact","incontrovertible proof","incontrovertible truth"],collocations:"incontrovertible evidence, incontrovertible fact, incontrovertible proof",family:"incontrovertible, incontrovertibly",contrast:"Stronger than 'clear' or 'obvious' — implies the matter is settled beyond reasonable challenge.",personal:"One incontrovertible fact about me is that ___."},
-{id:"w5",word:"Mercurial",meaning:"Changing suddenly and unpredictably, particularly in mood, temperament or behaviour.",hook:"changeable + unpredictable",register:"Everyday educated",examples:["mercurial temperament","mercurial personality","mercurial mood","mercurial nature"],collocations:"mercurial temperament, mercurial mood, mercurial nature",family:"mercurial, mercurially (rare)",contrast:"Moody = fluctuating mood generally. Mercurial = emphasises rapid, unpredictable change specifically.",personal:"The most mercurial person I know is ___ — one minute ___, the next ___."},
+{id:"w5",word:"Mercurial",meaning:"Changing suddenly and unpredictably, particularly in mood, temperament or behaviour.",hook:"changeable + unpredictable",register:"Everyday educated",examples:["mercurial temperament","mercurial personality","mercurial mood","mercurial nature"],collocations:"mercurial temperament, mercurial mood, mercurial nature",family:"mercurial, mercurially (rare)",contrast:"Moody = fluctuating mood generally. Mercurial = emphasises rapid, unpredictable change specifically.",nearestSynonym:"Moody",personal:"The most mercurial person I know is ___ — one minute ___, the next ___."},
 {id:"w6",word:"Exculpate",meaning:"To clear someone from blame or guilt, generally through evidence.",hook:"remove the blame",register:"Formal / professional",examples:["It may explain her behaviour, but it doesn't exculpate her."],collocations:"exculpatory evidence",family:"exculpate, exculpation, exculpatory",contrast:"Stronger and more formal than 'excuse' — implies clearing of actual blame, often with evidence.",personal:"Something that might explain but not exculpate ___ is ___."},
 {id:"w7",word:"Equanimity",meaning:"Mental calmness and composure, especially under stress or provocation.",hook:"calm under pressure",register:"Everyday educated",examples:["with equanimity","maintain one's equanimity","remarkable equanimity"],collocations:"maintain one's equanimity, remarkable equanimity",family:"equanimity, equanimous, equanimously (less common)",contrast:"The presence of pressure or provocation is what makes 'equanimity' more precise than simple 'calmness'.",personal:"A moment I handled with real equanimity was ___."},
-{id:"w8",word:"Acrimonious",meaning:"Bitter, angry or hostile, particularly in disagreements, speech or relationships.",hook:"bitterness in conflict",register:"Everyday educated",examples:["acrimonious exchange","acrimonious debate","acrimonious dispute","acrimonious divorce"],collocations:"acrimonious exchange, acrimonious debate, acrimonious dispute",family:"acrimony, acrimonious, acrimoniously",contrast:"Obstreperous = noisy/unruly/difficult. Acrimonious = bitter/hostile.",personal:"The most acrimonious ___ I've witnessed was between ___."},
+{id:"w8",word:"Acrimonious",meaning:"Bitter, angry or hostile, particularly in disagreements, speech or relationships.",hook:"bitterness in conflict",register:"Everyday educated",examples:["acrimonious exchange","acrimonious debate","acrimonious dispute","acrimonious divorce"],collocations:"acrimonious exchange, acrimonious debate, acrimonious dispute",family:"acrimony, acrimonious, acrimoniously",contrast:"Obstreperous = noisy/unruly/difficult. Acrimonious = bitter/hostile.",nearestSynonym:"Obstreperous",personal:"The most acrimonious ___ I've witnessed was between ___."},
 {id:"w9",word:"Malleable",meaning:"Capable of being shaped, altered or influenced — literally or figuratively.",hook:"shapeable",register:"Everyday educated",examples:["malleable material","malleable opinion","malleable memory","malleable proposal"],collocations:"malleable material, malleable opinion, malleable memory",family:"malleable, malleability, malleably (rare)",contrast:"Applied to a person, it can imply they're overly suggestible or easily influenced — not always a compliment.",personal:"My plans for ___ are still pretty malleable at this point."},
-{id:"w10",word:"Abeyance",meaning:"Temporary suspension or inactivity with the possibility or expectation of later resumption.",hook:"paused, not ended",register:"Formal / professional",examples:["held in abeyance","kept in abeyance","the plan is in abeyance"],collocations:"held in abeyance, kept in abeyance",family:"abeyance, abeyant (rare)",contrast:"Abandoned = finished. Postponed = moved to later. In abeyance = suspended while the future stays unresolved.",personal:"Right now I've got ___ in abeyance until ___."},
+{id:"w10",word:"Abeyance",meaning:"Temporary suspension or inactivity with the possibility or expectation of later resumption.",hook:"paused, not ended",register:"Formal / professional",examples:["held in abeyance","kept in abeyance","the plan is in abeyance"],collocations:"held in abeyance, kept in abeyance",family:"abeyance, abeyant (rare)",contrast:"Abandoned = finished. Postponed = moved to later. In abeyance = suspended while the future stays unresolved.",nearestSynonym:"Postponed",personal:"Right now I've got ___ in abeyance until ___."},
 {id:"w11",word:"Prescient",meaning:"Showing an ability to anticipate or understand future developments before they happen.",hook:"seeing ahead — PREscient predicts",register:"Everyday educated",examples:["prescient warning","prescient prediction","prescient decision","remarkably prescient"],collocations:"prescient warning, prescient decision, remarkably prescient",family:"prescient, prescience, presciently",contrast:"SENTient → senses. PREscient → predicts.",personal:"A prescient decision I made was ___, back when ___."},
-{id:"w12",word:"Oblique",meaning:"Indirect rather than straightforward or explicit.",hook:"coming at something sideways",register:"Everyday educated",examples:["oblique reference","oblique criticism","oblique remark","oblique approach"],collocations:"oblique reference, oblique criticism, oblique remark",family:"oblique, obliquely, obliqueness, obliquity (less useful)",contrast:"Vague = lacking clarity. Oblique = indirect, sometimes deliberately so, while remaining understandable.",personal:"I once made an oblique reference to ___ instead of saying it outright."},
+{id:"w12",word:"Oblique",meaning:"Indirect rather than straightforward or explicit.",hook:"coming at something sideways",register:"Everyday educated",examples:["oblique reference","oblique criticism","oblique remark","oblique approach"],collocations:"oblique reference, oblique criticism, oblique remark",family:"oblique, obliquely, obliqueness, obliquity (less useful)",contrast:"Vague = lacking clarity. Oblique = indirect, sometimes deliberately so, while remaining understandable.",nearestSynonym:"Vague",personal:"I once made an oblique reference to ___ instead of saying it outright."},
 {id:"w13",word:"Fastidious",meaning:"Extremely attentive to detail and demanding regarding accuracy, cleanliness, appearance or standards.",hook:"very particular about getting things right",register:"Everyday educated",examples:["fastidious about appearance","fastidious about cleanliness","fastidious attention to detail","fastidious standards"],collocations:"fastidious about appearance, fastidious attention to detail",family:"fastidious, fastidiously, fastidiousness",contrast:"Can be complimentary (meticulous, exacting) or imply someone is excessively particular.",personal:"I'm fastidious about ___ but genuinely careless about ___."},
 {id:"w14",word:"Recondite",meaning:"Difficult to understand because the subject is obscure, abstruse or principally known by specialists.",hook:"knowledge buried deep",register:"Literary",examples:["recondite subject","recondite knowledge","recondite point","recondite discussion"],collocations:"recondite subject, recondite knowledge, recondite point",family:"recondite (adjective is by far the most useful form)",contrast:"Merely difficult doesn't make something recondite — the sense of obscurity or specialised knowledge matters.",personal:"The most recondite subject I know anything about is ___."},
-{id:"w15",word:"Capricious",meaning:"Changing suddenly and unpredictably, often according to whim rather than a consistent or rational principle.",hook:"governed by whim",register:"Everyday educated",examples:["capricious behaviour","capricious decision","capricious nature","capricious change"],collocations:"capricious behaviour, capricious decision, capricious nature",family:"caprice, capricious, capriciously, capriciousness",contrast:"Mercurial → rapidly/unpredictably changeable, esp. mood. Capricious → unpredictable, governed by whim/impulse. \"His mood is mercurial.\" / \"His decisions are capricious.\"",personal:"A capricious decision I made recently was ___."},
+{id:"w15",word:"Capricious",meaning:"Changing suddenly and unpredictably, often according to whim rather than a consistent or rational principle.",hook:"governed by whim",register:"Everyday educated",examples:["capricious behaviour","capricious decision","capricious nature","capricious change"],collocations:"capricious behaviour, capricious decision, capricious nature",family:"caprice, capricious, capriciously, capriciousness",contrast:"Mercurial → rapidly/unpredictably changeable, esp. mood. Capricious → unpredictable, governed by whim/impulse. \"His mood is mercurial.\" / \"His decisions are capricious.\"",personal:"A capricious decision I made recently was ___.",nearestSynonym:"Mercurial"},
 {id:"w16",word:"Perfunctory",meaning:"Done with minimal interest, effort or care, generally because it is required or expected.",hook:"going through the motions",register:"Everyday educated",examples:["perfunctory apology","perfunctory glance","perfunctory examination","perfunctory greeting"],collocations:"perfunctory apology, perfunctory glance, perfunctory greeting",family:"perfunctory, perfunctorily, perfunctoriness (rare)",contrast:"Something can be brief without being perfunctory — perfunctory implies a lack of genuine engagement or care.",personal:"I gave a fairly perfunctory ___ to ___ recently — I should go back and do it properly."},
 {id:"w17",word:"Specious",meaning:"Appearing reasonable, convincing or true at first glance while actually being false or logically flawed.",hook:"sounds convincing — isn't",register:"Everyday educated",examples:["specious argument","specious reasoning","specious claim","specious justification"],collocations:"specious argument, specious reasoning, specious claim",family:"specious, speciously, speciousness (rare)",contrast:"Not the same as merely false — a specious argument has a veneer of plausibility that fails under scrutiny.",personal:"I've heard a specious argument recently that went something like: ___."},
-{id:"w18",word:"Tacit",meaning:"Understood, accepted or communicated without being directly stated.",hook:"understood without being said",register:"Everyday educated",examples:["tacit agreement","tacit understanding","tacit approval","tacit consent"],collocations:"tacit agreement, tacit understanding, tacit approval",family:"tacit, tacitly, tacitness (rare) — not to be confused with taciturn (says little)",contrast:"Oblique → communicated indirectly. Tacit → understood without needing to be communicated at all.",personal:"___ and I have a tacit understanding that ___."}
+{id:"w18",word:"Tacit",meaning:"Understood, accepted or communicated without being directly stated.",hook:"understood without being said",register:"Everyday educated",examples:["tacit agreement","tacit understanding","tacit approval","tacit consent"],collocations:"tacit agreement, tacit understanding, tacit approval",family:"tacit, tacitly, tacitness (rare) — not to be confused with taciturn (says little)",contrast:"Oblique → communicated indirectly. Tacit → understood without needing to be communicated at all.",nearestSynonym:"Oblique",personal:"___ and I have a tacit understanding that ___."}
 ];
 
 const BUILTIN_PHRASES = [
@@ -534,7 +545,7 @@ var store = {progress:{}, streak:0, lastPracticeDate:null, customWords:[], custo
   story:{level:0, subStage:60, streak:0, seedText:"", seedDate:"", liveLog:[]},
   vocabRating:1000, storyRating:1000,
   beatRatings:{situation:1000, desire:1000, conflict:1000, change:1000, result:1000},
-  badges:[], history:[]};
+  badges:[], history:[], answerLog:[]};
 async function loadStore(){
   var s = await sGet('ss:store');
   if(s) store = Object.assign(store, s);
@@ -599,6 +610,11 @@ const CONVO_SCENARIOS = [
 ];
 function randomScenario(){ return CONVO_SCENARIOS[Math.floor(Math.random()*CONVO_SCENARIOS.length)]; }
 
+function synonymInLexicon(name){
+  if(!name) return false;
+  return allItems().some(it=>it.word.toLowerCase()===name.toLowerCase());
+}
+
 function buildCue(item, prog){
   const forms = [];
   if(item.type==="word"){
@@ -606,8 +622,8 @@ function buildCue(item, prog){
     if(prog.box>=2){
       forms.push({kind:"Use it in a sentence", prompt:`Say a natural sentence aloud using <span class="focus">${item.word.toLowerCase()}</span>.`});
     }
-    if(item.contrast){
-      forms.push({kind:"Distinguish", prompt:`What's the difference between <span class="focus">${item.word.toLowerCase()}</span> and its nearest near-synonym?`});
+    if(item.nearestSynonym && synonymInLexicon(item.nearestSynonym)){
+      forms.push({kind:"Distinguish", prompt:`What's the difference between <span class="focus">${item.word.toLowerCase()}</span> and <span class="focus">${item.nearestSynonym.toLowerCase()}</span>?`});
     }
     if(item.personal){
       forms.push({kind:"Personal use", prompt:`<em style="color:var(--dim);font-style:italic">${randomScenario()}</em><br><br>Respond using <span class="focus">${item.word.toLowerCase()}</span> somewhere in what you say.`});
@@ -713,6 +729,9 @@ function renderBar(){
 }
 
 function renderPractice(){
+  if(vRecorder && vRecorder.state === "recording"){ try{ vRecorder.stop(); }catch(e){} }
+  if(vRecognizer){ try{ vRecognizer.stop(); }catch(e){} vRecognizer = null; }
+  releaseVocabAudioURL();
   renderStats();
   renderBar();
   const host = document.getElementById("cardHost");
@@ -760,6 +779,7 @@ function renderPractice(){
         <button class="btn primary block" id="revealBtn">Reveal answer</button>
       </div>
       <div class="qcard" id="revealBox">
+        ${cue.kind==="Distinguish" && item.nearestSynonym ? `<div class="answerlead"><span class="lbl2">Answer</span>The nearest synonym is <strong>${item.nearestSynonym}</strong>. ${item.contrast}</div>` : ""}
         <div class="headword">${item.word}</div>
         <dl>
           <dt>Meaning</dt><dd>${item.meaning}</dd>
@@ -795,12 +815,19 @@ function renderPractice(){
 }
 
 /* ---- lightweight recorder for the practice card (separate instance from Story Reps') ---- */
-let vRecorder = null, vRecChunks = [], vRecStart = 0, vRecTimerHandle = null;
+let vRecorder = null, vRecChunks = [], vRecStart = 0, vRecTimerHandle = null, vLastAudioURL = null;
+let vRecognizer = null, vRecognitionSupported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+
+function releaseVocabAudioURL(){
+  if(vLastAudioURL){ URL.revokeObjectURL(vLastAudioURL); vLastAudioURL = null; }
+}
+
 function wireVocabRecorder(){
   const btn = document.getElementById("vRecBtn");
   if(!btn) return;
   btn.onclick = async ()=>{
     const label = document.getElementById("vRecLabel");
+    const jot = document.querySelector("#cardHost .jot");
     if(vRecorder && vRecorder.state === "recording"){ vRecorder.stop(); return; }
     try{
       const stream = await navigator.mediaDevices.getUserMedia({audio:true});
@@ -813,9 +840,11 @@ function wireVocabRecorder(){
         btn.classList.remove("recording");
         label.textContent = "Record again";
         document.getElementById("vRecTimer").textContent = "";
+        releaseVocabAudioURL();
         const blob = new Blob(vRecChunks, {type: vRecorder.mimeType || "audio/webm"});
-        const url = URL.createObjectURL(blob);
-        document.getElementById("vPlaybackBox").innerHTML = `<audio controls src="${url}"></audio>`;
+        vLastAudioURL = URL.createObjectURL(blob);
+        document.getElementById("vPlaybackBox").innerHTML = `<audio controls src="${vLastAudioURL}"></audio>`;
+        if(vRecognizer){ try{ vRecognizer.stop(); }catch(e){} }
       };
       vRecorder.start();
       btn.classList.add("recording");
@@ -826,6 +855,27 @@ function wireVocabRecorder(){
         const s = Math.floor((Date.now()-vRecStart)/1000);
         document.getElementById("vRecTimer").textContent = `${s}s`;
       }, 250);
+
+      // best-effort live transcription into the jot box, if the browser supports it
+      if(vRecognitionSupported && jot){
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        vRecognizer = new SR();
+        vRecognizer.lang = "en-US";
+        vRecognizer.continuous = true;
+        vRecognizer.interimResults = true;
+        let finalText = "";
+        vRecognizer.onresult = (ev)=>{
+          let interim = "";
+          for(let i=ev.resultIndex;i<ev.results.length;i++){
+            const t = ev.results[i][0].transcript;
+            if(ev.results[i].isFinal) finalText += t + " ";
+            else interim += t;
+          }
+          jot.value = (finalText + interim).trim();
+        };
+        vRecognizer.onerror = ()=>{ /* silent — recording itself still works fine without transcription */ };
+        try{ vRecognizer.start(); }catch(e){}
+      }
     }catch(err){
       toast("Mic access didn't work — this needs to be running on its live URL, not the chat preview");
     }
@@ -833,6 +883,7 @@ function wireVocabRecorder(){
 }
 
 async function rate(item, level){
+  const jotText = (document.querySelector("#cardHost .jot")?.value || "").trim();
   const prog = ensureProgress(item);
   const preBox = prog.box;
   prog.seen += 1;
@@ -848,6 +899,15 @@ async function rate(item, level){
   const delta = store.vocabRating - oldRating;
 
   if(level===2){ sessionCombo += 1; } else if(level===0){ sessionCombo = 0; }
+
+  if(jotText){
+    store.answerLog.unshift({
+      date: todayStr(), word: item.word, type: item.type,
+      cueKind: prog.lastCueKind || "", rating: ["missed","shaky","nailed"][level],
+      answerText: jotText
+    });
+    store.answerLog = store.answerLog.slice(0, 300);
+  }
 
   recordSnapshot();
   const badged = checkBadges();
@@ -1016,6 +1076,7 @@ document.getElementById("addForm").addEventListener("submit", async (e)=>{
     collocations: document.getElementById("f_collocations").value.trim(),
     family: document.getElementById("f_family").value.trim(),
     contrast: document.getElementById("f_contrast").value.trim(),
+    nearestSynonym: document.getElementById("f_nearestSynonym").value.trim(),
     personal: document.getElementById("f_personal").value.trim()
   };
 
@@ -1057,6 +1118,7 @@ function enterEditMode(id, type){
   document.getElementById("f_collocations").value = item.collocations || "";
   document.getElementById("f_family").value = item.family || "";
   document.getElementById("f_contrast").value = item.contrast || "";
+  document.getElementById("f_nearestSynonym").value = item.nearestSynonym || "";
   document.getElementById("f_personal").value = item.personal || "";
   document.getElementById("submitBtn").textContent = "Save changes";
   document.getElementById("cancelEditBtn").style.display = "";
@@ -1162,7 +1224,8 @@ document.getElementById("exportBtn").addEventListener("click", ()=>{
     appVersion: APP_VERSION,
     customWords: store.customWords,
     customPhrases: store.customPhrases,
-    progress: store.progress
+    progress: store.progress,
+    answerLog: store.answerLog
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
@@ -1197,6 +1260,9 @@ document.getElementById("importFile").addEventListener("change", async (e)=>{
         if(!store.progress[pid]) store.progress[pid] = data.progress[pid];
       });
     }
+    if(Array.isArray(data.answerLog) && data.answerLog.length){
+      store.answerLog = data.answerLog.concat(store.answerLog).slice(0,300);
+    }
     await saveStore();
     toast(added ? `Imported ${added} new item${added===1?"":"s"}` : "Nothing new to import");
     renderStats();
@@ -1228,6 +1294,7 @@ document.getElementById("templateBtn").addEventListener("click", ()=>{
       collocations: "laconic reply, laconic wit, laconic style",
       family: "laconic, laconically, laconicism (rare)",
       contrast: "Laconic = few words by nature/style. Terse = deliberately curt, sometimes brusque.",
+      nearestSynonym: "Terse",
       personal: "The most laconic person I know is ___, because ___."
     },
     {
@@ -1263,6 +1330,7 @@ function normalizeUploadedItem(raw){
     collocations: (raw.collocations || "").toString().trim(),
     family: (raw.family || "").toString().trim(),
     contrast: (raw.contrast || "").toString().trim(),
+    nearestSynonym: (raw.nearestSynonym || "").toString().trim(),
     personal: (raw.personal || "").toString().trim()
   };
 }
@@ -1375,6 +1443,8 @@ let currentBeatIdx = 0;
 let currentBeatIdx2 = 1;
 
 async function renderStory(){
+  if(mediaRecorder && mediaRecorder.state === "recording"){ try{ mediaRecorder.stop(); }catch(e){} }
+  releaseStoryAudioURL();
   const lvl = storyLevel();
   document.getElementById("levelName").textContent = LEVEL_META[lvl].name;
   document.getElementById("levelNum").textContent = `level ${lvl} / 5`;
@@ -1471,7 +1541,11 @@ async function renderStory(){
 }
 
 /* ---- recording ---- */
-let mediaRecorder = null, recChunks = [], recStartTime = 0, recTimerHandle = null, countdownHandle = null;
+let mediaRecorder = null, recChunks = [], recStartTime = 0, recTimerHandle = null, countdownHandle = null, lastStoryAudioURL = null;
+
+function releaseStoryAudioURL(){
+  if(lastStoryAudioURL){ URL.revokeObjectURL(lastStoryAudioURL); lastStoryAudioURL = null; }
+}
 
 function setupRecorder(lvl){
   const recBtn = document.getElementById("recBtn");
@@ -1497,9 +1571,10 @@ async function toggleRecording(lvl){
       recBtn.classList.remove("recording");
       recLabel.textContent = "Record again";
       document.getElementById("recTimer").textContent = "";
+      releaseStoryAudioURL();
       const blob = new Blob(recChunks, {type: mediaRecorder.mimeType || "audio/webm"});
-      const url = URL.createObjectURL(blob);
-      document.getElementById("playbackBox").innerHTML = `<audio controls src="${url}"></audio>`;
+      lastStoryAudioURL = URL.createObjectURL(blob);
+      document.getElementById("playbackBox").innerHTML = `<audio controls src="${lastStoryAudioURL}"></audio>`;
       document.getElementById("repRate").style.display = "flex";
       document.querySelectorAll("#repRate button").forEach(b=>{
         b.onclick = ()=> rateStory(b.dataset.r==="1");
