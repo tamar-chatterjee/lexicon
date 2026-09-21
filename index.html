@@ -403,6 +403,16 @@
     </form>
 
     <div class="databox">
+      <div class="lbl">Upload words</div>
+      <p class="hint">Already have the fields worked out somewhere else — another chat, a spreadsheet, whatever? Upload a JSON file with one word/phrase object, or an array of them, using the same field names as the form above (word, meaning, hook, register, examples, collocations, family, contrast, personal, and optionally type: "word" or "phrase"). Unknown fields are ignored; only "word" is required.</p>
+      <div class="datarow">
+        <button class="btn ghost" id="uploadWordsBtn">Upload words (.json)</button>
+        <button class="btn ghost" id="templateBtn">Download template</button>
+      </div>
+      <input type="file" id="uploadWordsFile" accept="application/json" style="display:none">
+    </div>
+
+    <div class="databox">
       <div class="lbl">Backup &amp; sync</div>
       <p class="hint">Everything you add lives in this browser only. Export a backup file any time — commit it to your GitHub repo to keep it safe, or import it on another device/browser to bring your additions across.</p>
       <div class="datarow">
@@ -583,7 +593,11 @@ function buildCue(item, prog){
     forms.push({kind:"Recall the frame", prompt:`Retrieval scenario: ${item.examples[0]||item.meaning}. What's the frame/phrase you'd reach for?`});
     forms.push({kind:"Personal use", prompt:item.personal || `Use this frame right now, out loud, on something real from this week.`});
   }
-  const idx = prog.seen % forms.length;
+  let idx = Math.floor(Math.random()*forms.length);
+  if(forms.length>1 && forms[idx].kind === prog.lastCueKind){
+    idx = (idx+1) % forms.length;
+  }
+  prog.lastCueKind = forms[idx].kind;
   return forms[idx];
 }
 
@@ -714,6 +728,11 @@ function renderPractice(){
       <div class="kicker"><span>${item.type==="word"?"Word":"Phrase"} · facing ~${opponent}${sessionCombo>=2?` · 🔥${sessionCombo}`:""}</span><em>${cue.kind}</em></div>
       <div class="prompt">${cue.prompt}</div>
       <textarea class="jot" placeholder="Optional: jot what you'd say, then say it out loud…"></textarea>
+      <div class="rec-row" style="margin-top:12px">
+        <button class="rec-btn" id="vRecBtn"><span class="dot"></span><span id="vRecLabel">Record</span></button>
+        <span class="rec-timer" id="vRecTimer"></span>
+      </div>
+      <div class="playback" id="vPlaybackBox"></div>
       <div class="revealbtnrow" id="preReveal">
         <button class="btn primary block" id="revealBtn">Reveal answer</button>
       </div>
@@ -739,12 +758,55 @@ function renderPractice(){
   `;
 
   document.getElementById("revealBtn").onclick = ()=>{
+    if(vRecorder && vRecorder.state === "recording") vRecorder.stop();
     document.getElementById("revealBox").classList.add("on");
     document.getElementById("preReveal").style.display = "none";
   };
   host.querySelectorAll(".raterow button").forEach(btn=>{
-    btn.onclick = ()=> rate(item, parseInt(btn.dataset.rate,10));
+    btn.onclick = ()=>{
+      if(vRecorder && vRecorder.state === "recording") vRecorder.stop();
+      rate(item, parseInt(btn.dataset.rate,10));
+    };
   });
+  wireVocabRecorder();
+}
+
+/* ---- lightweight recorder for the practice card (separate instance from Story Reps') ---- */
+let vRecorder = null, vRecChunks = [], vRecStart = 0, vRecTimerHandle = null;
+function wireVocabRecorder(){
+  const btn = document.getElementById("vRecBtn");
+  if(!btn) return;
+  btn.onclick = async ()=>{
+    const label = document.getElementById("vRecLabel");
+    if(vRecorder && vRecorder.state === "recording"){ vRecorder.stop(); return; }
+    try{
+      const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+      vRecChunks = [];
+      vRecorder = new MediaRecorder(stream);
+      vRecorder.ondataavailable = e=>{ if(e.data.size>0) vRecChunks.push(e.data); };
+      vRecorder.onstop = ()=>{
+        stream.getTracks().forEach(t=>t.stop());
+        clearInterval(vRecTimerHandle);
+        btn.classList.remove("recording");
+        label.textContent = "Record again";
+        document.getElementById("vRecTimer").textContent = "";
+        const blob = new Blob(vRecChunks, {type: vRecorder.mimeType || "audio/webm"});
+        const url = URL.createObjectURL(blob);
+        document.getElementById("vPlaybackBox").innerHTML = `<audio controls src="${url}"></audio>`;
+      };
+      vRecorder.start();
+      btn.classList.add("recording");
+      label.textContent = "Stop";
+      document.getElementById("vPlaybackBox").innerHTML = "";
+      vRecStart = Date.now();
+      vRecTimerHandle = setInterval(()=>{
+        const s = Math.floor((Date.now()-vRecStart)/1000);
+        document.getElementById("vRecTimer").textContent = `${s}s`;
+      }, 250);
+    }catch(err){
+      toast("Mic access didn't work — this needs to be running on its live URL, not the chat preview");
+    }
+  };
 }
 
 async function rate(item, level){
@@ -990,37 +1052,71 @@ function exitEditMode(){
 }
 document.getElementById("cancelEditBtn").addEventListener("click", exitEditMode);
 
-/* ---- autofill from a free, keyless dictionary API (works once hosted, not in this chat preview) ---- */
+/* ---- autofill: tries two free, keyless dictionary providers, then gives up gracefully ---- */
+function stripHTML(html){
+  const d = document.createElement("div");
+  d.innerHTML = html;
+  return d.textContent || d.innerText || "";
+}
+
+async function fetchFromDictionaryApiDev(word){
+  const res = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(word));
+  if(!res.ok){ const e = new Error("not-found"); e.notFound = true; throw e; }
+  const data = await res.json();
+  const entry = data[0];
+  const meaningBlock = (entry.meanings && entry.meanings[0]) || {};
+  const def = (meaningBlock.definitions && meaningBlock.definitions[0]) || {};
+  const examples = [];
+  (entry.meanings||[]).forEach(m=>(m.definitions||[]).forEach(d=>{ if(d.example) examples.push(d.example); }));
+  const synonyms = new Set();
+  (entry.meanings||[]).forEach(m=>{
+    (m.synonyms||[]).forEach(s=>synonyms.add(s));
+    (m.definitions||[]).forEach(d=>(d.synonyms||[]).forEach(s=>synonyms.add(s)));
+  });
+  return {meaning: def.definition || "", examples: examples.slice(0,3), synonyms: Array.from(synonyms).slice(0,5)};
+}
+
+async function fetchFromWiktionary(word){
+  const res = await fetch("https://en.wiktionary.org/api/rest_v1/page/definition/" + encodeURIComponent(word));
+  if(!res.ok){ const e = new Error("not-found"); e.notFound = true; throw e; }
+  const data = await res.json();
+  const block = data.en || data["en-us"] || Object.values(data)[0];
+  if(!block || !block.length){ const e = new Error("not-found"); e.notFound = true; throw e; }
+  const def = (block[0].definitions && block[0].definitions[0]) || {};
+  const meaning = def.definition ? stripHTML(def.definition) : "";
+  const examples = (def.parsedExamples||[]).map(e=>stripHTML(e.example||"")).filter(Boolean);
+  return {meaning, examples: examples.slice(0,3), synonyms: []};
+}
+
 document.getElementById("autofillBtn").addEventListener("click", async ()=>{
   const word = document.getElementById("f_word").value.trim();
   if(!word){ toast("Type a word first"); return; }
   const btn = document.getElementById("autofillBtn");
   btn.disabled = true; btn.textContent = "Looking…";
-  try{
-    const res = await fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(word));
-    if(!res.ok) throw new Error("not found");
-    const data = await res.json();
-    const entry = data[0];
-    const meaningBlock = (entry.meanings && entry.meanings[0]) || {};
-    const def = (meaningBlock.definitions && meaningBlock.definitions[0]) || {};
+
+  let result = null, anyNotFound = false;
+  for(const fetcher of [fetchFromDictionaryApiDev, fetchFromWiktionary]){
+    try{
+      result = await fetcher(word);
+      if(result.meaning) break;
+      result = null;
+    }catch(err){
+      if(err.notFound) anyNotFound = true;
+    }
+  }
+
+  if(result){
     const meaningEl = document.getElementById("f_meaning");
-    if(!meaningEl.value.trim() && def.definition){
-      meaningEl.value = def.definition.charAt(0).toUpperCase() + def.definition.slice(1);
+    if(!meaningEl.value.trim() && result.meaning){
+      meaningEl.value = result.meaning.charAt(0).toUpperCase() + result.meaning.slice(1);
     }
     const examplesEl = document.getElementById("f_examples");
-    if(!examplesEl.value.trim()){
-      const exLines = [];
-      (entry.meanings||[]).forEach(m=>(m.definitions||[]).forEach(d=>{ if(d.example) exLines.push(d.example); }));
-      if(exLines.length) examplesEl.value = exLines.slice(0,3).join("\n");
+    if(!examplesEl.value.trim() && result.examples.length){
+      examplesEl.value = result.examples.join("\n");
     }
-    const allSynonyms = new Set();
-    (entry.meanings||[]).forEach(m=>{
-      (m.synonyms||[]).forEach(s=>allSynonyms.add(s));
-      (m.definitions||[]).forEach(d=>(d.synonyms||[]).forEach(s=>allSynonyms.add(s)));
-    });
     const contrastEl = document.getElementById("f_contrast");
-    if(!contrastEl.value.trim() && allSynonyms.size){
-      contrastEl.value = `Close in meaning to: ${Array.from(allSynonyms).slice(0,5).join(", ")} — work out how ${word.toLowerCase()} differs before treating them as interchangeable.`;
+    if(!contrastEl.value.trim() && result.synonyms.length){
+      contrastEl.value = `Close in meaning to: ${result.synonyms.join(", ")} — work out how ${word.toLowerCase()} differs before treating them as interchangeable.`;
     }
     const personalEl = document.getElementById("f_personal");
     if(!personalEl.value.trim()){
@@ -1028,11 +1124,12 @@ document.getElementById("autofillBtn").addEventListener("click", async ()=>{
     }
     document.getElementById("advancedFields").open = true;
     toast(`Drafted from a dictionary lookup — check it over`);
-  }catch(err){
-    toast("No definition found (or offline) — fill it in yourself this time");
-  }finally{
-    btn.disabled = false; btn.textContent = "Look up";
+  }else if(anyNotFound){
+    toast(`No dictionary entry for "${word}" — check the spelling, or fill it in yourself`);
+  }else{
+    toast("Couldn't reach a dictionary service — this needs to be on its live URL (not the chat preview), or check your connection");
   }
+  btn.disabled = false; btn.textContent = "Look up";
 });
 
 /* ================= EXPORT / IMPORT ================= */
@@ -1081,6 +1178,99 @@ document.getElementById("importFile").addEventListener("change", async (e)=>{
     renderStats();
   }catch(err){
     toast("Couldn't read that file");
+  }
+  e.target.value = "";
+});
+
+/* ================= UPLOAD WORDS (simple JSON, one item or many) ================= */
+function downloadJSON(filename, obj){
+  const blob = new Blob([JSON.stringify(obj, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("templateBtn").addEventListener("click", ()=>{
+  downloadJSON("sancti-speaks-word-template.json", [
+    {
+      type: "word",
+      word: "laconic",
+      meaning: "Using very few words; terse.",
+      hook: "says almost nothing, means a lot",
+      register: "Everyday educated",
+      examples: ["laconic reply", "laconic style", "stayed laconic throughout"],
+      collocations: "laconic reply, laconic wit, laconic style",
+      family: "laconic, laconically, laconicism (rare)",
+      contrast: "Laconic = few words by nature/style. Terse = deliberately curt, sometimes brusque.",
+      personal: "The most laconic person I know is ___, because ___."
+    },
+    {
+      type: "phrase",
+      word: "Paint me the scene.",
+      meaning: "Moves a conversation from information into a shared imagined moment.",
+      hook: "turn a topic into a place you're both standing in",
+      register: "Everyday educated",
+      examples: ["Okay, your perfect Sunday — where are we, what's around us?"],
+      collocations: "category: world-building",
+      family: "follow-ups: I can imagine us… / We'd definitely…",
+      contrast: "vs. a plain follow-up question, which collects facts instead of building a scene.",
+      personal: "Try it now on something someone told you recently."
+    }
+  ]);
+  toast("Template downloaded");
+});
+
+function normalizeUploadedItem(raw){
+  const word = (raw.word || raw.name || "").toString().trim();
+  if(!word) return null;
+  const examples = Array.isArray(raw.examples) ? raw.examples.map(String)
+    : (typeof raw.examples === "string" ? raw.examples.split("\n").map(s=>s.trim()).filter(Boolean) : []);
+  const type = (raw.type === "phrase") ? "phrase" : "word";
+  return {
+    id: "c" + Date.now() + Math.random().toString(36).slice(2,7),
+    type,
+    word,
+    meaning: (raw.meaning || "").toString().trim(),
+    hook: (raw.hook || "").toString().trim(),
+    register: (raw.register || "Everyday educated").toString(),
+    examples,
+    collocations: (raw.collocations || "").toString().trim(),
+    family: (raw.family || "").toString().trim(),
+    contrast: (raw.contrast || "").toString().trim(),
+    personal: (raw.personal || "").toString().trim()
+  };
+}
+
+document.getElementById("uploadWordsBtn").addEventListener("click", ()=>{
+  document.getElementById("uploadWordsFile").click();
+});
+document.getElementById("uploadWordsFile").addEventListener("change", async (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  try{
+    const text = await file.text();
+    const data = JSON.parse(text);
+    const list = Array.isArray(data) ? data : [data];
+    let added = 0, skipped = 0;
+    list.forEach(raw=>{
+      const item = normalizeUploadedItem(raw);
+      if(!item){ skipped++; return; }
+      const {type, ...fields} = item;
+      if(type === "phrase") store.customPhrases.push(fields);
+      else store.customWords.push(fields);
+      store.progress[fields.id] = {box:0, due: addDays(todayStr(),1), seen:0};
+      added++;
+    });
+    const badged = checkBadges();
+    await saveStore();
+    renderStats();
+    if(!badged){
+      toast(added ? `Added ${added} word${added===1?"":"s"}${skipped?`, skipped ${skipped}`:""}` : "Nothing usable in that file — needs at least a \"word\" field");
+    }
+  }catch(err){
+    toast("Couldn't read that file — check it's valid JSON");
   }
   e.target.value = "";
 });
