@@ -211,6 +211,80 @@
   .toast.on{opacity:1}
 
   ::selection{background:rgba(226,74,43,.35)}
+
+  /* --- Story reps --- */
+  .levelrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .levelrow .lname{font-family:var(--mono);font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--truth)}
+  .levelrow .lnum{font-family:var(--mono);font-size:10px;color:var(--dimmer)}
+  .streakdots{display:flex;gap:5px;margin-bottom:18px}
+  .streakdots i{width:9px;height:9px;border-radius:50%;border:1px solid var(--line);list-style:none}
+  .streakdots i.on{background:var(--good);border-color:var(--good)}
+
+  .seedbox{background:var(--panel);border:1px solid var(--line);padding:14px;margin-bottom:16px}
+  .seedbox label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+  .seedbox input{width:100%;background:var(--ground);border:1px solid var(--line);color:var(--ink);font-family:var(--sans);font-size:14px;padding:9px 10px;margin-bottom:8px}
+  .seedbox input:focus{outline:none;border-color:var(--mark)}
+  .seedrowbtns{display:flex;gap:8px}
+  .seedrowbtns .btn{flex:1;font-size:10px;padding:9px 6px}
+
+  .beatpill{
+    display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--mark);border:1px solid var(--line);padding:3px 9px;margin:0 4px 4px 0;
+  }
+  .stage .prompt.storyprompt{font-size:17px}
+
+  .rec-row{display:flex;align-items:center;gap:14px;margin-top:18px}
+  .rec-btn{
+    display:flex;align-items:center;gap:8px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:11px 18px;cursor:pointer;
+  }
+  .rec-btn .dot{width:9px;height:9px;border-radius:50%;background:var(--truth)}
+  .rec-btn.recording{border-color:var(--truth)}
+  .rec-btn.recording .dot{animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .rec-timer{font-family:var(--mono);font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums}
+  .countdown{font-family:var(--mono);font-size:30px;color:var(--gold);text-align:center;margin:14px 0 4px}
+
+  .playback{margin-top:16px}
+  .playback audio{width:100%}
+
+  .liverow{display:flex;gap:8px;margin-top:10px}
+  .liverow input{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--ink);font-family:var(--sans);font-size:14px;padding:10px 12px}
+  .liverow input:focus{outline:none;border-color:var(--mark)}
+  .livehist{margin-top:20px}
+  .livehist .entry{border-bottom:1px solid var(--line);padding:10px 2px;font-size:13.5px}
+  .livehist .entry .d{font-family:var(--mono);font-size:9.5px;color:var(--dimmer);margin-bottom:2px}
+
+  .modelstory{background:var(--panel);border:1px solid var(--line);padding:18px;font-size:15px;line-height:1.65}
+  .modelstory .beatline{margin-bottom:4px}
+  .modelstory .beatline .tag{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--mark);margin-right:8px;display:none}
+  .modelstory.revealed .beatline .tag{display:inline}
+
+  /* --- Progress --- */
+  .ratingcards{display:flex;gap:10px;margin-bottom:24px}
+  .ratingcard{flex:1;background:var(--panel);border:1px solid var(--line);padding:16px 14px}
+  .ratingcard .rn{font-family:var(--mono);font-size:30px;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+  .ratingcard .rl{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dimmer);margin-top:6px}
+
+  .sectiontitle{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:26px 0 12px}
+  .sectiontitle:first-child{margin-top:0}
+
+  .breakdownrow{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .breakdownrow .bname{width:110px;flex-shrink:0;font-size:12.5px;color:var(--ink)}
+  .breakdownrow .btrack{flex:1;height:6px;background:var(--line)}
+  .breakdownrow .bfill{height:100%;background:var(--mark)}
+  .breakdownrow .bval{font-family:var(--mono);font-size:10.5px;color:var(--dim);width:34px;text-align:right}
+
+  .badgegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .badge{border:1px solid var(--line);padding:10px 12px;background:var(--panel)}
+  .badge.locked{opacity:.35}
+  .badge .bicon{font-size:17px;margin-bottom:4px}
+  .badge .bname{font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--ink)}
+
+  .chartwrap{background:var(--panel);border:1px solid var(--line);padding:14px}
+  .chartlegend{display:flex;gap:16px;margin-top:10px;font-family:var(--mono);font-size:10px;color:var(--dim)}
+  .chartlegend span{display:inline-flex;align-items:center;gap:5px}
+  .chartlegend i{width:8px;height:8px;display:inline-block;border-radius:50%}
 </style>
 </head>
 <body>
@@ -227,15 +301,31 @@
   <button class="tabbtn on" data-view="practice">Practice</button>
   <button class="tabbtn" data-view="browse">Lexicon</button>
   <button class="tabbtn" data-view="add">Add</button>
+  <button class="tabbtn" data-view="story">Story reps</button>
+  <button class="tabbtn" data-view="progress">Progress</button>
 </nav>
 
 <main>
 
   <section id="practice" class="screen on">
+    <div class="levelrow">
+      <span class="lname" id="rankName" style="color:var(--mark)">—</span>
+      <span class="lnum num" id="rankRating"></span>
+    </div>
+    <div class="breakdownrow" style="margin-bottom:16px">
+      <span class="bname" style="width:auto;font-size:10.5px;color:var(--dimmer)" id="rankNextLabel">to next rank</span>
+      <div class="btrack"><div class="bfill" id="rankFill" style="background:var(--gold);width:0%"></div></div>
+    </div>
+
     <div class="statgrid">
       <div class="stat"><b class="num" id="dueCount">–</b><span>Due today</span></div>
       <div class="stat"><b class="num" id="totalCount">–</b><span>In lexicon</span></div>
       <div class="stat"><b class="num" id="masteredCount">–</b><span>Locked (box 5)</span></div>
+    </div>
+
+    <div class="sectiontitle" style="margin:0 0 8px">Today's 1% target · <span id="sessionGoalText" class="num" style="color:var(--ink)"></span></div>
+    <div class="breakdownrow" style="margin-bottom:18px">
+      <div class="btrack"><div class="bfill" id="goalFill" style="background:var(--good);width:0%"></div></div>
     </div>
 
     <div class="sessionhead">
@@ -323,6 +413,17 @@
     </div>
   </section>
 
+  <section id="story" class="screen">
+    <div class="levelrow">
+      <span class="lname" id="levelName">—</span>
+      <span class="lnum" id="levelNum"></span>
+    </div>
+    <ul class="streakdots" id="streakDots"></ul>
+    <div id="storyHost"></div>
+  </section>
+  <section id="progress" class="screen">
+    <div id="progressHost"></div>
+  </section>
 
 </main>
 
@@ -415,7 +516,11 @@ function driverName(){
   return {claude:'host storage', idb:'on-device storage', ls:'local storage', mem:'memory only — nothing will be kept'}[DRIVER];
 }
 
-var store = {progress:{}, streak:0, lastPracticeDate:null, customWords:[], customPhrases:[]};
+var store = {progress:{}, streak:0, lastPracticeDate:null, customWords:[], customPhrases:[],
+  story:{level:0, subStage:60, streak:0, seedText:"", seedDate:"", liveLog:[]},
+  vocabRating:1000, storyRating:1000,
+  beatRatings:{situation:1000, desire:1000, conflict:1000, change:1000, result:1000},
+  badges:[], history:[]};
 async function loadStore(){
   var s = await sGet('ss:store');
   if(s) store = Object.assign(store, s);
@@ -494,13 +599,42 @@ function shuffled(arr){
   return a;
 }
 
+const RANKS = [
+  {min:0, name:"Novice"},
+  {min:1000, name:"Apprentice"},
+  {min:1080, name:"Adept"},
+  {min:1160, name:"Fluent"},
+  {min:1240, name:"Articulate"},
+  {min:1320, name:"Eloquent"},
+  {min:1400, name:"Silver-Tongued"},
+  {min:1500, name:"Virtuoso"}
+];
+function getRankInfo(rating){
+  let cur = RANKS[0], next = null;
+  for(let i=0;i<RANKS.length;i++){
+    if(rating >= RANKS[i].min) cur = RANKS[i];
+    else { next = RANKS[i]; break; }
+  }
+  return {cur, next};
+}
+
+let sessionStartRating = store.vocabRating;
+let sessionCombo = 0;
+
+function sessionGoal(){ return Math.max(5, Math.round(sessionStartRating*0.01)); }
+function sessionGain(){ return store.vocabRating - sessionStartRating; }
+
 function startSession(){
+  sessionStartRating = store.vocabRating;
+  sessionCombo = 0;
   session.queue = shuffled(dueItems());
   session.pos = 0;
   renderPractice();
 }
 
 function drillAnyway(){
+  sessionStartRating = store.vocabRating;
+  sessionCombo = 0;
   session.queue = shuffled(allItems()).slice(0, 10);
   session.pos = 0;
   renderPractice();
@@ -512,6 +646,22 @@ function renderStats(){
   document.getElementById("dueCount").textContent = dueItems().length;
   document.getElementById("masteredCount").textContent = items.filter(it=>ensureProgress(it).box>=5).length;
   document.getElementById("streakNum").textContent = store.streak;
+
+  const {cur, next} = getRankInfo(store.vocabRating);
+  document.getElementById("rankName").textContent = cur.name;
+  document.getElementById("rankRating").textContent = store.vocabRating;
+  if(next){
+    const pct = Math.max(0, Math.min(100, ((store.vocabRating-cur.min)/(next.min-cur.min))*100));
+    document.getElementById("rankFill").style.width = pct+"%";
+    document.getElementById("rankNextLabel").textContent = `${next.name} at ${next.min}`;
+  } else {
+    document.getElementById("rankFill").style.width = "100%";
+    document.getElementById("rankNextLabel").textContent = "top rank";
+  }
+
+  const goal = sessionGoal(), gain = sessionGain();
+  document.getElementById("sessionGoalText").textContent = `${gain>=0?"+":""}${gain} / +${goal}`;
+  document.getElementById("goalFill").style.width = Math.max(0,Math.min(100,(gain/goal)*100)) + "%";
 }
 
 function renderBar(){
@@ -543,7 +693,9 @@ function renderPractice(){
   if(session.pos >= session.queue.length){
     label.textContent = "Session complete";
     posEl.textContent = "";
-    host.innerHTML = `<div class="donepanel"><div class="big">Nicely done</div>You worked through ${session.queue.length} item${session.queue.length===1?"":"s"} out loud.<br><button class="btn ghost" id="againBtn">Practice more</button></div>`;
+    const gain = sessionGain(), goal = sessionGoal();
+    const hitGoal = gain >= goal;
+    host.innerHTML = `<div class="donepanel"><div class="big">${hitGoal ? "🎯 Hit today's 1% target" : "Nicely done"}</div>You worked through ${session.queue.length} item${session.queue.length===1?"":"s"} out loud.<br>Rating ${gain>=0?"+":""}${gain} this session${hitGoal?"":` (target was +${goal})`}.<br><button class="btn ghost" id="againBtn">Practice more</button></div>`;
     document.getElementById("againBtn").onclick = drillAnyway;
     markPracticedToday();
     return;
@@ -555,10 +707,11 @@ function renderPractice(){
   const item = session.queue[session.pos];
   const prog = ensureProgress(item);
   const cue = buildCue(item, prog);
+  const opponent = 800 + prog.box*200;
 
   host.innerHTML = `
     <div class="stage">
-      <div class="kicker"><span>${item.type==="word"?"Word":"Phrase"}</span><em>${cue.kind}</em></div>
+      <div class="kicker"><span>${item.type==="word"?"Word":"Phrase"} · facing ~${opponent}${sessionCombo>=2?` · 🔥${sessionCombo}`:""}</span><em>${cue.kind}</em></div>
       <div class="prompt">${cue.prompt}</div>
       <textarea class="jot" placeholder="Optional: jot what you'd say, then say it out loud…"></textarea>
       <div class="revealbtnrow" id="preReveal">
@@ -596,15 +749,74 @@ function renderPractice(){
 
 async function rate(item, level){
   const prog = ensureProgress(item);
+  const preBox = prog.box;
   prog.seen += 1;
   if(level===0){ prog.box = 1; }
   else if(level===1){ prog.box = Math.max(1, prog.box); }
   else { prog.box = Math.min(5, prog.box+1); }
   const interval = INTERVALS[prog.box] ?? 1;
   prog.due = addDays(todayStr(), interval);
+  const actual = level===2 ? 1 : (level===1 ? 0.5 : 0);
+  const opponent = 800 + preBox*200;
+  const oldRating = store.vocabRating;
+  store.vocabRating = applyElo(store.vocabRating, opponent, actual);
+  const delta = store.vocabRating - oldRating;
+
+  if(level===2){ sessionCombo += 1; } else if(level===0){ sessionCombo = 0; }
+
+  recordSnapshot();
+  const badged = checkBadges();
   await saveStore();
   session.pos += 1;
   renderPractice();
+  if(!badged){
+    const boxMsg = prog.box!==preBox ? ` · box ${preBox}→${prog.box}` : "";
+    toast(`${delta>=0?"+":""}${delta} rating${boxMsg}`);
+  }
+}
+
+function applyElo(rating, opponent, actual, k=24){
+  const expected = 1 / (1 + Math.pow(10, (opponent-rating)/400));
+  return Math.round(rating + k*(actual-expected));
+}
+
+function recordSnapshot(){
+  const t = todayStr();
+  const mastered = allItems().filter(it=>ensureProgress(it).box>=5).length;
+  const entry = {date:t, vocabRating:store.vocabRating, storyRating:store.storyRating, mastered};
+  const last = store.history[store.history.length-1];
+  if(last && last.date === t){ Object.assign(last, entry); }
+  else { store.history.push(entry); }
+  if(store.history.length > 90) store.history = store.history.slice(-90);
+}
+
+const BADGES = [
+  {id:"first-add", name:"First Addition", icon:"✎", check:s=> (s.customWords.length+s.customPhrases.length) >= 1},
+  {id:"streak-3", name:"Three Day Streak", icon:"🔥", check:s=> s.streak >= 3},
+  {id:"streak-7", name:"One Week", icon:"🔥", check:s=> s.streak >= 7},
+  {id:"streak-14", name:"Two Weeks", icon:"🔥", check:s=> s.streak >= 14},
+  {id:"streak-30", name:"One Month", icon:"🔥", check:s=> s.streak >= 30},
+  {id:"mastered-10", name:"Ten Mastered", icon:"◆", check:s=> allItems().filter(it=>ensureProgress(it).box>=5).length >= 10},
+  {id:"mastered-25", name:"Twenty-Five Mastered", icon:"◆", check:s=> allItems().filter(it=>ensureProgress(it).box>=5).length >= 25},
+  {id:"vocab-1150", name:"Vocab Rating 1150", icon:"▲", check:s=> s.vocabRating >= 1150},
+  {id:"vocab-1300", name:"Vocab Rating 1300", icon:"▲", check:s=> s.vocabRating >= 1300},
+  {id:"story-lvl3", name:"Full Arc", icon:"⟡", check:s=> s.story.level >= 3},
+  {id:"story-lvl4", name:"Against The Clock", icon:"⟡", check:s=> s.story.level >= 4},
+  {id:"story-lvl5", name:"Real World Ready", icon:"⟡", check:s=> s.story.level >= 5},
+  {id:"first-live", name:"First Live Rep", icon:"●", check:s=> s.story.liveLog.length >= 1},
+  {id:"live-10", name:"Ten Live Reps", icon:"●", check:s=> s.story.liveLog.length >= 10},
+  {id:"story-1150", name:"Story Rating 1150", icon:"▲", check:s=> s.storyRating >= 1150}
+];
+function checkBadges(){
+  const newly = [];
+  BADGES.forEach(b=>{
+    if(!store.badges.includes(b.id) && b.check(store)){
+      store.badges.push(b.id);
+      newly.push(b.name);
+    }
+  });
+  if(newly.length){ toast(`🏅 New badge: ${newly.join(", ")}`); }
+  return newly.length > 0;
 }
 
 async function markPracticedToday(){
@@ -613,6 +825,7 @@ async function markPracticedToday(){
   if(store.lastPracticeDate === addDays(t,-1)){ store.streak += 1; }
   else { store.streak = 1; }
   store.lastPracticeDate = t;
+  checkBadges();
   await saveStore();
   renderStats();
 }
@@ -734,9 +947,10 @@ document.getElementById("addForm").addEventListener("submit", async (e)=>{
     if(addType === "phrase"){ store.customPhrases.push(newItem); }
     else { store.customWords.push(newItem); }
     store.progress[id] = {box:0, due: addDays(todayStr(),1), seen:0};
+    const badged = checkBadges();
     await saveStore();
     document.getElementById("addForm").reset();
-    toast(`Added “${word}” — enters practice tomorrow`);
+    if(!badged) toast(`Added “${word}” — enters practice tomorrow`);
   }
   renderStats();
 });
@@ -871,6 +1085,375 @@ document.getElementById("importFile").addEventListener("change", async (e)=>{
   e.target.value = "";
 });
 
+/* ================= STORY REPS ================= */
+const BEATS = [
+  {key:"situation", label:"Situation", tip:"Where are we, what's the ordinary starting point?"},
+  {key:"desire", label:"Desire", tip:"What did you (or someone in it) want, right then?"},
+  {key:"conflict", label:"Conflict", tip:"What got in the way?"},
+  {key:"change", label:"Change", tip:"What shifted — the turn?"},
+  {key:"result", label:"Result", tip:"How did it land — the mic-drop?"}
+];
+const LEVEL_META = [
+  {name:"Notice", desc:"Spot the beats in a story that's already told. No output yet."},
+  {name:"Isolate", desc:"One beat at a time, from something real from today."},
+  {name:"Link", desc:"Two adjacent beats, one take."},
+  {name:"Full arc — slow", desc:"All five beats, no clock."},
+  {name:"Full arc — compressed", desc:"All five beats, against a shrinking clock."},
+  {name:"Live", desc:"Used for real. Log it, don't perform it here."}
+];
+const MUNDANE_SEEDS = [
+  "You went to the pharmacy today.",
+  "Someone cancelled plans on you at the last minute.",
+  "Your wifi went out mid-call.",
+  "You waited in a long queue.",
+  "You spilled something on your shirt before a meeting.",
+  "You got a parking ticket.",
+  "Your train/bus was delayed.",
+  "You ran into someone you hadn't seen in years.",
+  "You forgot something at home and had to go back.",
+  "A colleague asked you an awkward question in a meeting.",
+  "You tried a new coffee place.",
+  "Your phone died at the worst possible moment.",
+  "You got lost trying a new route.",
+  "Someone gave you unsolicited advice.",
+  "You had an argument with customer service."
+];
+const MODEL_STORIES = [
+  {beats:["I was the last one left in the office on a Friday.","I just wanted to finish one email and leave.","The wifi cut out mid-send, and the draft vanished.","Instead of rewriting it, I called the person instead.","Turned out a two-minute call did more than the email ever would have."]},
+  {beats:["I was queuing for coffee, already late.","I wanted to grab it and go, no conversation.","The barista recognised me from years ago and froze mid-order.","We ended up talking for five minutes about where life had taken us.","I left twenty minutes late and didn't mind at all."]},
+  {beats:["I'd promised to cook dinner for six people.","I wanted it to look effortless, obviously.","I realised at 6pm I'd forgotten to defrost the main ingredient.","I improvised an entirely different dish from what was in the fridge.","Everyone said it was the best version I'd ever made."]},
+  {beats:["I was giving a talk to a room of strangers.","I wanted to open with something sharp and memorable.","My opening line landed to total silence.","I dropped the script and just told them what actually happened that morning instead.","That's the bit people came up to talk about afterward."]},
+  {beats:["I was on hold with an airline for the third time that day.","I just wanted my flight rebooked without another argument.","The agent put me on hold, then the call dropped entirely.","I called back and, out of pure exhaustion, just laughed instead of complaining.","The next agent rebooked me in ninety seconds, upgraded."]},
+  {beats:["I was walking into a first date already nervous.","I wanted to seem completely unbothered.","I tripped on the doormat walking in.","Instead of pretending it didn't happen, I just owned it out loud.","It became the story we still tell people about how we met."]}
+];
+
+function storyLevel(){ return store.story.level; }
+function graduationTarget(){ return 3; }
+
+function renderStreakDots(){
+  const host = document.getElementById("streakDots");
+  const target = graduationTarget();
+  let html = "";
+  for(let i=0;i<target;i++){
+    html += `<i class="${i < store.story.streak ? "on":""}"></i>`;
+  }
+  host.innerHTML = html;
+}
+
+function todaySeedNeeded(){
+  return store.story.seedDate !== todayStr();
+}
+
+function renderSeedBox(){
+  return `
+    <div class="seedbox">
+      <label>Today's real, mundane moment</label>
+      <input type="text" id="seedInput" placeholder="e.g. You waited twenty minutes for a delivery that never came." value="${store.story.seedText.replace(/"/g,'&quot;')}">
+      <div class="seedrowbtns">
+        <button type="button" class="btn ghost" id="saveSeedBtn">Use this</button>
+        <button type="button" class="btn ghost" id="randomSeedBtn">Give me a random one</button>
+      </div>
+    </div>
+  `;
+}
+
+let currentBeatIdx = 0;
+let currentBeatIdx2 = 1;
+
+async function renderStory(){
+  const lvl = storyLevel();
+  document.getElementById("levelName").textContent = LEVEL_META[lvl].name;
+  document.getElementById("levelNum").textContent = `level ${lvl} / 5`;
+  renderStreakDots();
+  const host = document.getElementById("storyHost");
+
+  if(lvl === 0){
+    const story = MODEL_STORIES[Math.floor(Math.random()*MODEL_STORIES.length)];
+    host.innerHTML = `
+      <p class="hint" style="margin-bottom:14px">${LEVEL_META[0].desc}</p>
+      <div class="modelstory" id="modelStory">
+        ${story.beats.map((b,i)=>`<div class="beatline"><span class="tag">${BEATS[i].label}</span>${b}</div>`).join("")}
+      </div>
+      <div class="rec-row">
+        <button class="btn primary" id="revealStoryBtn">Reveal the beats</button>
+      </div>
+      <div class="raterow" id="noticeRate" style="display:none;margin-top:18px">
+        <button class="nailed" data-r="1">I could tell before revealing</button>
+        <button class="missed" data-r="0">Not yet</button>
+      </div>
+    `;
+    document.getElementById("revealStoryBtn").onclick = ()=>{
+      document.getElementById("modelStory").classList.add("revealed");
+      document.getElementById("noticeRate").style.display = "flex";
+    };
+    host.querySelectorAll("#noticeRate button").forEach(b=>{
+      b.onclick = ()=> rateStory(b.dataset.r==="1");
+    });
+    return;
+  }
+
+  if(lvl === 5){
+    host.innerHTML = `
+      <p class="hint" style="margin-bottom:14px">${LEVEL_META[5].desc}</p>
+      <div class="liverow">
+        <input type="text" id="liveNote" placeholder="What happened when you tried it live?">
+        <button class="btn primary" id="logLiveBtn">Log it</button>
+      </div>
+      <div class="livehist" id="liveHist"></div>
+    `;
+    document.getElementById("logLiveBtn").onclick = logLive;
+    renderLiveHist();
+    return;
+  }
+
+  // levels 1-4 share the seed + record + playback + rate shell
+  let beatPrompt = "";
+  if(lvl===1){
+    currentBeatIdx = Math.floor(Math.random()*5);
+    beatPrompt = `Just the <span class="focus">${BEATS[currentBeatIdx].label}</span> — ${BEATS[currentBeatIdx].tip}`;
+  } else if(lvl===2){
+    currentBeatIdx = Math.floor(Math.random()*4);
+    currentBeatIdx2 = currentBeatIdx+1;
+    beatPrompt = `<span class="focus">${BEATS[currentBeatIdx].label} → ${BEATS[currentBeatIdx2].label}</span> — one take, both beats.`;
+  } else if(lvl===3){
+    beatPrompt = `All five beats — Situation, Desire, Conflict, Change, Result. No clock.`;
+  } else if(lvl===4){
+    beatPrompt = `All five beats — against the clock.`;
+  }
+
+  host.innerHTML = `
+    ${todaySeedNeeded() ? renderSeedBox() : ""}
+    <div class="stage">
+      <div class="kicker"><span>${LEVEL_META[lvl].name}</span><em>${store.story.seedDate===todayStr() ? "today's seed" : ""}</em></div>
+      <div class="prompt storyprompt">${store.story.seedText ? `<em style="color:var(--dim);font-style:italic">${store.story.seedText}</em><br><br>` : ""}${beatPrompt}</div>
+      ${lvl===4 ? `<div class="countdown" id="countdownDisp">${store.story.subStage}s</div>` : ""}
+      <div class="rec-row">
+        <button class="rec-btn" id="recBtn"><span class="dot"></span><span id="recLabel">Record</span></button>
+        <span class="rec-timer" id="recTimer"></span>
+      </div>
+      <div class="playback" id="playbackBox"></div>
+      <div class="raterow" id="repRate" style="display:none;margin-top:18px">
+        <button class="nailed" data-r="1">Landed</button>
+        <button class="missed" data-r="0">Flat</button>
+      </div>
+    </div>
+  `;
+
+  if(todaySeedNeeded()){
+    document.getElementById("saveSeedBtn").onclick = ()=>{
+      const v = document.getElementById("seedInput").value.trim();
+      if(!v){ toast("Type something first, or pull a random one"); return; }
+      store.story.seedText = v; store.story.seedDate = todayStr();
+      saveStore(); renderStory();
+    };
+    document.getElementById("randomSeedBtn").onclick = ()=>{
+      store.story.seedText = MUNDANE_SEEDS[Math.floor(Math.random()*MUNDANE_SEEDS.length)];
+      store.story.seedDate = todayStr();
+      saveStore(); renderStory();
+    };
+  } else {
+    setupRecorder(lvl);
+  }
+}
+
+/* ---- recording ---- */
+let mediaRecorder = null, recChunks = [], recStartTime = 0, recTimerHandle = null, countdownHandle = null;
+
+function setupRecorder(lvl){
+  const recBtn = document.getElementById("recBtn");
+  recBtn.onclick = ()=> toggleRecording(lvl);
+}
+
+async function toggleRecording(lvl){
+  const recBtn = document.getElementById("recBtn");
+  const recLabel = document.getElementById("recLabel");
+  if(mediaRecorder && mediaRecorder.state === "recording"){
+    mediaRecorder.stop();
+    return;
+  }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    recChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = e=>{ if(e.data.size>0) recChunks.push(e.data); };
+    mediaRecorder.onstop = ()=>{
+      stream.getTracks().forEach(t=>t.stop());
+      clearInterval(recTimerHandle);
+      clearInterval(countdownHandle);
+      recBtn.classList.remove("recording");
+      recLabel.textContent = "Record again";
+      document.getElementById("recTimer").textContent = "";
+      const blob = new Blob(recChunks, {type: mediaRecorder.mimeType || "audio/webm"});
+      const url = URL.createObjectURL(blob);
+      document.getElementById("playbackBox").innerHTML = `<audio controls src="${url}"></audio>`;
+      document.getElementById("repRate").style.display = "flex";
+      document.querySelectorAll("#repRate button").forEach(b=>{
+        b.onclick = ()=> rateStory(b.dataset.r==="1");
+      });
+    };
+    mediaRecorder.start();
+    recBtn.classList.add("recording");
+    recLabel.textContent = "Stop";
+    document.getElementById("repRate").style.display = "none";
+    document.getElementById("playbackBox").innerHTML = "";
+    recStartTime = Date.now();
+    recTimerHandle = setInterval(()=>{
+      const s = Math.floor((Date.now()-recStartTime)/1000);
+      document.getElementById("recTimer").textContent = `${s}s`;
+    }, 250);
+    if(lvl===4){
+      let remaining = store.story.subStage;
+      const cd = document.getElementById("countdownDisp");
+      cd.textContent = remaining + "s";
+      countdownHandle = setInterval(()=>{
+        remaining -= 1;
+        if(cd) cd.textContent = Math.max(remaining,0) + "s";
+        if(remaining <= 0 && mediaRecorder && mediaRecorder.state==="recording"){
+          mediaRecorder.stop();
+        }
+      }, 1000);
+    }
+  }catch(err){
+    toast("Mic access didn't work — this needs to be running on its live URL, not the chat preview");
+  }
+}
+
+/* ---- rating / graduation ---- */
+async function rateStory(landed){
+  const lvl = storyLevel();
+  const actual = landed ? 1 : 0;
+
+  if(lvl >= 1){
+    const opponent = 900 + lvl*150 + (lvl===4 ? (60-store.story.subStage)*4 : 0);
+    store.storyRating = applyElo(store.storyRating, opponent, actual, 20);
+    if(lvl===1){
+      const k = BEATS[currentBeatIdx].key;
+      store.beatRatings[k] = applyElo(store.beatRatings[k], opponent, actual, 24);
+    } else if(lvl===2){
+      const k1 = BEATS[currentBeatIdx].key, k2 = BEATS[currentBeatIdx2].key;
+      store.beatRatings[k1] = applyElo(store.beatRatings[k1], opponent, actual, 20);
+      store.beatRatings[k2] = applyElo(store.beatRatings[k2], opponent, actual, 20);
+    }
+  }
+
+  if(landed){
+    store.story.streak += 1;
+  } else {
+    store.story.streak = 0;
+  }
+  if(store.story.streak >= graduationTarget()){
+    store.story.streak = 0;
+    if(lvl===4){
+      if(store.story.subStage > 15){
+        store.story.subStage = store.story.subStage === 60 ? 30 : 15;
+      } else {
+        store.story.level = 5;
+      }
+    } else if(lvl < 5){
+      store.story.level = lvl + 1;
+    }
+    store.story.seedDate = ""; // fresh seed prompt on level-up
+    recordSnapshot();
+    const badged = checkBadges();
+    if(!badged) toast(store.story.level===5 ? "Graduated to Live — nicely done" : "Level up");
+  } else {
+    recordSnapshot();
+    const badged = checkBadges();
+    if(!badged) toast(landed ? "Nice — keep going" : "No worries, that's what the reps are for");
+  }
+  await saveStore();
+  renderStory();
+}
+
+/* ---- live log ---- */
+async function logLive(){
+  const val = document.getElementById("liveNote").value.trim();
+  if(!val) return;
+  store.story.liveLog.unshift({date: todayStr(), note: val});
+  store.story.liveLog = store.story.liveLog.slice(0, 30);
+  const badged = checkBadges();
+  await saveStore();
+  document.getElementById("liveNote").value = "";
+  renderLiveHist();
+  if(!badged) toast("Logged");
+}
+function renderLiveHist(){
+  const host = document.getElementById("liveHist");
+  if(!store.story.liveLog.length){ host.innerHTML = `<div class="empty">No live reps logged yet.</div>`; return; }
+  host.innerHTML = store.story.liveLog.map(e=>`<div class="entry"><div class="d">${e.date}</div>${e.note}</div>`).join("");
+}
+
+function buildSparkline(history){
+  if(history.length < 2){
+    return `<p class="hint" style="margin:0">Keep practicing — your chart fills in once you've got a few days logged.</p>`;
+  }
+  const w=300,h=110,pad=8;
+  const vocabVals = history.map(h=>h.vocabRating);
+  const storyVals = history.map(h=>h.storyRating);
+  const all = vocabVals.concat(storyVals);
+  const min = Math.min(...all), max = Math.max(...all);
+  const range = Math.max(max-min, 20);
+  const x = i => pad + (i/(history.length-1))*(w-pad*2);
+  const y = v => h-pad - ((v-min)/range)*(h-pad*2);
+  const path = vals => vals.map((v,i)=> (i===0?"M":"L") + x(i).toFixed(1) + "," + y(v).toFixed(1)).join(" ");
+  return `
+    <svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" preserveAspectRatio="none">
+      <path d="${path(vocabVals)}" fill="none" stroke="var(--mark)" stroke-width="2"/>
+      <path d="${path(storyVals)}" fill="none" stroke="var(--truth)" stroke-width="2"/>
+    </svg>
+    <div class="chartlegend">
+      <span><i style="background:var(--mark)"></i>Vocabulary</span>
+      <span><i style="background:var(--truth)"></i>Storytelling</span>
+    </div>
+  `;
+}
+
+function renderProgress(){
+  const host = document.getElementById("progressHost");
+
+  // register breakdown
+  const registers = {};
+  allItems().filter(it=>it.type==="word").forEach(it=>{
+    const p = ensureProgress(it);
+    if(p.seen<1) return;
+    const r = it.register || "Everyday educated";
+    if(!registers[r]) registers[r] = {sum:0,count:0};
+    registers[r].sum += p.box; registers[r].count += 1;
+  });
+
+  const badgeGrid = BADGES.map(b=>{
+    const unlocked = store.badges.includes(b.id);
+    return `<div class="badge ${unlocked?"":"locked"}"><div class="bicon">${b.icon}</div><div class="bname">${b.name}</div></div>`;
+  }).join("");
+
+  host.innerHTML = `
+    <div class="ratingcards">
+      <div class="ratingcard"><div class="rn num">${store.vocabRating}</div><div class="rl">Vocabulary rating</div></div>
+      <div class="ratingcard"><div class="rn num">${store.storyRating}</div><div class="rl">Storytelling rating</div></div>
+    </div>
+
+    <div class="sectiontitle">Progress over time</div>
+    <div class="chartwrap">${buildSparkline(store.history)}</div>
+
+    <div class="sectiontitle">Storytelling — by beat</div>
+    ${BEATS.map(b=>{
+      const v = store.beatRatings[b.key];
+      const pct = Math.max(0, Math.min(100, ((v-800)/(1600-800))*100));
+      return `<div class="breakdownrow"><span class="bname">${b.label}</span><div class="btrack"><div class="bfill" style="width:${pct}%"></div></div><span class="bval num">${v}</span></div>`;
+    }).join("")}
+
+    <div class="sectiontitle">Vocabulary — by register</div>
+    ${Object.keys(registers).length ? Object.entries(registers).map(([r,d])=>{
+      const avg = d.sum/d.count;
+      const pct = (avg/5)*100;
+      return `<div class="breakdownrow"><span class="bname">${r}</span><div class="btrack"><div class="bfill" style="width:${pct}%"></div></div><span class="bval num">${avg.toFixed(1)}</span></div>`;
+    }).join("") : `<p class="hint" style="margin:0">Practice a few words to see this fill in.</p>`}
+
+    <div class="sectiontitle">Badges (${store.badges.length}/${BADGES.length})</div>
+    <div class="badgegrid">${badgeGrid}</div>
+  `;
+}
+
 /* ================= TABS ================= */
 document.querySelectorAll(".tabbtn").forEach(btn=>{
   btn.addEventListener("click", ()=>{
@@ -879,6 +1462,8 @@ document.querySelectorAll(".tabbtn").forEach(btn=>{
     btn.classList.add("on");
     document.getElementById(btn.dataset.view).classList.add("on");
     if(btn.dataset.view==="browse") renderBrowse();
+    if(btn.dataset.view==="story") renderStory();
+    if(btn.dataset.view==="progress") renderProgress();
   });
 });
 document.getElementById("searchBox").addEventListener("input", renderBrowse);
