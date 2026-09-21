@@ -415,7 +415,7 @@
 
     <div class="databox">
       <div class="lbl">Upload words</div>
-      <p class="hint">Already have the fields worked out somewhere else — another chat, a spreadsheet, whatever? Upload a JSON file with one word/phrase object, or an array of them, using the same field names as the form above (word, meaning, hook, register, examples, collocations, family, contrast, nearestSynonym, personal, and optionally type: "word" or "phrase"). Unknown fields are ignored; only "word" is required.</p>
+      <p class="hint">Already have the fields worked out somewhere else — another chat, a spreadsheet, whatever? Upload a JSON file with one word/phrase object, or an array of them, using the same field names as the form above (word, meaning, hook, register, examples, collocations, family, contrast, nearestSynonym, personal, and optionally type: "word" or "phrase"). For phrases, you can also add a "scenarios" array of {"setup": "...", "modelAnswer": "..."} pairs so practice drills use a matched real-world example instead of a generic prompt. Unknown fields are ignored; only "word" is required.</p>
       <div class="datarow">
         <button class="btn ghost" id="uploadWordsBtn">Upload words (.json)</button>
         <button class="btn ghost" id="templateBtn">Download template</button>
@@ -452,7 +452,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION = "1.7.0";
+const APP_VERSION = "1.8.0";
 document.getElementById("appVersion").textContent = "v" + APP_VERSION;
 
 /* ================= DATA ================= */
@@ -478,14 +478,37 @@ const BUILTIN_WORDS = [
 ];
 
 const BUILTIN_PHRASES = [
-{id:"p1",word:"Just suppose…",meaning:"Opens imagination — invites a hypothetical without demanding commitment.",hook:"low-pressure hypothetical door-opener",register:"Everyday educated",examples:["Just suppose you disappeared for a month. Where are you going?"],collocations:"category: opening imagination",family:"variants: Imagine for a second… / If that were possible…",contrast:"vs. a direct question ('What would you do?') — this frames it as play, not a real demand for a plan.",personal:"Try it now: \"Just suppose ___, where would your mind go first?\""},
-{id:"p2",word:"What is it about that…?",meaning:"Deepens a topic by asking what specifically appeals or matters, rather than accepting the surface answer.",hook:"finds the feeling under the fact",register:"Everyday educated",examples:["What is it about that kind of freedom that appeals to you?"],collocations:"category: deepening",family:"variants: Why that specifically? / What part matters most?",contrast:"vs. 'Why do you like it?' — this version is harder to answer with a cliché.",personal:"Pick something someone mentioned to you recently and ask yourself: what is it about that, specifically, that got their attention?"},
-{id:"p3",word:"Have you noticed…?",meaning:"Directs attention to a pattern in the other person's own words or energy.",hook:"holds up a small mirror",register:"Everyday educated",examples:["Have you noticed you become much more animated whenever you talk about travel?"],collocations:"category: noticing",family:"variants: There's something in the way you said that… / You light up talking about this.",contrast:"vs. simply complimenting them — noticing invites them to reflect, not just receive praise.",personal:"Next conversation, notice one pattern in how someone talks, and say it back to them gently."},
-{id:"p4",word:"So…?",meaning:"A tiny, open prompt that invites another layer after something emotionally meaningful is said, without supplying your own reaction first.",hook:"the powerful pause",register:"Everyday educated",examples:["She gives an interesting answer. Pause. \"So…?\""],collocations:"category: inviting another layer",family:"—",contrast:"vs. jumping in with advice or a clever line — 'So…?' leaves room instead of filling it.",personal:"Next time someone says something that matters to them, resist responding — just say \"So…?\" and wait."},
-{id:"p5",word:"When you… (calibration)",meaning:"Presuppose circumstances that are already plausible or voluntarily chosen — never feelings, beliefs, or consent.",hook:"presuppose the situation, not the reaction",register:"Everyday educated",examples:["When you're next in Paris…","When you finally take that trip…"],collocations:"category: future framing",family:"contrast pair: avoid 'When you realise I'm right…' or 'When you fall for me…'",contrast:"Good: presupposes circumstance. Bad: presupposes feeling or agreement that hasn't happened.",personal:"Turn a plan someone mentioned into a 'when you…' sentence: \"When you finally ___…\""},
-{id:"p6",word:"What is it about that word…? (hot words)",meaning:"When someone uses an emotionally weighted word (wild, alive, home, free…), stay with their exact word instead of translating it into your own synonym.",hook:"don't translate — stay in their language",register:"Everyday educated",examples:["They say: \"I want life to feel a little more wild.\" You: \"Wild how?\" or \"What does wild look like for you these days?\""],collocations:"category: hot words — free, alive, home, peaceful, wild, safe, exciting, strange, beautiful, intense, romantic, adventure, grounded, chaos, magic, real",family:"—",contrast:"vs. 'So you like adventure?' — that substitutes your word for theirs and closes the door a little.",personal:"Think of the last unusual word someone used about their own life, and write the question you should have asked back."},
-{id:"p7",word:"Okay, paint me the scene. (world-building)",meaning:"Moves a conversation from information into a shared imagined scene, building an 'us' playfully rather than only extracting facts.",hook:"turn a topic into a place you're both standing in",register:"Everyday educated",examples:["Right — tiny basement jazz bar somewhere in Paris, dreadful red wine, rain outside. Are you happy?"],collocations:"category: world-building & flirtation",family:"follow-ups: I can imagine us… / We'd definitely…",contrast:"vs. 'What kind of jazz do you like?' — the informational question collects facts; painting the scene creates a shared moment.",personal:"Take something someone loves and build one full sentence of scene around it: \"Right, we're in ___, and ___.\""},
-{id:"p8",word:"Notice → Hot word → Deepen → Imagine → Share",meaning:"The core conversation sequence: notice what they said, pick up their word, deepen it, imagine together, then share something of your own so it isn't an interview.",hook:"five-step sequence, always end on Share",register:"Everyday educated",examples:["Her: \"I think I just need more adventure.\" You: \"Adventure keeps coming up with you… what actually counts as adventure in your world?… what is it about that feeling you crave?… just suppose you had nothing tying you down for six months — where does your mind go first?… Mine inevitably involves some ancient coastal town and no sensible plan.\""],collocations:"category: core sequence",family:"—",contrast:"Without the final Share step, curiosity can start to feel like an interview.",personal:"Run this sequence once today, out loud, on a real thing someone told you this week."}
+{id:"p1",word:"Just suppose…",meaning:"Opens imagination — invites a hypothetical without demanding commitment.",hook:"low-pressure hypothetical door-opener",register:"Everyday educated",examples:["Just suppose you disappeared for a month. Where are you going?"],collocations:"category: opening imagination",family:"variants: Imagine for a second… / If that were possible…",contrast:"vs. a direct question ('What would you do?') — this frames it as play, not a real demand for a plan.",personal:"Try it now: \"Just suppose ___, where would your mind go first?\"",scenarios:[
+  {setup:"A friend says: “I don't know, work's just been a lot lately.”",modelAnswer:"Just suppose you could disappear for a month right now — where's your mind go first?"},
+  {setup:"Someone mentions: “I've been thinking about switching careers.”",modelAnswer:"Just suppose money wasn't a factor at all — what would you actually do?"}
+]},
+{id:"p2",word:"What is it about that…?",meaning:"Deepens a topic by asking what specifically appeals or matters, rather than accepting the surface answer.",hook:"finds the feeling under the fact",register:"Everyday educated",examples:["What is it about that kind of freedom that appeals to you?"],collocations:"category: deepening",family:"variants: Why that specifically? / What part matters most?",contrast:"vs. 'Why do you like it?' — this version is harder to answer with a cliché.",personal:"Pick something someone mentioned to you recently and ask yourself: what is it about that, specifically, that got their attention?",scenarios:[
+  {setup:"A friend says: “I've been meaning to call my grandmother more.”",modelAnswer:"What is it about calling her, specifically, that you keep putting off — or is it more that you just miss her?"},
+  {setup:"Someone says: “I really want to travel more before I turn 30.”",modelAnswer:"What is it about travelling, specifically, that you're chasing — is it the escape, or something else?"}
+]},
+{id:"p3",word:"Have you noticed…?",meaning:"Directs attention to a pattern in the other person's own words or energy.",hook:"holds up a small mirror",register:"Everyday educated",examples:["Have you noticed you become much more animated whenever you talk about travel?"],collocations:"category: noticing",family:"variants: There's something in the way you said that… / You light up talking about this.",contrast:"vs. simply complimenting them — noticing invites them to reflect, not just receive praise.",personal:"Next conversation, notice one pattern in how someone talks, and say it back to them gently.",scenarios:[
+  {setup:"A friend keeps bringing up how much they loved living abroad.",modelAnswer:"Have you noticed you always light up when you talk about that year abroad?"},
+  {setup:"A colleague mentions their old job for the third time this week.",modelAnswer:"Have you noticed how often you bring up your last job? Sounds like it's still on your mind."}
+]},
+{id:"p4",word:"So…?",meaning:"A tiny, open prompt that invites another layer after something emotionally meaningful is said, without supplying your own reaction first.",hook:"the powerful pause",register:"Everyday educated",examples:["She gives an interesting answer. Pause. \"So…?\""],collocations:"category: inviting another layer",family:"—",contrast:"vs. jumping in with advice or a clever line — 'So…?' leaves room instead of filling it.",personal:"Next time someone says something that matters to them, resist responding — just say \"So…?\" and wait.",scenarios:[
+  {setup:"A friend just told you, quietly: “I don't think I'm happy where I am right now.”",modelAnswer:"…So?"},
+  {setup:"Someone finishes explaining why they finally left a long relationship.",modelAnswer:"…So? How do you feel now that it's actually done?"}
+]},
+{id:"p5",word:"When you… (calibration)",meaning:"Presuppose circumstances that are already plausible or voluntarily chosen — never feelings, beliefs, or consent.",hook:"presuppose the situation, not the reaction",register:"Everyday educated",examples:["When you're next in Paris…","When you finally take that trip…"],collocations:"category: future framing",family:"contrast pair: avoid 'When you realise I'm right…' or 'When you fall for me…'",contrast:"Good: presupposes circumstance. Bad: presupposes feeling or agreement that hasn't happened.",personal:"Turn a plan someone mentioned into a 'when you…' sentence: \"When you finally ___…\"",scenarios:[
+  {setup:"A friend says: “I'm thinking about finally learning to surf next summer.”",modelAnswer:"When you finally learn to surf, I'm coming to watch you fall off the board at least once."},
+  {setup:"Someone mentions: “I keep meaning to get back into painting.”",modelAnswer:"When you finally pick it back up, you have to show me the first thing you make."}
+]},
+{id:"p6",word:"What is it about that word…? (hot words)",meaning:"When someone uses an emotionally weighted word (wild, alive, home, free…), stay with their exact word instead of translating it into your own synonym.",hook:"don't translate — stay in their language",register:"Everyday educated",examples:["They say: \"I want life to feel a little more wild.\" You: \"Wild how?\" or \"What does wild look like for you these days?\""],collocations:"category: hot words — free, alive, home, peaceful, wild, safe, exciting, strange, beautiful, intense, romantic, adventure, grounded, chaos, magic, real",family:"—",contrast:"vs. 'So you like adventure?' — that substitutes your word for theirs and closes the door a little.",personal:"Think of the last unusual word someone used about their own life, and write the question you should have asked back.",scenarios:[
+  {setup:"A friend says: “I want life to feel a bit wilder.”",modelAnswer:"Wilder how? What would that actually look like day to day?"},
+  {setup:"Someone says: “I just want things to feel more real.”",modelAnswer:"Real in what way — like, less performative, or something else?"}
+]},
+{id:"p7",word:"Okay, paint me the scene. (world-building)",meaning:"Moves a conversation from information into a shared imagined scene, building an 'us' playfully rather than only extracting facts.",hook:"turn a topic into a place you're both standing in",register:"Everyday educated",examples:["Right — tiny basement jazz bar somewhere in Paris, dreadful red wine, rain outside. Are you happy?"],collocations:"category: world-building & flirtation",family:"follow-ups: I can imagine us… / We'd definitely…",contrast:"vs. 'What kind of jazz do you like?' — the informational question collects facts; painting the scene creates a shared moment.",personal:"Take something someone loves and build one full sentence of scene around it: \"Right, we're in ___, and ___.\"",scenarios:[
+  {setup:"A friend mentions they love jazz.",modelAnswer:"Okay — tiny basement bar, bad red wine, rain outside. Are you happy?"},
+  {setup:"Someone says their perfect weekend is just doing nothing.",modelAnswer:"Paint me the scene — where are you, what time do you wake up, what's the first thing you do?"}
+]},
+{id:"p8",word:"Notice → Hot word → Deepen → Imagine → Share",meaning:"The core conversation sequence: notice what they said, pick up their word, deepen it, imagine together, then share something of your own so it isn't an interview.",hook:"five-step sequence, always end on Share",register:"Everyday educated",examples:["Her: \"I think I just need more adventure.\" You: \"Adventure keeps coming up with you… what actually counts as adventure in your world?… what is it about that feeling you crave?… just suppose you had nothing tying you down for six months — where does your mind go first?… Mine inevitably involves some ancient coastal town and no sensible plan.\""],collocations:"category: core sequence",family:"—",contrast:"Without the final Share step, curiosity can start to feel like an interview.",personal:"Run this sequence once today, out loud, on a real thing someone told you this week.",scenarios:[
+  {setup:"A friend says: “I think I just need more adventure.”",modelAnswer:"Adventure keeps coming up with you — what actually counts as adventure in your world? What is it about that feeling you're craving? Just suppose you had six months with nothing tying you down — where's your mind go first? Mine goes straight to some coastal town with no plan at all."}
+]}
 ];
 
 /* ================= STORAGE: Claude host API, else IndexedDB, else localStorage, else memory ================= */
@@ -630,7 +653,12 @@ function buildCue(item, prog){
     }
   } else {
     forms.push({kind:"Recall the frame", prompt:`Retrieval scenario: ${item.examples[0]||item.meaning}. What's the frame/phrase you'd reach for?`});
-    forms.push({kind:"Personal use", prompt:`<em style="color:var(--dim);font-style:italic">${randomScenario()}</em><br><br>${item.personal || `Respond to that using this frame, out loud.`}`});
+    if(item.scenarios && item.scenarios.length){
+      const sc = item.scenarios[Math.floor(Math.random()*item.scenarios.length)];
+      forms.push({kind:"Personal use", prompt:`<em style="color:var(--dim);font-style:italic">${sc.setup}</em><br><br>Respond to that, out loud, using this frame.`, modelAnswer: sc.modelAnswer});
+    } else {
+      forms.push({kind:"Personal use", prompt:`<em style="color:var(--dim);font-style:italic">${randomScenario()}</em><br><br>${item.personal || `Respond to that using this frame, out loud.`}`});
+    }
   }
   let idx = Math.floor(Math.random()*forms.length);
   if(forms.length>1 && forms[idx].kind === prog.lastCueKind){
@@ -780,6 +808,7 @@ function renderPractice(){
       </div>
       <div class="qcard" id="revealBox">
         ${cue.kind==="Distinguish" && item.nearestSynonym ? `<div class="answerlead"><span class="lbl2">Answer</span>The nearest synonym is <strong>${item.nearestSynonym}</strong>. ${item.contrast}</div>` : ""}
+        ${cue.kind==="Personal use" && cue.modelAnswer ? `<div class="answerlead"><span class="lbl2">One way you might respond</span>${cue.modelAnswer}</div>` : ""}
         <div class="headword">${item.word}</div>
         <dl>
           <dt>Meaning</dt><dd>${item.meaning}</dd>
@@ -1307,7 +1336,10 @@ document.getElementById("templateBtn").addEventListener("click", ()=>{
       collocations: "category: world-building",
       family: "follow-ups: I can imagine us… / We'd definitely…",
       contrast: "vs. a plain follow-up question, which collects facts instead of building a scene.",
-      personal: "Try it now on something someone told you recently."
+      personal: "Try it now on something someone told you recently.",
+      scenarios: [
+        {setup: "A friend mentions they've always loved old bookshops.", modelAnswer: "Okay — dusty shelves, one creaky floorboard, you've lost track of time. What are you looking for?"}
+      ]
     }
   ]);
   toast("Template downloaded");
@@ -1331,7 +1363,8 @@ function normalizeUploadedItem(raw){
     family: (raw.family || "").toString().trim(),
     contrast: (raw.contrast || "").toString().trim(),
     nearestSynonym: (raw.nearestSynonym || "").toString().trim(),
-    personal: (raw.personal || "").toString().trim()
+    personal: (raw.personal || "").toString().trim(),
+    scenarios: Array.isArray(raw.scenarios) ? raw.scenarios.filter(s=>s && s.setup && s.modelAnswer).map(s=>({setup:String(s.setup), modelAnswer:String(s.modelAnswer)})) : undefined
   };
 }
 
