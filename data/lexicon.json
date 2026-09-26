@@ -1,6 +1,6 @@
 {
-  "exportedAt": "2026-09-26T01:29:00.407Z",
-  "appVersion": "1.9.0",
+  "exportedAt": "2026-09-26T16:24:09.313Z",
+  "appVersion": "2.2.0",
   "customWords": [
     {
       "id": "c1790026920050i4dh1",
@@ -139,7 +139,29 @@
       "personal": "The discussion became increasingly polemical when ___.,I found the author's treatment of ___ unnecessarily polemical because ___.,Rather than offering a neutral analysis of ___, the speaker adopted a polemical tone and ___."
     }
   ],
-  "customPhrases": [],
+  "customPhrases": [
+    {
+      "id": "c17904398493111r0ve",
+      "word": "If I were to…",
+      "meaning": "Introduces a hypothetical action or idea in a softened, exploratory way.",
+      "hook": "float the possibility without committing to it",
+      "register": "Everyday educated",
+      "examples": [
+        "If I were to disappear for a month, where do you think I'd end up?"
+      ],
+      "collocations": "category: hypothetical / possibility",
+      "family": "follow-ups: Just suppose… / Let's say for the sake of argument… / Imagine for a second…",
+      "contrast": "vs. 'I will…', which states an intention rather than opening a hypothetical space.",
+      "nearestSynonym": "",
+      "personal": "Use it to introduce a playful or meaningful hypothetical without making it sound like a plan.",
+      "scenarios": [
+        {
+          "setup": "Someone says they badly need a break from routine.",
+          "modelAnswer": "If I were to give you a completely free month tomorrow, where would you go first?"
+        }
+      ]
+    }
+  ],
   "progress": {
     "w1": {
       "box": 0,
@@ -304,7 +326,8 @@
     "c1790350124462w0f9f": {
       "box": 0,
       "due": "2026-09-25",
-      "seen": 0
+      "seen": 0,
+      "lastCueKind": "Personal use"
     },
     "c179035012960095yg7": {
       "box": 0,
@@ -315,9 +338,46 @@
       "box": 0,
       "due": "2026-09-25",
       "seen": 0
+    },
+    "c17904398493111r0ve": {
+      "box": 0,
+      "due": "2026-09-26",
+      "seen": 0
     }
   },
   "answerLog": [
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
     {
       "date": "2026-09-21",
       "word": "Perfunctory",
