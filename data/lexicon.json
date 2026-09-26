@@ -1,6 +1,6 @@
 {
-  "exportedAt": "2026-09-26T02:14:31.260Z",
-  "appVersion": "2.2.0",
+  "exportedAt": "2026-09-26T01:29:00.407Z",
+  "appVersion": "1.9.0",
   "customWords": [
     {
       "id": "c1790026920050i4dh1",
@@ -201,8 +201,7 @@
     "w12": {
       "box": 0,
       "due": "2026-09-21",
-      "seen": 0,
-      "lastCueKind": "Personal use"
+      "seen": 0
     },
     "w13": {
       "box": 0,
@@ -319,22 +318,6 @@
     }
   },
   "answerLog": [
-    {
-      "date": "2026-09-21",
-      "word": "Perfunctory",
-      "type": "word",
-      "cueKind": "Personal use",
-      "rating": "missed",
-      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
-    },
-    {
-      "date": "2026-09-21",
-      "word": "Equanimity",
-      "type": "word",
-      "cueKind": "Personal use",
-      "rating": "shaky",
-      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
-    },
     {
       "date": "2026-09-21",
       "word": "Perfunctory",
