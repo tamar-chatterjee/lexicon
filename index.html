@@ -222,6 +222,33 @@
   ::selection{background:rgba(226,74,43,.35)}
   .hint code{background:var(--panel2);border:1px solid var(--line);padding:1px 5px;font-family:var(--mono);font-size:.9em;color:var(--mark)}
 
+  /* --- Today --- */
+  .todaystepper{display:flex;gap:8px;margin-bottom:22px}
+  .todaystepper .step{
+    flex:1;border:1px solid var(--line);padding:12px 10px;text-align:center;background:var(--panel);
+  }
+  .todaystepper .step.current{border-color:var(--truth);background:var(--panel2)}
+  .todaystepper .step.done{border-color:var(--good)}
+  .todaystepper .step .sn{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--dimmer);text-transform:uppercase}
+  .todaystepper .step.current .sn{color:var(--truth)}
+  .todaystepper .step.done .sn{color:var(--good)}
+  .todaystepper .step .sl{font-size:12.5px;color:var(--ink);margin-top:3px}
+
+  .todayintro{background:var(--panel);border:1px solid var(--line);padding:22px 20px;text-align:center}
+  .todayintro .big{font-family:var(--mono);font-size:16px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);margin-bottom:10px}
+  .todayintro p{color:var(--dim);font-size:14px;line-height:1.6;margin:0 0 18px}
+  .todayintro .formula{font-family:var(--mono);font-size:11px;color:var(--dimmer);letter-spacing:.06em;margin-bottom:18px}
+  .todayintro .formula b{color:var(--mark)}
+
+  .todaydone{background:var(--panel);border:1px solid var(--good);border-left-width:3px;padding:22px 20px}
+  .todaydone .big{font-family:var(--mono);font-size:16px;letter-spacing:.04em;text-transform:uppercase;color:var(--good);margin-bottom:12px}
+  .todaydone .stat-inline{font-family:var(--mono);font-size:13px;color:var(--ink);margin-bottom:6px}
+  .todaydone .stat-inline b{color:var(--gold)}
+
+  .stepdonepanel{text-align:center;padding:40px 16px;color:var(--dim)}
+  .stepdonepanel .big{font-family:var(--mono);font-size:16px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);margin-bottom:10px}
+  .stepdonepanel .btn{margin-top:18px}
+
   /* --- Story reps --- */
   .levelrow{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
   .levelrow .lname{font-family:var(--mono);font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--truth)}
@@ -242,6 +269,12 @@
     color:var(--mark);border:1px solid var(--line);padding:3px 9px;margin:0 4px 4px 0;
   }
   .stage .prompt.storyprompt{font-size:17px}
+  .senserow{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .sensechip{
+    font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    border:1px solid var(--line);color:var(--mark);padding:3px 9px;
+  }
+  .senselabel{font-size:11.5px;color:var(--dimmer);margin-left:2px}
 
   .rec-row{display:flex;align-items:center;gap:14px;margin-top:18px}
   .rec-btn{
@@ -307,7 +340,8 @@
 </header>
 
 <nav>
-  <button class="tabbtn on" data-view="practice">Practice</button>
+  <button class="tabbtn on" data-view="today">Today</button>
+  <button class="tabbtn" data-view="practice">Practice</button>
   <button class="tabbtn" data-view="browse">Lexicon</button>
   <button class="tabbtn" data-view="add">Add</button>
   <button class="tabbtn" data-view="story">Stories</button>
@@ -316,7 +350,11 @@
 
 <main>
 
-  <section id="practice" class="screen on">
+  <section id="today" class="screen on">
+    <div id="todayHost"></div>
+  </section>
+
+  <section id="practice" class="screen">
     <div class="levelrow">
       <span class="lname" id="rankName" style="color:var(--mark)">—</span>
       <span class="lnum num" id="rankRating"></span>
@@ -437,6 +475,22 @@
       <div class="datarow">
         <button class="btn ghost" id="syncRepoBtn">Sync from repo now</button>
       </div>
+
+      <p class="hint" style="margin-top:16px">Automatic write-back: connect a GitHub token (scoped to just this repo) and every word or phrase you add here commits straight to <code>data/lexicon.json</code> — no manual export/commit round-trip. The token stays only in this browser.</p>
+      <div id="ghStatus" class="hint" style="margin:6px 0 10px"></div>
+      <form class="addform" id="ghForm" style="margin:0">
+        <label for="gh_repo">Repo (owner/name)</label>
+        <input type="text" id="gh_repo" placeholder="yourusername/sancti-speaks">
+        <label for="gh_branch">Branch</label>
+        <input type="text" id="gh_branch" placeholder="main" value="main">
+        <label for="gh_token">Personal access token</label>
+        <input type="password" id="gh_token" placeholder="github_pat_…">
+        <div class="submitrow">
+          <button type="submit" class="btn primary">Connect</button>
+          <button type="button" class="btn ghost" id="ghPushNowBtn">Push now</button>
+          <button type="button" class="btn ghost" id="ghDisconnectBtn">Disconnect</button>
+        </div>
+      </form>
     </div>
   </section>
 
@@ -458,7 +512,7 @@
 
 <script>
 /* ================= VERSION ================= */
-const APP_VERSION = "1.9.0";
+const APP_VERSION = "2.2.0";
 document.getElementById("appVersion").textContent = "v" + APP_VERSION;
 
 /* ================= DATA ================= */
@@ -574,7 +628,7 @@ var store = {progress:{}, streak:0, lastPracticeDate:null, customWords:[], custo
   story:{level:0, subStage:60, streak:0, seedText:"", seedDate:"", liveLog:[]},
   vocabRating:1000, storyRating:1000,
   beatRatings:{situation:1000, desire:1000, conflict:1000, change:1000, result:1000},
-  badges:[], history:[], answerLog:[]};
+  badges:[], history:[], answerLog:[], today:{lastCompletedDate:null}};
 async function loadStore(){
   var s = await sGet('ss:store');
   if(s) store = Object.assign(store, s);
@@ -785,6 +839,13 @@ function renderPractice(){
     posEl.textContent = "";
     const gain = sessionGain(), goal = sessionGoal();
     const hitGoal = gain >= goal;
+    if(todayFlow.active && todayFlow.step===1){
+      todayFlow.step = 2;
+      host.innerHTML = `<div class="stepdonepanel"><div class="big">Step 1 done</div>${session.queue.length} item${session.queue.length===1?"":"s"}, rating ${gain>=0?"+":""}${gain}.<br>Next: one story rep.<br><button class="btn primary" id="toStoryBtn">Continue to your story rep →</button></div>`;
+      document.getElementById("toStoryBtn").onclick = ()=> switchTab("story");
+      markPracticedToday();
+      return;
+    }
     host.innerHTML = `<div class="donepanel"><div class="big">${hitGoal ? "🎯 Hit today's 1% target" : "Nicely done"}</div>You worked through ${session.queue.length} item${session.queue.length===1?"":"s"} out loud.<br>Rating ${gain>=0?"+":""}${gain} this session${hitGoal?"":` (target was +${goal})`}.<br><button class="btn ghost" id="againBtn">Practice more</button></div>`;
     document.getElementById("againBtn").onclick = drillAnyway;
     markPracticedToday();
@@ -1122,6 +1183,7 @@ document.getElementById("addForm").addEventListener("submit", async (e)=>{
     await saveStore();
     toast(`Saved changes to “${word}”`);
     exitEditMode();
+    if(ghConfig) pushLexiconToRepo(true);
   } else {
     const id = "c" + Date.now();
     const newItem = Object.assign({id}, fields);
@@ -1131,7 +1193,8 @@ document.getElementById("addForm").addEventListener("submit", async (e)=>{
     const badged = checkBadges();
     await saveStore();
     document.getElementById("addForm").reset();
-    if(!badged) toast(`Added “${word}” — enters practice tomorrow`);
+    if(!badged) toast(`Added “${word}”${ghConfig ? " — pushing to repo…" : " — enters practice tomorrow"}`);
+    if(ghConfig) pushLexiconToRepo(true);
   }
   renderStats();
 });
@@ -1158,10 +1221,7 @@ function enterEditMode(id, type){
   document.getElementById("submitBtn").textContent = "Save changes";
   document.getElementById("cancelEditBtn").style.display = "";
   document.getElementById("advancedFields").open = true;
-  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("on"));
-  document.querySelector('.tabbtn[data-view="add"]').classList.add("on");
-  document.querySelectorAll(".screen").forEach(v=>v.classList.remove("on"));
-  document.getElementById("add").classList.add("on");
+  switchTab("add");
   document.getElementById("f_word").scrollIntoView({behavior:"smooth", block:"start"});
 }
 function exitEditMode(){
@@ -1329,6 +1389,134 @@ async function syncFromRepoFile(silent){
 }
 document.getElementById("syncRepoBtn")?.addEventListener("click", ()=> syncFromRepoFile(false));
 
+/* ================= GITHUB WRITE-BACK (optional, token-based) ================= */
+let ghConfig = null; // {repo, branch, token} — kept out of `store` so it never lands in exports
+
+async function loadGhConfig(){
+  ghConfig = await sGet("ss:github");
+}
+async function saveGhConfig(cfg){
+  ghConfig = cfg;
+  await sSet("ss:github", cfg);
+}
+async function clearGhConfig(){
+  ghConfig = null;
+  await sSet("ss:github", null);
+}
+
+function b64EncodeUnicode(str){
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function b64DecodeUnicode(str){
+  return decodeURIComponent(escape(atob(str)));
+}
+
+function renderGhStatus(){
+  const el = document.getElementById("ghStatus");
+  if(!el) return;
+  if(ghConfig && ghConfig.repo && ghConfig.token){
+    el.textContent = `Connected — pushing to ${ghConfig.repo} (${ghConfig.branch||"main"})`;
+    el.style.color = "var(--good)";
+    document.getElementById("gh_repo").value = ghConfig.repo;
+    document.getElementById("gh_branch").value = ghConfig.branch || "main";
+  } else {
+    el.textContent = "Not connected — new words save locally only until you connect a token.";
+    el.style.color = "var(--dimmer)";
+  }
+}
+
+async function ghApiRequest(path, options){
+  const res = await fetch(`https://api.github.com/repos/${ghConfig.repo}/contents/${path}`, {
+    ...options,
+    headers: {
+      "Authorization": `Bearer ${ghConfig.token}`,
+      "Accept": "application/vnd.github+json",
+      ...(options && options.headers ? options.headers : {})
+    }
+  });
+  return res;
+}
+
+async function pushLexiconToRepo(silent){
+  if(!ghConfig || !ghConfig.repo || !ghConfig.token){
+    if(!silent) toast("Connect a GitHub token first — see the form below");
+    return false;
+  }
+  const path = "data/lexicon.json";
+  const payload = {
+    exportedAt: new Date().toISOString(),
+    appVersion: APP_VERSION,
+    customWords: store.customWords,
+    customPhrases: store.customPhrases,
+    progress: store.progress,
+    answerLog: store.answerLog
+  };
+  const content = b64EncodeUnicode(JSON.stringify(payload, null, 2));
+
+  try{
+    // fetch current sha, if the file already exists
+    let sha = null;
+    const getRes = await ghApiRequest(`${path}?ref=${ghConfig.branch||"main"}`, {method:"GET"});
+    if(getRes.status === 200){
+      const cur = await getRes.json();
+      sha = cur.sha;
+    } else if(getRes.status !== 404){
+      if(getRes.status === 401) throw new Error("bad-token");
+      throw new Error("get-failed");
+    }
+
+    const putBody = {
+      message: `Update lexicon via Speak app (${todayStr()})`,
+      content,
+      branch: ghConfig.branch || "main"
+    };
+    if(sha) putBody.sha = sha;
+
+    let putRes = await ghApiRequest(path, {method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(putBody)});
+
+    if(putRes.status === 409){
+      // someone else committed in between — refetch sha once and retry
+      const retryGet = await ghApiRequest(`${path}?ref=${ghConfig.branch||"main"}`, {method:"GET"});
+      if(retryGet.status === 200){
+        const cur2 = await retryGet.json();
+        putBody.sha = cur2.sha;
+        putRes = await ghApiRequest(path, {method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify(putBody)});
+      }
+    }
+
+    if(putRes.status === 401) throw new Error("bad-token");
+    if(!putRes.ok) throw new Error("put-failed");
+
+    if(!silent) toast("Pushed to the repo");
+    return true;
+  }catch(err){
+    if(err.message === "bad-token") toast("GitHub rejected that token — check it's valid and scoped to this repo");
+    else if(!silent) toast("Couldn't push to the repo — check the repo name, branch, and token");
+    return false;
+  }
+}
+
+document.getElementById("ghForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const repo = document.getElementById("gh_repo").value.trim().replace(/^\/|\/$/g,"");
+  const branch = document.getElementById("gh_branch").value.trim() || "main";
+  const token = document.getElementById("gh_token").value.trim();
+  if(!repo || !token){ toast("Need at least the repo and a token"); return; }
+  await saveGhConfig({repo, branch, token});
+  document.getElementById("gh_token").value = "";
+  renderGhStatus();
+  const ok = await pushLexiconToRepo(false);
+  if(ok) toast("Connected and pushed successfully");
+});
+document.getElementById("ghPushNowBtn").addEventListener("click", ()=> pushLexiconToRepo(false));
+document.getElementById("ghDisconnectBtn").addEventListener("click", async ()=>{
+  await clearGhConfig();
+  document.getElementById("gh_repo").value = "";
+  document.getElementById("gh_token").value = "";
+  renderGhStatus();
+  toast("Disconnected — new words now save locally only");
+});
+
 /* ================= UPLOAD WORDS (simple JSON, one item or many) ================= */
 function downloadJSON(filename, obj){
   const blob = new Blob([JSON.stringify(obj, null, 2)], {type:"application/json"});
@@ -1420,8 +1608,9 @@ document.getElementById("uploadWordsFile").addEventListener("change", async (e)=
     await saveStore();
     renderStats();
     if(!badged){
-      toast(added ? `Added ${added} word${added===1?"":"s"}${skipped?`, skipped ${skipped}`:""}` : "Nothing usable in that file — needs at least a \"word\" field");
+      toast(added ? `Added ${added} word${added===1?"":"s"}${skipped?`, skipped ${skipped}`:""}${ghConfig?" — pushing to repo…":""}` : "Nothing usable in that file — needs at least a \"word\" field");
     }
+    if(added && ghConfig) pushLexiconToRepo(true);
   }catch(err){
     toast("Couldn't read that file — check it's valid JSON");
   }
@@ -1430,12 +1619,13 @@ document.getElementById("uploadWordsFile").addEventListener("change", async (e)=
 
 /* ================= STORY REPS ================= */
 const BEATS = [
-  {key:"situation", label:"Situation", tip:"Where are we, what's the ordinary starting point?"},
+  {key:"situation", label:"Situation", tip:"Where are we, what's the ordinary starting point? Ground it in one concrete sense — what did you see, hear, or feel — before naming how it felt.", senses:true},
   {key:"desire", label:"Desire", tip:"What did you (or someone in it) want, right then?"},
   {key:"conflict", label:"Conflict", tip:"What got in the way?"},
-  {key:"change", label:"Change", tip:"What shifted — the turn?"},
+  {key:"change", label:"Change", tip:"What shifted — the turn? Put us in the room: what did that exact moment look or sound like?", senses:true},
   {key:"result", label:"Result", tip:"How did it land — the mic-drop?"}
 ];
+const SENSES = ["Sight","Sound","Touch","Smell","Taste"];
 const LEVEL_META = [
   {name:"Notice", desc:"Spot the beats in a story that's already told. No output yet."},
   {name:"Isolate", desc:"One beat at a time, from something real from today."},
@@ -1462,12 +1652,12 @@ const MUNDANE_SEEDS = [
   "You had an argument with customer service."
 ];
 const MODEL_STORIES = [
-  {beats:["I was the last one left in the office on a Friday.","I just wanted to finish one email and leave.","The wifi cut out mid-send, and the draft vanished.","Instead of rewriting it, I called the person instead.","Turned out a two-minute call did more than the email ever would have."]},
-  {beats:["I was queuing for coffee, already late.","I wanted to grab it and go, no conversation.","The barista recognised me from years ago and froze mid-order.","We ended up talking for five minutes about where life had taken us.","I left twenty minutes late and didn't mind at all."]},
-  {beats:["I'd promised to cook dinner for six people.","I wanted it to look effortless, obviously.","I realised at 6pm I'd forgotten to defrost the main ingredient.","I improvised an entirely different dish from what was in the fridge.","Everyone said it was the best version I'd ever made."]},
-  {beats:["I was giving a talk to a room of strangers.","I wanted to open with something sharp and memorable.","My opening line landed to total silence.","I dropped the script and just told them what actually happened that morning instead.","That's the bit people came up to talk about afterward."]},
-  {beats:["I was on hold with an airline for the third time that day.","I just wanted my flight rebooked without another argument.","The agent put me on hold, then the call dropped entirely.","I called back and, out of pure exhaustion, just laughed instead of complaining.","The next agent rebooked me in ninety seconds, upgraded."]},
-  {beats:["I was walking into a first date already nervous.","I wanted to seem completely unbothered.","I tripped on the doormat walking in.","Instead of pretending it didn't happen, I just owned it out loud.","It became the story we still tell people about how we met."]}
+  {beats:["The office had gone quiet except for the hum of the aircon — I was the last one left, on a Friday.","I just wanted to finish one email and leave.","The wifi cut out mid-send, that little spinning wheel just froze, and the draft vanished.","Instead of rewriting it, I picked up the phone and just called the person instead.","Turned out a two-minute call did more than the email ever would have."]},
+  {beats:["I was queuing for coffee, already late, the smell of burnt espresso everywhere.","I wanted to grab it and go, no conversation.","The barista looked up, recognised me from years ago, and froze mid-order.","We ended up talking for five minutes about where life had taken us.","I left twenty minutes late and didn't mind at all."]},
+  {beats:["I'd promised to cook dinner for six people — the kitchen already smelled like garlic and rosemary.","I wanted it to look effortless, obviously.","I opened the freezer at 6pm and realised I'd forgotten to defrost the main ingredient.","I improvised an entirely different dish from what was in the fridge.","Everyone said it was the best version I'd ever made."]},
+  {beats:["I was standing under hot stage lights, facing a room full of strangers gone silent.","I wanted to open with something sharp and memorable.","My opening line landed to total silence — you could hear someone's chair creak.","I dropped the script and just told them what actually happened that morning instead.","That's the bit people came up to talk about afterward."]},
+  {beats:["I was on hold with an airline for the third time that day, that same tinny hold music looping.","I just wanted my flight rebooked without another argument.","The agent put me on hold, then the call dropped entirely, dead silence.","I called back and, out of pure exhaustion, just laughed instead of complaining.","The next agent rebooked me in ninety seconds, upgraded."]},
+  {beats:["I was walking up to a first date already nervous, palms actually sweating.","I wanted to seem completely unbothered.","I tripped on the doormat walking in, loud enough that the whole restaurant heard it.","Instead of pretending it didn't happen, I just owned it out loud.","It became the story we still tell people about how we met."]}
 ];
 
 function storyLevel(){ return store.story.level; }
@@ -1516,6 +1706,7 @@ async function renderStory(){
     const story = MODEL_STORIES[Math.floor(Math.random()*MODEL_STORIES.length)];
     host.innerHTML = `
       <p class="hint" style="margin-bottom:14px">${LEVEL_META[0].desc}</p>
+      <p class="hint" style="margin-bottom:14px">Watch the <strong style="color:var(--ink)">Situation</strong> and <strong style="color:var(--ink)">Change</strong> beats especially — the good ones ground you in something you can see, hear or feel before naming any emotion. That's what makes a story easy to picture instead of just easy to summarise.</p>
       <div class="modelstory" id="modelStory">
         ${story.beats.map((b,i)=>`<div class="beatline"><span class="tag">${BEATS[i].label}</span>${b}</div>`).join("")}
       </div>
@@ -1553,17 +1744,22 @@ async function renderStory(){
 
   // levels 1-4 share the seed + record + playback + rate shell
   let beatPrompt = "";
+  let showSenses = false;
   if(lvl===1){
     currentBeatIdx = Math.floor(Math.random()*5);
     beatPrompt = `Just the <span class="focus">${BEATS[currentBeatIdx].label}</span> — ${BEATS[currentBeatIdx].tip}`;
+    showSenses = !!BEATS[currentBeatIdx].senses;
   } else if(lvl===2){
     currentBeatIdx = Math.floor(Math.random()*4);
     currentBeatIdx2 = currentBeatIdx+1;
     beatPrompt = `<span class="focus">${BEATS[currentBeatIdx].label} → ${BEATS[currentBeatIdx2].label}</span> — one take, both beats.`;
+    showSenses = !!(BEATS[currentBeatIdx].senses || BEATS[currentBeatIdx2].senses);
   } else if(lvl===3){
     beatPrompt = `All five beats — Situation, Desire, Conflict, Change, Result. No clock.`;
+    showSenses = true;
   } else if(lvl===4){
     beatPrompt = `All five beats — against the clock.`;
+    showSenses = true;
   }
 
   host.innerHTML = `
@@ -1571,6 +1767,7 @@ async function renderStory(){
     <div class="stage">
       <div class="kicker"><span>${LEVEL_META[lvl].name}</span><em>${store.story.seedDate===todayStr() ? "today's seed" : ""}</em></div>
       <div class="prompt storyprompt">${store.story.seedText ? `<em style="color:var(--dim);font-style:italic">${store.story.seedText}</em><br><br>` : ""}${beatPrompt}</div>
+      ${showSenses ? `<div class="senserow">${SENSES.map(s=>`<span class="sensechip">${s}</span>`).join("")}<span class="senselabel">ground it in one of these</span></div>` : ""}
       ${lvl===4 ? `<div class="countdown" id="countdownDisp">${store.story.subStage}s</div>` : ""}
       <div class="rec-row">
         <button class="rec-btn" id="recBtn"><span class="dot"></span><span id="recLabel">Record</span></button>
@@ -1712,6 +1909,11 @@ async function rateStory(landed){
     if(!badged) toast(landed ? "Nice — keep going" : "No worries, that's what the reps are for");
   }
   await saveStore();
+  if(todayFlow.active && todayFlow.step===2){
+    await markTodayFullyDone();
+    switchTab("today");
+    return;
+  }
   renderStory();
 }
 
@@ -1804,17 +2006,93 @@ function renderProgress(){
   `;
 }
 
+/* ================= TODAY ================= */
+let todayFlow = {active:false, step:1};
+
+function renderToday(){
+  const host = document.getElementById("todayHost");
+  const doneToday = store.today.lastCompletedDate === todayStr();
+
+  if(doneToday){
+    host.innerHTML = `
+      <ul class="todaystepper" style="list-style:none;padding:0">
+        <li class="step done"><div class="sn">Step 1</div><div class="sl">Warm-up recall</div></li>
+        <li class="step done"><div class="sn">Step 2</div><div class="sl">Story rep</div></li>
+        <li class="step done"><div class="sn">Step 3</div><div class="sl">Done</div></li>
+      </ul>
+      <div class="todaydone">
+        <div class="big">Today's session — done</div>
+        <div class="stat-inline">Streak: <b>${store.streak}</b> day${store.streak===1?"":"s"}</div>
+        <div class="stat-inline">Vocabulary rating: <b>${store.vocabRating}</b></div>
+        <div class="stat-inline">Story level: <b>${LEVEL_META[store.story.level].name}</b></div>
+        <p class="hint" style="margin-top:14px;margin-bottom:0">Come back tomorrow for the next one — or use Practice/Stories directly if you want extra reps today.</p>
+      </div>
+    `;
+    return;
+  }
+
+  const due = dueItems();
+  const cappedCount = Math.min(due.length, 12);
+  const step1 = todayFlow.active && todayFlow.step===1;
+  const step2 = todayFlow.active && todayFlow.step===2;
+  host.innerHTML = `
+    <ul class="todaystepper" style="list-style:none;padding:0">
+      <li class="step ${step1?"current":""}"><div class="sn">Step 1</div><div class="sl">Warm-up recall</div></li>
+      <li class="step ${step2?"current":""}"><div class="sn">Step 2</div><div class="sl">Story rep</div></li>
+      <li class="step"><div class="sn">Step 3</div><div class="sl">Done</div></li>
+    </ul>
+    <div class="todayintro">
+      <div class="big">Today's session</div>
+      <p>${cappedCount ? `${cappedCount} word${cappedCount===1?"":"s"}/phrases, weakest first, then one story rep.` : `Nothing urgently due — straight to one quick story rep to keep the streak alive.`}</p>
+      <div class="formula"><b>Warm-up</b> → <b>Story rep</b> → <b>Done</b> — same order, every day. Miss a day and the streak resets, but nothing you've learned gets punished — it just waits for you.</div>
+      <button class="btn primary block" id="startTodayBtn">${todayFlow.active ? "Continue today's session" : "Start today's session"}</button>
+    </div>
+  `;
+  document.getElementById("startTodayBtn").onclick = ()=>{
+    if(todayFlow.active && todayFlow.step===2){ switchTab("story"); }
+    else if(todayFlow.active && todayFlow.step===1){ switchTab("practice"); }
+    else { startTodaySession(); }
+  };
+}
+
+function startTodaySession(){
+  const due = dueItems().slice().sort((a,b)=> ensureProgress(a).box - ensureProgress(b).box);
+  session.queue = due.slice(0, 12);
+  session.pos = 0;
+  sessionStartRating = store.vocabRating;
+  sessionCombo = 0;
+  todayFlow.active = true;
+  todayFlow.step = session.queue.length ? 1 : 2;
+  if(session.queue.length){
+    switchTab("practice");
+    renderPractice();
+  } else {
+    switchTab("story");
+    renderStory();
+  }
+}
+
+async function markTodayFullyDone(){
+  store.today.lastCompletedDate = todayStr();
+  todayFlow.active = false;
+  todayFlow.step = 1;
+  await saveStore();
+}
+
 /* ================= TABS ================= */
+function switchTab(view){
+  document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("on"));
+  document.querySelectorAll(".screen").forEach(v=>v.classList.remove("on"));
+  const btn = document.querySelector(`.tabbtn[data-view="${view}"]`);
+  if(btn) btn.classList.add("on");
+  document.getElementById(view).classList.add("on");
+  if(view==="today") renderToday();
+  if(view==="browse") renderBrowse();
+  if(view==="story") renderStory();
+  if(view==="progress") renderProgress();
+}
 document.querySelectorAll(".tabbtn").forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    document.querySelectorAll(".tabbtn").forEach(b=>b.classList.remove("on"));
-    document.querySelectorAll(".screen").forEach(v=>v.classList.remove("on"));
-    btn.classList.add("on");
-    document.getElementById(btn.dataset.view).classList.add("on");
-    if(btn.dataset.view==="browse") renderBrowse();
-    if(btn.dataset.view==="story") renderStory();
-    if(btn.dataset.view==="progress") renderProgress();
-  });
+  btn.addEventListener("click", ()=> switchTab(btn.dataset.view));
 });
 document.getElementById("searchBox").addEventListener("input", renderBrowse);
 document.getElementById("filterType").addEventListener("change", renderBrowse);
@@ -1824,8 +2102,11 @@ async function boot(){
   await initStore();
   await loadStore();
   if(DRIVER==='mem') toast('Memory only this session — nothing will be saved');
+  await loadGhConfig();
+  renderGhStatus();
   await syncFromRepoFile(true);
   startSession();
+  renderToday();
 }
 boot();
 </script>
