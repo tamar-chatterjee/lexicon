@@ -1,6 +1,6 @@
 {
-  "exportedAt": "2026-09-21T22:26:47.803Z",
-  "appVersion": "1.9.0",
+  "exportedAt": "2026-09-26T02:14:31.260Z",
+  "appVersion": "2.2.0",
   "customWords": [
     {
       "id": "c1790026920050i4dh1",
@@ -69,6 +69,74 @@
       "contrast": "Wary = cautious because you recognise a possible risk or problem. Suspicious = inclined to distrust someone or believe that something dishonest or harmful may be happening.",
       "nearestSynonym": "Cautious",
       "personal": "I'm usually wary of ___ because ___.,She became increasingly wary when ___.,I would be wary about ___ if ___."
+    },
+    {
+      "id": "c1790349856488r0jlm",
+      "word": "inure",
+      "meaning": "To make someone accustomed to something unpleasant or difficult so that it affects them less.",
+      "hook": "exposed so often, it stops hitting as hard",
+      "register": "Everyday educated",
+      "examples": [
+        "inured to criticism",
+        "inured to hardship",
+        "became inured to the constant noise"
+      ],
+      "collocations": "inured to criticism, inured to hardship, inured to suffering, inured to disappointment, become inured to",
+      "family": "inure, inured, inuring, inurement (rare)",
+      "contrast": "Inure = become accustomed and less sensitive to something unpleasant through repeated exposure. Endure = continue through or tolerate something difficult; it does not imply becoming accustomed to it.",
+      "nearestSynonym": "Harden",
+      "personal": "After years of ___, I became almost inured to ___.,She had become so inured to ___ that she barely noticed it anymore.,Repeated exposure to ___ can inure someone to ___."
+    },
+    {
+      "id": "c1790350124462w0f9f",
+      "word": "cursory",
+      "meaning": "Quick and not thorough, involving little attention to detail.",
+      "hook": "a quick look, not a proper examination",
+      "register": "Everyday educated",
+      "examples": [
+        "a cursory glance",
+        "a cursory examination",
+        "after a cursory review"
+      ],
+      "collocations": "cursory glance, cursory look, cursory examination, cursory inspection, cursory review",
+      "family": "cursory, cursorily, cursoriness (rare)",
+      "contrast": "Cursory = quick and lacking thoroughness. Perfunctory = done with minimal care or interest because it feels routine or obligatory; something can be cursory without being perfunctory.",
+      "nearestSynonym": "Superficial",
+      "personal": "After only a cursory glance at ___, I assumed ___.,A cursory examination of ___ would probably miss ___.,I gave ___ a cursory review before realising ___."
+    },
+    {
+      "id": "c179035012960095yg7",
+      "word": "staid",
+      "meaning": "Serious, respectable, and restrained in manner, appearance, or style; sometimes suggesting a lack of excitement or spontaneity.",
+      "hook": "respectable, restrained — perhaps a little too proper",
+      "register": "Everyday educated",
+      "examples": [
+        "a staid atmosphere",
+        "a staid institution",
+        "usually rather staid"
+      ],
+      "collocations": "staid atmosphere, staid institution, staid appearance, staid manner, staid reputation",
+      "family": "staid, staidly, staidness (less common)",
+      "contrast": "Staid = respectable, serious, and restrained, sometimes to the point of seeming dull. Sedate = calm and unhurried, without necessarily suggesting conventionality or excessive propriety.",
+      "nearestSynonym": "Sober",
+      "personal": "The atmosphere at ___ was surprisingly staid because ___.,Although ___ has a rather staid reputation, ___.,I tend to find ___ a little too staid when ___."
+    },
+    {
+      "id": "c1790350133287wavxv",
+      "word": "polemical",
+      "meaning": "Strongly critical or argumentative, especially when attacking or challenging a particular belief, position, or opponent.",
+      "hook": "written or spoken to challenge and attack a position",
+      "register": "Formal / educated",
+      "examples": [
+        "a polemical essay",
+        "a polemical tone",
+        "an increasingly polemical debate"
+      ],
+      "collocations": "polemical essay, polemical writing, polemical tone, polemical argument, polemical attack",
+      "family": "polemic, polemical, polemically, polemicist",
+      "contrast": "Polemical = aggressively argumentative or critical in challenging a position. Controversial = likely to provoke disagreement, but not necessarily written or expressed as an attack.",
+      "nearestSynonym": "Contentious",
+      "personal": "The discussion became increasingly polemical when ___.,I found the author's treatment of ___ unnecessarily polemical because ___.,Rather than offering a neutral analysis of ___, the speaker adopted a polemical tone and ___."
     }
   ],
   "customPhrases": [],
@@ -133,12 +201,14 @@
     "w12": {
       "box": 0,
       "due": "2026-09-21",
-      "seen": 0
+      "seen": 0,
+      "lastCueKind": "Personal use"
     },
     "w13": {
       "box": 0,
       "due": "2026-09-21",
-      "seen": 0
+      "seen": 0,
+      "lastCueKind": "Personal use"
     },
     "w14": {
       "box": 0,
@@ -190,8 +260,7 @@
     "p5": {
       "box": 0,
       "due": "2026-09-21",
-      "seen": 0,
-      "lastCueKind": "Personal use"
+      "seen": 0
     },
     "p6": {
       "box": 0,
@@ -227,9 +296,61 @@
       "box": 0,
       "due": "2026-09-21",
       "seen": 0
+    },
+    "c1790349856488r0jlm": {
+      "box": 0,
+      "due": "2026-09-25",
+      "seen": 0
+    },
+    "c1790350124462w0f9f": {
+      "box": 0,
+      "due": "2026-09-25",
+      "seen": 0
+    },
+    "c179035012960095yg7": {
+      "box": 0,
+      "due": "2026-09-25",
+      "seen": 0
+    },
+    "c1790350133287wavxv": {
+      "box": 0,
+      "due": "2026-09-25",
+      "seen": 0
     }
   },
   "answerLog": [
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
     {
       "date": "2026-09-21",
       "word": "Perfunctory",
