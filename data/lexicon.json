@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-10-04T00:15:26.366Z",
+  "exportedAt": "2026-10-04T00:16:29.046Z",
   "appVersion": "2.2.0",
   "customWords": [
     {
@@ -154,6 +154,142 @@
       "contrast": "Taciturn = habitually inclined to speak very little. Reticent = reluctant to speak about a particular subject or reveal thoughts and feelings.",
       "nearestSynonym": "Reserved",
       "personal": "The most taciturn person I know is ___, especially when ___.,He became unusually taciturn after ___.,I tend to grow taciturn when ___."
+    },
+    {
+      "id": "c1791072933574ijjhf",
+      "word": "adroit",
+      "meaning": "Skilful, clever, and effective, especially in handling a difficult situation.",
+      "hook": "handles it smoothly and skilfully",
+      "register": "Everyday educated",
+      "examples": [
+        "an adroit negotiator",
+        "an adroit response",
+        "adroit handling of the situation"
+      ],
+      "collocations": "adroit handling, adroit response, adroit negotiator, adroit manoeuvre, politically adroit",
+      "family": "adroit, adroitly, adroitness",
+      "contrast": "Adroit = skilful and tactful in action or handling situations. Clever = mentally quick or ingenious, but does not necessarily imply practical finesse.",
+      "nearestSynonym": "Deft",
+      "personal": "She was particularly adroit at handling ___ because ___.,His adroit response to ___ prevented ___.,I wish I were more adroit when dealing with ___."
+    },
+    {
+      "id": "c17910729431624wxt1",
+      "word": "germane",
+      "meaning": "Directly relevant and closely related to the subject being discussed.",
+      "hook": "relevant to the point at hand",
+      "register": "Formal / educated",
+      "examples": [
+        "germane to the discussion",
+        "a germane observation",
+        "not particularly germane"
+      ],
+      "collocations": "germane to, germane point, germane observation, directly germane, particularly germane",
+      "family": "germane; germanely (rare); germaneness (rare)",
+      "contrast": "Germane = directly relevant to the matter at hand. Relevant = connected to the subject more broadly and is more neutral in register.",
+      "nearestSynonym": "Relevant",
+      "personal": "I don't think ___ is particularly germane to the question of ___.,One point that is especially germane here is ___.,Her comment about ___ was germane because ___."
+    },
+    {
+      "id": "c1791072950596ziz3a",
+      "word": "germane",
+      "meaning": "Directly relevant and closely related to the subject being discussed.",
+      "hook": "relevant to the point at hand",
+      "register": "Formal / educated",
+      "examples": [
+        "germane to the discussion",
+        "a germane observation",
+        "not particularly germane"
+      ],
+      "collocations": "germane to, germane point, germane observation, directly germane, particularly germane",
+      "family": "germane; germanely (rare); germaneness (rare)",
+      "contrast": "Germane = directly relevant to the matter at hand. Relevant = connected to the subject more broadly and is more neutral in register.",
+      "nearestSynonym": "Relevant",
+      "personal": "I don't think ___ is particularly germane to the question of ___.,One point that is especially germane here is ___.,Her comment about ___ was germane because ___."
+    },
+    {
+      "id": "c1791072957402u698e",
+      "word": "austere",
+      "meaning": "Severe, plain, or restrained in appearance, manner, or lifestyle, with little comfort or decoration.",
+      "hook": "stripped back, severe, without indulgence",
+      "register": "Everyday educated",
+      "examples": [
+        "an austere interior",
+        "an austere lifestyle",
+        "an austere manner"
+      ],
+      "collocations": "austere surroundings, austere lifestyle, austere interior, austere manner, austere beauty",
+      "family": "austere, austerely, austerity",
+      "contrast": "Austere = deliberately plain, restrained, or severe. Staid = respectable and restrained in manner or style, sometimes to the point of dullness.",
+      "nearestSynonym": "Severe",
+      "personal": "The room had an austere quality because ___.,I would find such an austere lifestyle difficult because ___.,His manner can seem rather austere when ___."
+    },
+    {
+      "id": "c1791072964644p359v",
+      "word": "salient",
+      "meaning": "Most noticeable, important, or relevant among a number of points or features.",
+      "hook": "the point that stands out",
+      "register": "Everyday educated",
+      "examples": [
+        "the most salient point",
+        "salient features",
+        "a particularly salient detail"
+      ],
+      "collocations": "salient point, salient feature, salient detail, salient issue, most salient",
+      "family": "salient, salience, saliently (less common)",
+      "contrast": "Salient = especially noticeable or important in the present context. Important = significant in a general sense, without implying that it stands out from other points.",
+      "nearestSynonym": "Prominent",
+      "personal": "The most salient point in the discussion was ___.,One particularly salient feature of ___ is ___.,What struck me as most salient was ___."
+    },
+    {
+      "id": "c1791072971189twje9",
+      "word": "contumacious",
+      "meaning": "Stubbornly and openly disobedient or defiant toward authority.",
+      "hook": "defiant and refusing to obey",
+      "register": "Very formal / literary / legal",
+      "examples": [
+        "contumacious behaviour",
+        "a contumacious refusal",
+        "remained contumacious despite repeated warnings"
+      ],
+      "collocations": "contumacious behaviour, contumacious refusal, contumacious conduct, contumacious defendant, persistently contumacious",
+      "family": "contumacious, contumaciously, contumacy",
+      "contrast": "Contumacious = stubbornly defiant toward authority or an order. Stubborn = generally unwilling to change one's position and does not necessarily involve authority.",
+      "nearestSynonym": "Defiant",
+      "personal": "His contumacious refusal to ___ eventually led to ___.,The official regarded ___ as openly contumacious because ___.,It would be contumacious to ignore ___ after ___."
+    },
+    {
+      "id": "c1791072978195ntxe2",
+      "word": "inexorable",
+      "meaning": "Impossible to stop, prevent, or persuade from continuing.",
+      "hook": "it keeps coming and cannot be stopped",
+      "register": "Formal / educated",
+      "examples": [
+        "the inexorable passage of time",
+        "an inexorable decline",
+        "the inexorable advance of technology"
+      ],
+      "collocations": "inexorable rise, inexorable decline, inexorable march, inexorable advance, inexorable pressure",
+      "family": "inexorable, inexorably, inexorability",
+      "contrast": "Inexorable = impossible to stop or prevent once underway. Relentless = persistent and unremitting, but not necessarily impossible to halt.",
+      "nearestSynonym": "Unstoppable",
+      "personal": "The inexorable rise of ___ has changed ___.,There seemed to be an inexorable movement toward ___.,Despite attempts to prevent it, ___ continued inexorably."
+    },
+    {
+      "id": "c179107298904324h83",
+      "word": "amenable",
+      "meaning": "Willing to agree, cooperate, or be influenced; also capable of being affected or treated in a particular way.",
+      "hook": "open to the idea — willing to work with it",
+      "register": "Everyday educated",
+      "examples": [
+        "amenable to compromise",
+        "amenable to suggestion",
+        "perfectly amenable to the idea"
+      ],
+      "collocations": "amenable to change, amenable to compromise, amenable to suggestion, amenable to discussion, perfectly amenable",
+      "family": "amenable, amenability; amenably (rare)",
+      "contrast": "Amenable = willing to cooperate, agree, or respond to influence. Agreeable = pleasant or acceptable, and only sometimes means willing to agree.",
+      "nearestSynonym": "Receptive",
+      "personal": "I'd be quite amenable to ___ if ___.,She seemed more amenable to the idea once ___.,I find people are generally amenable to ___ when ___."
     }
   ],
   "customPhrases": [
@@ -488,6 +624,46 @@
       "seen": 0
     },
     "c17910729263656g8jf": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
+    },
+    "c1791072933574ijjhf": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
+    },
+    "c17910729431624wxt1": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
+    },
+    "c1791072950596ziz3a": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
+    },
+    "c1791072957402u698e": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
+    },
+    "c1791072964644p359v": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
+    },
+    "c1791072971189twje9": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
+    },
+    "c1791072978195ntxe2": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
+    },
+    "c179107298904324h83": {
       "box": 0,
       "due": "2026-10-04",
       "seen": 0
