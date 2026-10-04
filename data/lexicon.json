@@ -1,5 +1,5 @@
 {
-  "exportedAt": "2026-09-26T16:24:09.313Z",
+  "exportedAt": "2026-10-04T00:15:26.366Z",
   "appVersion": "2.2.0",
   "customWords": [
     {
@@ -137,6 +137,23 @@
       "contrast": "Polemical = aggressively argumentative or critical in challenging a position. Controversial = likely to provoke disagreement, but not necessarily written or expressed as an attack.",
       "nearestSynonym": "Contentious",
       "personal": "The discussion became increasingly polemical when ___.,I found the author's treatment of ___ unnecessarily polemical because ___.,Rather than offering a neutral analysis of ___, the speaker adopted a polemical tone and ___."
+    },
+    {
+      "id": "c17910729263656g8jf",
+      "word": "taciturn",
+      "meaning": "Habitually quiet and inclined to say very little.",
+      "hook": "a person of very few words",
+      "register": "Everyday educated",
+      "examples": [
+        "a taciturn colleague",
+        "naturally taciturn",
+        "remained taciturn throughout dinner"
+      ],
+      "collocations": "taciturn person, taciturn manner, naturally taciturn, unusually taciturn, remain taciturn",
+      "family": "taciturn, taciturnity (formal), taciturnly (rare)",
+      "contrast": "Taciturn = habitually inclined to speak very little. Reticent = reluctant to speak about a particular subject or reveal thoughts and feelings.",
+      "nearestSynonym": "Reserved",
+      "personal": "The most taciturn person I know is ___, especially when ___.,He became unusually taciturn after ___.,I tend to grow taciturn when ___."
     }
   ],
   "customPhrases": [
@@ -160,39 +177,128 @@
           "modelAnswer": "If I were to give you a completely free month tomorrow, where would you go first?"
         }
       ]
+    },
+    {
+      "id": "c1790439859995om4tg",
+      "word": "Have you ever…",
+      "meaning": "Invites someone to recall a personal experience related to the topic at hand.",
+      "hook": "open the door to a real story",
+      "register": "Everyday",
+      "examples": [
+        "Have you ever gone somewhere on impulse and ended up loving it?"
+      ],
+      "collocations": "category: experience / story opener",
+      "family": "follow-ups: What happened? / What was that like? / And then what?",
+      "contrast": "vs. a factual question, which asks for information rather than inviting a lived experience or story.",
+      "nearestSynonym": "",
+      "personal": "Use it when you want to move from a general topic into something the other person has actually experienced.",
+      "scenarios": [
+        {
+          "setup": "A friend says they love spontaneous travel.",
+          "modelAnswer": "Have you ever booked a trip with almost no plan and just figured it out as you went?"
+        }
+      ]
+    },
+    {
+      "id": "c17904398670832eyah",
+      "word": "What would it be like if…",
+      "meaning": "Invites someone to imagine the felt experience of a possible future or alternative situation.",
+      "hook": "turn a possibility into an experience",
+      "register": "Everyday educated",
+      "examples": [
+        "What would it be like if you could take six months off with nothing tying you down?"
+      ],
+      "collocations": "category: imagination / possibility",
+      "family": "follow-ups: What do you picture? / Where does your mind go? / What would that make possible?",
+      "contrast": "vs. 'What would you do if…?', which focuses more on action; this phrasing draws attention to the experience itself.",
+      "nearestSynonym": "",
+      "personal": "Use it to help someone step mentally into a possibility rather than merely analyse it.",
+      "scenarios": [
+        {
+          "setup": "Someone says they wish they had more freedom.",
+          "modelAnswer": "What would it be like if you genuinely had nothing you had to do for the next six months?"
+        }
+      ]
+    },
+    {
+      "id": "c1790439878853c5ghw",
+      "word": "You might find yourself…",
+      "meaning": "Suggests a possible future experience gently, without presenting it as certain or telling someone what they will feel.",
+      "hook": "suggest a possibility without imposing it",
+      "register": "Everyday educated",
+      "examples": [
+        "You might find yourself enjoying the slower pace more than you expected."
+      ],
+      "collocations": "category: gentle future projection",
+      "family": "follow-ups: You might… / You could… / Perhaps you'll find… / I wonder if…",
+      "contrast": "vs. 'You will…', which presumes an outcome; 'you might find yourself…' preserves uncertainty and autonomy.",
+      "nearestSynonym": "",
+      "personal": "Use it when offering a possible future experience while leaving plenty of room for the other person to disagree.",
+      "scenarios": [
+        {
+          "setup": "A friend is unsure whether they would enjoy travelling alone.",
+          "modelAnswer": "You might find yourself enjoying the freedom of having no one else's schedule to work around."
+        }
+      ]
+    },
+    {
+      "id": "c179043988627494f7f",
+      "word": "I wonder whether…",
+      "meaning": "Introduces a thought, possibility, or interpretation with curiosity rather than certainty.",
+      "hook": "offer the thought, don't force the conclusion",
+      "register": "Everyday educated",
+      "examples": [
+        "I wonder whether what you're really missing is the sense of possibility."
+      ],
+      "collocations": "category: curiosity / gentle interpretation",
+      "family": "follow-ups: I wonder if… / Perhaps… / Could it be that…",
+      "contrast": "vs. 'The reason is…', which asserts an interpretation; 'I wonder whether…' leaves it open for the other person to accept, reject, or refine.",
+      "nearestSynonym": "",
+      "personal": "Use it to test an interpretation lightly, especially when you want to avoid sounding as though you know the other person's mind.",
+      "scenarios": [
+        {
+          "setup": "Someone keeps talking about wanting a dramatic change of scenery.",
+          "modelAnswer": "I wonder whether it's the place itself you're craving, or the feeling of being somewhere completely new."
+        }
+      ]
     }
   ],
   "progress": {
     "w1": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w2": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w3": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w4": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0,
-      "lastCueKind": "Recall the word"
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w5": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
     },
     "w6": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
     },
     "w7": {
       "box": 1,
@@ -201,45 +307,52 @@
       "lastCueKind": "Personal use"
     },
     "w8": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w9": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w10": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
     },
     "w11": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w12": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w13": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0,
+      "box": 1,
+      "due": "2026-09-26",
+      "seen": 1,
       "lastCueKind": "Personal use"
     },
     "w14": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w15": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Distinguish"
     },
     "w16": {
       "box": 1,
@@ -248,14 +361,16 @@
       "lastCueKind": "Personal use"
     },
     "w17": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "w18": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
     },
     "p1": {
       "box": 0,
@@ -291,7 +406,8 @@
     "p7": {
       "box": 0,
       "due": "2026-09-21",
-      "seen": 0
+      "seen": 0,
+      "lastCueKind": "Recall the frame"
     },
     "p8": {
       "box": 0,
@@ -299,53 +415,389 @@
       "seen": 0
     },
     "c1790026920050i4dh1": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
     },
     "c17900271027683viis": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
-    },
-    "c17900271094044ul29": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
-    },
-    "c1790027198963aw2uo": {
-      "box": 0,
-      "due": "2026-09-21",
-      "seen": 0
-    },
-    "c1790349856488r0jlm": {
-      "box": 0,
-      "due": "2026-09-25",
-      "seen": 0
-    },
-    "c1790350124462w0f9f": {
-      "box": 0,
-      "due": "2026-09-25",
-      "seen": 0,
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
       "lastCueKind": "Personal use"
     },
+    "c17900271094044ul29": {
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
+    },
+    "c1790027198963aw2uo": {
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
+    },
+    "c1790349856488r0jlm": {
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
+    },
+    "c1790350124462w0f9f": {
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
+    },
     "c179035012960095yg7": {
-      "box": 0,
-      "due": "2026-09-25",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Recall the word"
     },
     "c1790350133287wavxv": {
-      "box": 0,
-      "due": "2026-09-25",
-      "seen": 0
+      "box": 1,
+      "due": "2026-09-27",
+      "seen": 1,
+      "lastCueKind": "Personal use"
     },
     "c17904398493111r0ve": {
       "box": 0,
       "due": "2026-09-26",
       "seen": 0
+    },
+    "c1790439859995om4tg": {
+      "box": 0,
+      "due": "2026-09-26",
+      "seen": 0
+    },
+    "c17904398670832eyah": {
+      "box": 0,
+      "due": "2026-09-26",
+      "seen": 0
+    },
+    "c1790439878853c5ghw": {
+      "box": 0,
+      "due": "2026-09-26",
+      "seen": 0
+    },
+    "c179043988627494f7f": {
+      "box": 0,
+      "due": "2026-09-26",
+      "seen": 0
+    },
+    "c17910729263656g8jf": {
+      "box": 0,
+      "due": "2026-10-04",
+      "seen": 0
     }
   },
   "answerLog": [
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-27",
+      "word": "apt",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "I think that would be a very act I think you"
+    },
+    {
+      "date": "2026-09-27",
+      "word": "Tacit",
+      "type": "word",
+      "cueKind": "Recall the word",
+      "rating": "nailed",
+      "answerText": "the word tacit"
+    },
+    {
+      "date": "2026-09-27",
+      "word": "Specious",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "very much like a species claim to me"
+    },
+    {
+      "date": "2026-09-27",
+      "word": "Capricious",
+      "type": "word",
+      "cueKind": "Distinguish",
+      "rating": "shaky",
+      "answerText": "capricious is more  is someone who's easy to manipulate versus mercurial  which is some whose need to change changes"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Oblique",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "I just wish  it's not having I wonder if there's a weak way to get to doing the same thing between differently"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Prescient",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "felt a lot more"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Malleable",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "nailed",
+      "answerText": "to find that it's been chaotic because your managers manual doesn't really have  a reading decisions"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Acrimonious",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "nailed",
+      "answerText": "I'm so sorry to hear this but although I'm not surprised after hearing about all the acronyms discussions and and a musicians"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Exculpate",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "you there was that self instructed that he was talking about last year do you know he was exultated"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Mercurial",
+      "type": "word",
+      "cueKind": "Recall the word",
+      "rating": "nailed",
+      "answerText": "mercurial"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Incontrovertible",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "nailed",
+      "answerText": "I have in controvertible evidence that the adventure that I just went on would be something that I am happy to share with you some controvert as in controvertible evidence that and I have for you specific to what I know that you"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Pecuniary",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "nailed",
+      "answerText": "these places that you feel alive at  least is where there's absolutely no the cuny  focus"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Persiflage",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "nailed",
+      "answerText": "actually want to ask you what you mean by Wilder exactly deep into how that word sort of plays out in your in your life however  I'd like to go beyond the more regular Percy flan and make sense"
+    },
+    {
+      "date": "2026-09-26",
+      "word": "Obstreperous",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "nailed",
+      "answerText": "yeah me too if only I could get rid of these obstreperous children it would help me do it."
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Perfunctory",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "missed",
+      "answerText": "it's difficult to be yourself when all conversations revolved around perfunctory subjects such as criminal law"
+    },
+    {
+      "date": "2026-09-21",
+      "word": "Equanimity",
+      "type": "word",
+      "cueKind": "Personal use",
+      "rating": "shaky",
+      "answerText": "well it's certainly not a place where  you can maintain a state of equanimity"
+    },
     {
       "date": "2026-09-21",
       "word": "Perfunctory",
